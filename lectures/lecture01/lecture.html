@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>POLI 30 - Political Inquiry</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Umberto Mignozzetti" />
+    <script src="lecture_files/header-attrs/header-attrs.js"></script>
+    <link href="lecture_files/remark-css/default.css" rel="stylesheet" />
+    <link href="lecture_files/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="lecture_files/remark-css/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# POLI 30 - Political Inquiry
+]
+.subtitle[
+## Introduction
+]
+.author[
+### Dr. Umberto Mignozzetti
+]
+
+---
+
+
+
+
+&lt;style&gt;
+
+.remark-slide-number {
+  position: inherit;
+}
+
+.remark-slide-number .progress-bar-container {
+  position: absolute;
+  bottom: 0;
+  height: 6px;
+  display: block;
+  left: 0;
+  right: 0;
+}
+
+.remark-slide-number .progress-bar {
+  height: 100%;
+  background-color: #f2a900;
+}
+
+.orange {
+  color: #f2a900;
+}
+&lt;/style&gt;
+# Today's Agenda
+
+.font150[
+
+What is POLI 30 D?
+
+Syllabus and bureaucracy
+
+About me
+
+About you
+
+]
+
+---
+
+class: inverse, center, middle
+
+# POLI 30 D
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#f2a900' size=1px width=720px&gt;&lt;/html&gt; 
+
+---
+
+# POLI 30 D
+
+.font130[
+* Political Inquiry
+
+* In this class, you are going to learn how Political Scientists produce rigorous empirical research.
+
+* **Rigorous:** Reproducible and transparent.
+
+* **Empirical:** Using data.
+
+]
+
+---
+
+# POLI 30 D
+
+.font130[
+* This class aims to empower you to consume and produce knowledge. 
+
+* You will be able to evaluate the strength of empirical claims, i.e., calling B.S.
+
+* You will be able to produce elementary data analysis using the statistical software R.
+
+* At a minimum, you will look at the newspaper differently.
+
+]
+
+---
+
+# POLI 30 D
+
+.font130[
+* In WWII, the USAF needed to improve the reliability of their bombers.
+
+* They collected data on planes that went to war and back to see where they should reinforce.
+
+![planes](survivorship-bias.png){width=50%}
+
+]
+
+---
+
+# POLI 30 D
+
+.font130[
+* My mother-in-law, 65+ years old lady, was diagnosed with hep C.
+
+* I did what any responsible in-law was supposed to do...
+
+* The doctor was sure about her diagnostic: she told my wife that the test had an 80% accuracy (i.e., an 20% false-negative rate).
+
+* But it turns out that the test she ran had a 50% false-positive rate.
+
+* Now, spse of 1000 people that do the test, ten tests positive (1%). What are the chances that these people indeed have the disease?
+
+|                       | test negative | test positive |
+|-----------------------|:-------------:|:-------------:|
+| does not have disease | .99*.5 = .495 | .99*.5 = .495 |
+|           has disease | .01*.2 = .002 | .01*.8 = .008 |
+
+]
+
+---
+# POLI 30 D
+
+.font130[
+* This class aims to empower you to consume and produce knowledge. 
+
+* You will be able to evaluate the strength of empirical claims, i.e., calling B.S.
+
+* You will be able to produce elementary data analysis using the statistical software R.
+
+* At a minimum, you will look at the newspaper differently.
+
+]
+
+---
+
+# POLI 30 D
+
+.font130[
+Grading:
+
+|     Assignment     | Points | Weight |                                                          Due Date                                                         |
+|:------------------:|:------:|:------:|:-------------------------------------------------------------------------------------------------------------------------:|
+| Participation x 28 |   10   |  10 %  | Through i-clicker                                                                                                         |
+| Quizzes x 28       |   10   |  20 %  | Before the next lecture start                                                                                             |
+| Problem Sets x 4   |   10   |  50 %  | PS 1 – Jan 27&lt;br&gt;PS 2 – Feb 10&lt;br&gt;PS 3 – Feb 24&lt;br&gt;PS 4 – Mar 10&lt;br&gt;All PSs will be live two weeks before their due date. |
+| Final Exam         |   10   |  20 %  | March 22, 8-11 am                                                                                                         |
+|                    |        |  100%  |                                                                                                                           |
+
+]
+
+---
+
+# Bureaucracy
+
+.font150[
+* Attendance is required. I will use the i-clicker to check it. More on that to come.
+
+* Academic Integrity: feel free to work in groups, but turn in your own work.
+
+* The main book we will use is 
+
+**Llaudet and Imai. Data Analysis for Social Science: A Friendly and Practical Introduction. United States, Princeton University Press, 2022.**
+
+]
+
+---
+
+# Lecture x TA sections and Communication
+
+.font150[
+* Lectures: more theoretical
+
+* TA sections: more computational
+
+* I hold office hours daily, from 11 AM to 12 PM.
+
+* You need to sign in using [https://calendly.com/umbertomig/office-hours](https://calendly.com/umbertomig/office-hours)
+
+]
+
+---
+
+# About me
+
+.font150[
+* My name is Umberto Mignozzetti.
+
+* I hold a Ph.D. from New York University.
+
+* I study how institution design affects welfare in developing democracies.
+
+* In my free time, I like to watch soccer.
+
+]
+
+---
+
+# About you
+
+.font130[
+
+* You are likely sitting close to a future Apple CEO, US Senator, NGO leader, or Eccentric Billionaire.
+
+* Introduce yourself to the person next to you.
+
+* Tell them your name and your majors / minors / study interests.
+
+* Tell them what you like to do in your free time.
+
+]
+
+---
+
+class: inverse, center, middle
+
+# Questions?
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#f2a900' size=1px width=720px&gt;&lt;/html&gt; 
+
+---
+
+class: inverse, center, middle
+
+# See you in the next class!
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#f2a900' size=1px width=720px&gt;&lt;/html&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://raw.githubusercontent.com/umbertomig/qtm151/main/slides/wmisc/macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"ratio": "4:3",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"slideNumberFormat": "<div class=\"progress-bar-container\">\n  <div class=\"progress-bar\" style=\"width: calc(%current% / %total% * 100%);\">\n  </div>\n</div>"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
