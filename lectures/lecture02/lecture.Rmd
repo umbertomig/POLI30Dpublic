@@ -42,6 +42,23 @@ classoption: "handout" # overrides incremental, removes all pauses
 \end{minipage}
 \end{center}
 
+## Before we start
+
+**Announcements:**
+
+- Quizzes and Participation:
+  + I will start these at week 03.
+
++ We **do have** Lab this week:
+  + Bring your laptop to install and configure R and R Studio
+  + Meet and greet your TAs. They are here to help!
+
+* Github page: [https://github.com/umbertomig/POLI30Dpublic](https://github.com/umbertomig/POLI30Dpublic)
+
+* Podcast: I didn't know I need to wear a mic. Will do from now on.
+
+# Political Science Theories
+
 ## What is a theory?
 
 **Political science goals:**
@@ -204,6 +221,8 @@ My preferred definition:
 ## Scientific Cycle
 
 \begin{center}\includegraphics[height=.7\textheight]{../images/sciencecycle.png}\end{center}
+
+# Political Science Data
 
 ## What are Data/Datasets?
 - To test theories, we need data. What is data? What are datasets?
