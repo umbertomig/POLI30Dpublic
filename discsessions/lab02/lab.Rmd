@@ -36,7 +36,7 @@ classoption: "handout" # overrides incremental, removes all pauses
 
 **Recap:**
 
-- Last class you learned how to install R and R Studio in your computer.
+- Last class, you learned how to install R and R Studio on your computer.
 
 **Great job!**
 
@@ -67,14 +67,14 @@ classoption: "handout" # overrides incremental, removes all pauses
 ## If you are worried because...
 - You have never done any statistics or coding...
 \vspace{.1cm}    
-    + Don't worry, we assume you haven't
+    + Don't worry. We assume you haven't
 - Math is your "mortal enemy" or "you are not good at it"...
     + We will start from zero and progress slowly
     + There is plenty of help available
     + As long as you put in the time to do the work every week, you will do great!
 - You don't think you will be able to "memorize" all the equations ...
 \vspace{.1cm}
-    + Just start slow and progress. Understand trumps memorization!
+    + Start slow and progress. Understand trumps memorization!
 \vspace{-1cm}
 
 ## Why is it so hard to code?
@@ -85,14 +85,14 @@ classoption: "handout" # overrides incremental, removes all pauses
 
 * R, Python, and other programming languages are *formal languages*.
 
-* This means that you should pass the exact instructions for the computer to it do what you want to get done.
+* This means that you should pass the exact instructions to the computer to it do what you want to get done.
 
-* Learning how to code is to learn how to speak a very formal language. As with learning any language, **practice makes it perfect**!
+* Learning how to code is learning to speak a very formal language. As with learning any language, **practice makes it perfect**!
 
 # Learning your R Studio
 
 ## R and RStudio
-- In Lab 01, you should have installed two programs in your computer: 
+- In Lab 01, you should have installed two programs on your computer: 
     + R (\includegraphics[height=.05\textheight]{../images/Rlogo.png}) and RStudio (\includegraphics[height=.05\textheight]{../images/RStudio_logo.png})
 \vspace{.2cm}   
 
@@ -189,7 +189,7 @@ classoption: "handout" # overrides incremental, removes all pauses
     + name it "lab02" so that you know what it refers to
     
 ***
-- In the book as well as in the lectures, we show the output that you should see in the Console right after the code that produces it, like so:
+- In the book, as well as in the lectures, we show the output that you should see in the Console right after the code that produces it, like so:
 \vspace{.2cm}
 \begin{center}
 \begin{minipage}{0.375\paperwidth}
@@ -207,7 +207,7 @@ classoption: "handout" # overrides incremental, removes all pauses
 
 ## 2. Create objects
 - R stores information in the form of \concept{objects}
-- In order to analyze data, we will need to create objects
+- To analyze data, we will need to create objects
 - An object is like a box that can contain anything\newline
 \vspace{.4cm}
 \begin{minipage}{0.4\paperwidth}
@@ -230,7 +230,7 @@ classoption: "handout" # overrides incremental, removes all pauses
     + name can contain \fu{\_} underscores, which are good substitutes for spaces
 \vspace{.2cm}
 
-- To its right, we specify the content of the object
+- To its right, we specify the object's content
 \vspace{.8cm}
 \begin{mdframed}[backgroundcolor=white,linecolor=function, linewidth=0.05cm]
 \begin{center}\fu{\textit{object\_name} <- \textit{object\_content}}\end{center}
@@ -255,21 +255,21 @@ classoption: "handout" # overrides incremental, removes all pauses
     twentyfive 
     ```
 
-- This is equivalent of asking to R: what is inside of *twentyfive*?
+- This is equivalent to asking R: what is inside of *twentyfive*?
 
 ***
 - Objects can contain text (called strings of characters) as well as numbers
 
-- Run for example:
+- Run, for example:
     ```{r, collapse=TRUE, comment='##'}
     class <- "POLI30D" 
     ```
 
-- Now in the environment there should be two objects
+- Now, in the environment, there should be two objects
     + What are they? 
 \vspace{.2cm}    
 
-- Note that in this last piece of code we used \fu{"} around the contents, but we did not use \fu{"} in the previous piece of code
+- Note that in this last piece of code, we used \fu{"} around the contents, but we did not use \fu{"} in the previous piece of code
 
 \vspace{.1cm}\pause
 \begin{center} \fu{twentyfive <- 25} \,\,\,\,\,\,\color{black}vs.\,\,\,\,\,\, \fu{class <- "POLI30D"} \end{center}
@@ -442,7 +442,7 @@ or \\
     - Optional arguments: named \fu{degrees} and \fu{minutes} to change the default temperature and duration of the bake, respectively
     \vspace{.1cm}
         + \fu{degrees=350} changes temperature to 350$^{\circ}$F
-        + \fu{minutes=30} changes duration of bake to 30 minutes
+        + \fu{minutes=30} changes the duration of the bake to 30 minutes
 
 ***
 - The following code would ask R to bake a cake mix for 30 minutes at 350$^{\circ}$F, so that we can have cake as the output:
@@ -514,7 +514,7 @@ or \\
     + Whenever returning to work on an R script, run all the code from the beginning
     
 ***
-- It is good practice to comment code
+- It is good practice to comment on code
     + include short notes to yourself or your collaborators explaining what the code does
     
 - To comment code, we use \fu{\color{gray}\#\color{black}}
@@ -529,7 +529,7 @@ or \\
     ```
 
 ***
-- Before closing your computer, remember to save the R script, otherwise you risk losing unsaved changes
+- Before closing your computer, remember to save the R script, otherwise, you risk losing unsaved changes
 \vspace{.1cm}
     + either use shortcuts (*command+S* or *ctr+S*) or 
     + click on File > Save
