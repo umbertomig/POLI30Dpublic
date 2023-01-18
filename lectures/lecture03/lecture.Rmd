@@ -46,15 +46,16 @@ classoption: "handout" # overrides incremental, removes all pauses
 
 **Announcements:**
 
-- I hope you had a great break! Next one is President's Day.
+- I hope you had a great break! Next one is on President's Day.
 
 - Quizzes and Participation:
-  + Start at week 03. I will give full marks on Quiz 1 for everyone on week 03. You're welcome :)
+  + Start at Week 03. I will give full marks on Quiz 1 for everyone on week 03. You're welcome :)
 
 - How was your Lab last week?
-  + We have a great line up of TAs in this class.
 
 - Github page: [https://github.com/umbertomig/POLI30Dpublic](https://github.com/umbertomig/POLI30Dpublic)
+
+- Piazza forum: [https://piazza.com/ucsd/winter2023/17221](https://piazza.com/ucsd/winter2023/17221)
 
 ## Before we start
 
