@@ -1,0 +1,101 @@
+---
+title: "POLI 30 D"
+author: "Your name here"
+output: html_document
+---
+
+# Problem Set 01 - Do Women Promote Different Policies than Men?
+
+(Based on DSS Materials and on [Chattopadhyay and Esther Duflo. 2004. ``Women as Policy Makers: Evidence from a Randomized Policy Experiment in India."](https://economics.mit.edu/files/792) *Econometrica*, 72 (5): 1409–43.)
+
+We will estimate the average causal effect of having a female politician on two policy outcomes. For this purpose, we will analyze data from an experiment conducted in India, where villages were randomly assigned to have a female council head. The dataset we will use is in a file called "india.csv". The Table below shows the names and descriptions of the variables in this dataset, where the unit of observation is villages.
+
+| **Variable** | **Description**                                                                                  |
+|--------------|--------------------------------------------------------------------------------------------------|
+| village      | village identifier ("Gram Panchayat number _ village number")                                    |
+| female       | whether village was assigned a female politician: 1=yes, 0=no                                    |
+| water        | number of new (or repaired) drinking water facilities in the village <br>since random assignment |
+| irrigation   | number of new (or repaired) irrigation facilities in the village<br>since random assignment      |
+
+In this problem set, we will practice loading, making sense of data, and understanding the basics of causal inference. We will also learn how to use R Markdown.
+
+---
+
+1. Use the function `read.csv()` to read the CSV file "india.csv". You can find it on the GitHub page: [https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/india.csv](https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/india.csv). Use the assignment operator `<-` to store the data in an object called *india*. Provide the R code you used. (1 point) 
+
+
+```{r}
+# Your coding answers here.
+```
+
+---
+    
+2. Use the function `head()` to view the first few observations of the dataset. Provide the R code you used. (1 point)
+
+```{r}
+# Your coding answers here.
+```
+
+---
+
+3. What does each observation in this dataset represent? Please substantively interpret the first observation in the dataset. (1 point)
+
+**Answer:** Change this line to type your answer here.
+
+---
+
+4. For each variable in the dataset, please identify the type of variable (character vs. numeric binary vs. numeric non-binary) (1 point)
+
+**Answer:** Change this line to type your answer here.
+
+---
+
+5. How many observations are in the dataset? In other words, how many villages were part of this experiment? (Hint: the function `dim()` might be helpful here.) (1 point)
+
+```{r}
+# Your coding answers here.
+```
+
+---
+
+6. Use the function `mean()` to calculate the average of the variable *female*. Please provide a full substantive interpretation of what this average means. (1 point)
+
+```{r}
+# Your coding answers here.
+```
+
+**Answer:** Change this line to type your answer here.
+
+---
+
+7. Use the function `mean()` to calculate the average of the variable *water*. Please provide a full substantive interpretation of what this average means. Make sure to provide the unit of measurement. (1 point)
+
+```{r}
+# Your coding answers here.
+```
+
+**Answer:** Change this line to type your answer here.
+
+---
+
+8. If we wanted to estimate the average causal effect of having a female politician on the number of new (and repaired) drinking water facilities: (1 point)
+    a. What would be the treatment variable? Please provide the name of the variable
+    b. What would be the outcome variable? Please provide the name of the variable
+
+**Answer:** Change this line to type your answer here.
+
+---
+
+9. If we wanted to estimate the average causal effect of having a female politician on the number of new (and repaired) irrigation facilities: (1 point)
+    a. What would be the treatment variable? Please provide the name of the variable
+    b. What would be the outcome variable? Please provide the name of the variable
+
+**Answer:** Change this line to type your answer here.
+
+---
+
+10. In both analyses above: (1 point)
+    a. What would be the treatment group?
+    b. What would be the control group?
+
+**Answer:** Change this line to type your answer here.
