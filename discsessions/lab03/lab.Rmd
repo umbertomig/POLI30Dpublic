@@ -54,9 +54,9 @@ knitr::opts_chunk$set(mysmall = TRUE)
 
 ## Before we start
 
-**Recap:** In the Lab sessions you learned:
+**Recap:** In the Lab sessions, you learned:
 
-- How to install R and R Studio in your computer.
+- How to install R and R Studio on your computer.
 - How to do basic math operations in R.
 
 **Great job!**
@@ -110,7 +110,7 @@ class(y)
 
 The \fu{str(.)} function also gives a neat description of what is going on. 
 
-- `str` is short for structure of the data:
+- `str` is short for the structure of the data:
 
 ```{r}
 str(x)
@@ -129,7 +129,7 @@ place   <- c('La Jolla', 'Del Mar',
              'Del Mar', 'Poway') # Character with places
 ```
 
-Each of the variables have four positions (like four observations).
+Each of the variables has four positions (like four observations).
 
 ## R Vectors
 
@@ -193,7 +193,7 @@ length(message)
 
 \vspace{0.3cm}
 
-And if you don't need something anymore, you can remove it:
+And if you don't need an object anymore, you can remove it:
 
 ```{r, mysmall = TRUE}
 rm(message_num)
@@ -248,21 +248,21 @@ dat3
 
 # Loading CSV data in R
 
-## Loading a CSV dataset from locale
+## Loading a CSV dataset from the locale
 
-- CSV stands for [Comma Separated Values](https://en.wikipedia.org/wiki/Comma-separated_values). It is a special way to organize data:
+- CSV stands for [Comma Separated Values](https://en.wikipedia.org/wiki/Comma-separated_values). It is a particular way to organize data:
   + Each line corresponds to one observation
   + Within lines, information for each variable is separated by a comma.
 
-- To load data from the locale (i.e., your computer), you need to find and change your working directory.
+- To load data from the locale (i.e., your computer), you must find and change your working directory.
 
-- The book explains more on that. We are not going to deal with these cases in here.
+- The book explains more about that. We are not going to deal with these cases here.
 
 - We will frequently analyze data from **GitHub**.
 
 ## Loading a CSV dataset from GitHub
 
-To load a CSV dataset from the GitHub:
+To load a CSV dataset from GitHub:
 
 1. [Open the GitHub](https://github.com/umbertomig/POLI30Dpublic)
 2. [Go to the GitHub data folder](https://github.com/umbertomig/POLI30Dpublic/tree/main/data)
@@ -314,7 +314,7 @@ tail(countries)
 
 ## `str`
 
-Nice and neat description of the data.frame. You can try with other objects too!
+That is a nice and neat description of the data.frame. You can try it with other objects too!
 
 ```{r, myfntsize = TRUE}
 str(countries)
