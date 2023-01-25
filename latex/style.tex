@@ -37,12 +37,12 @@
 \addtobeamertemplate{frametitle}{\bfseries \vskip+3.5ex}{\vskip-3.5ex}
 
 % change looks of quotes
-% \usepackage{framed}
-% \usepackage{xcolor}
-% \let\oldquote=\quote
-% \let\endoldquote=\endquote
-% \colorlet{shadecolor}{shadecolor}
-% \renewenvironment{quote}{\begin{shaded*}\vspace{-.3cm}\begin{oldquote}}{\end{oldquote}\end{shaded*}}
+\usepackage{framed}
+\usepackage{xcolor}
+\let\oldquote=\quote
+\let\endoldquote=\endquote
+\colorlet{shadecolor}{shadecolor}
+\renewenvironment{quote}{\begin{shaded*}\vspace{-.3cm}\begin{oldquote}}{\end{oldquote}\end{shaded*}}
 
 % change default sizes
 \setbeamerfont{frametitle}{size=\large}
@@ -52,10 +52,10 @@
 \setbeamertemplate{itemize/enumerate subsubbody begin}{\normalsize}
 
 % change separation around quotes?
-\usepackage{etoolbox} 
-\makeatletter 
-\preto{\@verbatim}{\topsep=-7pt \partopsep=-7pt } 
-\makeatother
+% \usepackage{etoolbox} 
+% \makeatletter 
+% \preto{\@verbatim}{\topsep=-7pt \partopsep=-7pt } 
+% \makeatother
 
 % get rid of navigation symbols
 \beamertemplatenavigationsymbolsempty
@@ -70,34 +70,29 @@
 \usepackage{tikz-qtree}
 
 % try to change separation in stuff
-\setlength{\emergencystretch}{3em}  % prevent overfull lines
-\renewcommand{\tightlist}{%
-  \vspace{.001cm}
-  \setlength{\itemsep}{6pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{0}
+% \setlength{\emergencystretch}{3em}  % prevent overfull lines
+% \renewcommand{\tightlist}{%
+%   \vspace{.001cm}
+%   \setlength{\itemsep}{6pt}\setlength{\parskip}{0pt}}
+% \setcounter{secnumdepth}{0}
 
 % fu command for functions
-\usepackage{xpatch}
-\renewcommand{\ttdefault}{ul9}
-\xpatchcmd{\ttfamily}{\selectfont}{\fontencoding{T1}\selectfont}{}{}
-\DeclareTextCommand{\nobreakspace}{T1}{\leavevmode\nobreak\ }
-\newcommand{\reducedstrut}{\vrule width 0pt height .9\ht\strutbox depth .9\dp\strutbox\relax}
-\newcommand{\fu}[1]{%
-  \begingroup
-  \setlength{\fboxsep}{0pt}%
-  \textcolor{function}{\reducedstrut#1\/}%
-  \endgroup
-}
+% \usepackage{xpatch}
+% \renewcommand{\ttdefault}{ul9}
+% \xpatchcmd{\ttfamily}{\selectfont}{\fontencoding{T1}\selectfont}{}{}
+% \DeclareTextCommand{\nobreakspace}{T1}{\leavevmode\nobreak\ }
+% \newcommand{\reducedstrut}{\vrule width 0pt height .9\ht\strutbox depth .9\dp\strutbox\relax}
+\newcommand{\fu}[1]{\color{blue}{\textbf{\texttt{#1}}}\color{black}} 
 
 % verbatim sans
-\usepackage{fancyvrb}
-\usepackage{listings}
-\lstset{fancyvrb=true,basicstyle=\sffamily,columns=flexible}
-
-% if verbatim is written lowercase!!
-\makeatletter
-\def\verbatim@font{\normalfont\sffamily}
-\makeatother
+% \usepackage{fancyvrb}
+% \usepackage{listings}
+% %\lstset{fancyvrb=true,basicstyle=\sffamily,columns=flexible}
+% % 
+% % % if verbatim is written lowercase!!
+% \makeatletter
+% \def\verbatim@font{\normalfont\sffamily}
+% \makeatother
 
 % create new commands
 \newcommand{\bit}{ 
