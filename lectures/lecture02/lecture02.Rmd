@@ -1,0 +1,394 @@
+---
+title: |
+    | **POLI 30 D: Political Inquiry**
+    | \vspace{-.8cm}
+author: |
+    | \large\textbf{Professor Umberto Mignozzetti\\(Based on DSS Materials)}\vspace{.3cm}
+date: |
+    | \large\textbf{Lecture 02 | Observations and Variables}
+fontsize: 12pt
+output:
+  beamer_presentation:
+    highlight: tango
+    includes:
+      in_header: ../latex/style.tex # changes style to match the style of the book
+    incremental: true # if true: pauses are inserted after each item in a list
+    keep_tex: false # if true: .tex files are kept (helpful when fixing errors)
+    slide_level: 2
+classoption: "handout" # overrides incremental, removes all pauses
+---
+
+***
+\begin{center}
+\begin{minipage}{0.8\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.5cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{\textbf{Plan for Today}}}\normalsize\\\\
+- What is a theory?\\
+\,\,\,\,\,\,\,\, - definition of theory?\\
+\,\,\,\,\,\,\,\, - political science theories?\\\\
+- What are data/datasets?\\
+\,\,\,\,\,\,\,\, - what is an observation?\\
+\,\,\,\,\,\,\,\, - what is a variable?\\\\
+- Types of variables based on content\\
+\,\,\,\,\,\,\,\, - character vs. numeric variables\\
+\,\,\,\,\,\,\,\, - binary vs. non-binary variables\\\\
+\end{tabular}
+\end{center}
+\vspace{.5cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+
+## Before we start
+
+**Announcements:**
+
+- Quizzes and Participation:
+  + I will start these at week 03.
+
++ We **do have** Lab this week:
+  + Bring your laptop to install and configure R and R Studio
+  + Meet and greet your TAs. They are here to help!
+
+* Github page: [https://github.com/umbertomig/POLI30Dpublic](https://github.com/umbertomig/POLI30Dpublic)
+
+* Podcast: I didn't know I need to wear a mic. Will do from now on.
+
+# Political Science Theories
+
+## What is a theory?
+
+**Political science goals:**
+
+* Describe and understand political phenomena.
+
+* Identify regularities and patterns in political behavior.
+
+* Build theories that enable us to explain, predict, and sometimes affect political outcomes.
+
+* But what is a theory?
+
+## What is a theory?
+
+One definition:
+
+> A set of statements or principles devised to explain a group of facts or phenomena, especially one that has been repeatedly tested or is widely accepted and can be used to make predictions about natural phenomena.
+
+Another definition:
+
+> A general statement about how the world may work. A theory specifies a causal mechanism. We assume that there are underlying laws that we seek to reveal.
+
+## What is a theory?
+
+My preferred definition:
+
+\begin{center}\includegraphics[height=.6\textheight]{../images/maps.png}\end{center}
+
+## What is a theory?
+
+* Theories don't have to be (completely) right to be helpful.
+
+* Theories are continuously being assessed, updated, and even replaced with new evidence.
+
+* All theories are wrong, but some are useful!
+
+* What do you think is **not** a theory?
+
+## Example: What is the Sun?
+
+* One theory: It's a giant chariot being driven by the sun god.
+  + The sun god drives across the sky once per day, then takes a break. 
+
+* Another theory: It is a star at the center of the Solar system.
+  + Giant ball of hot plasma.
+  
+* We use the data to see which theories are better.
+
+* But all of them are incomplete by design.
+
+## Example PoliSci Theory
+
+* Lyall (2009). "Does Indiscriminate violence Incite Insurgent Attacks? Evidence from Chechnya”?
+
+* Idea: Indiscriminate violence reduces insurgence violence.
+  + It creates enormous logistical problems for insurgencies.
+  + It may cause the local population to turn against the insurgency.
+
+## Anatomy of a simple theory
+
+\vspace{.2cm}
+
+* Dependent Variable: to be explained
+
+> AKA: "response variable", "regressand", "outcome", "predicted variable", "explained variable", target", or "label"
+
+* Independent Variable: used to explain something
+
+> AKA: "predictor variable", "regressor", "treatment", "manipulated variable", "explanatory variable", "risk factor", "feature", or "input variable"
+
+* Relationship and mechanism
+
+* Units
+
+## Lyall (2009) 's Example
+
+* Dependent variable: Insurgence violence
+
+* Independent variable: Indiscriminate violence
+
+* Mechanism:
+  + It creates enormous logistical problems for insurgencies.
+  + It may cause the local population to turn against the insurgency.
+
+* Units: Insurgence
+
+## Corruption Example
+
+> Corruption is lower in more developed countries because citizens have more ability to monitor politicians' performance due to increased access to information and education.
+
+* Independent variable?
+
+* Dependent variable?
+
+* Mechanism?
+
+* Unit of analysis?
+
+## Turnout Example
+
+> Citizens with more education are more likely to turn out to vote than those with less because understanding the issues increases the perceived importance of political outcomes.
+
+* Independent variable?
+
+* Dependent variable?
+
+* Mechanism?
+
+* Unit of analysis?
+
+## Turnout Example
+
+* Sometimes, a theory has multiple causes:
+
+\begin{center}\includegraphics[height=.6\textheight]{../images/theorymult.png}\end{center}
+
+## Good theory
+
+* Falsifiable
+
+* Non-normative
+
+* General
+
+* Explains how and why two or more variables are related (only theory)
+
+## Hypotheses
+
+* To test a theory, we should derive hypotheses from it.
+
+* Hypotheses: "...a testable statement about the empirical relationship between an independent and dependent variable."
+
+* Empirical implications of our theory - what we expect to see in data if our theory is correct.
+
+* A good hypothesis:
+  + Ties variance in cause to variance in effect
+  + Is falsifiable
+  + Is general, or ``not immediately verifiable''
+  
+## Example
+
+* **Theory:**
+
+> Citizens that understand the issues at stake in politics are more likely to participate in politics than those that do not because understanding the issues increases the perceived importance of political outcomes.
+
+* **Hypothesis:**
+
+> Turnout will be higher among individuals with higher education than those with lower education.
+
+## Scientific Method
+
+* A unique way to create and falsify theories. It involves:
+  + Create theories
+  + Observe
+  + Hypothesize
+  + Test
+  + Repeat many times and eventually revise (improve) the theories we have
+  + Not just three steps - a process of knowledge acquisition
+
+## Scientific Cycle
+
+\begin{center}\includegraphics[height=.7\textheight]{../images/sciencecycle.png}\end{center}
+
+# Political Science Data
+
+## What are Data/Datasets?
+- To test theories, we need data. What is data? What are datasets?
+
+- Datasets capture the characteristics of a particular set of individuals or entities: 
+    + students, classrooms, schools, etc.
+\vspace{.2cm}
+
+- Datasets are typically organized as \concept{dataframes}\ where rows are observations and columns are variables\newline
+\begin{center}
+\begin{tabular}{@{}c@{\,\,}c@{\,\,}|c|c|c|c}
+\multicolumn{1}{@{}c@{}}{}&\multicolumn{1}{@{}c@{}}{}& \multicolumn{3}{@{}c@{\,\,}}{variables}\\
+\multicolumn{1}{@{}c@{}}{}&\multicolumn{1}{@{}c@{}}{}&
+\multicolumn{1}{@{}c@{\,\,}}{1} & \multicolumn{1}{@{}c@{\,\,}}{2} & \multicolumn{1}{@{}c@{\,\,}}{...}\\
+\multicolumn{1}{@{}c@{}}{}&\multicolumn{1}{@{}c@{}}{}& \multicolumn{1}{@{}c@{}}{$\downarrow$} & \multicolumn{1}{@{}c@{}}{$\downarrow$} & \multicolumn{1}{@{}c@{}}{} \\[.03in]
+\cline{3-5}
+\multicolumn{1}{r@{\,\,}}{\textrm{1}\,\,} & $\rightarrow$  && &&  \\
+\cline{3-5}
+\textrm{observations \,\, 2\,\,} & $\rightarrow$ & &&&\\
+\cline{3-5}
+\multicolumn{1}{r@{\,\,}}{...\,\,}&&&&&\\
+\cline{3-5}
+\end{tabular}
+\end{center}
+\vspace{-1.2cm}
+
+## Example of a Dataframe
+\begin{center}\includegraphics[height=.7\textheight]{../images/data3.png}\end{center}
+\vspace{-1cm}
+
+## What is an observation? 
+- It is the information collected from a particular entity or individual in the study
+\vspace{.2cm}
+
+- The \concept{Unit of observation}\ of the dataset defines the individuals or the entities that each observation in the dataset represents
+    + if the Unit of observation is students, each row in the dataset represents a different student
+\vspace{.2cm}
+    
+- We usually refer to an observation by the row number in the dataset, which we denote as $i$
+    + what is the first observation ($i$=1) in the dataframe above?
+\vspace{-1cm}
+
+## What is a variable?
+- A variable contains the values of a changing characteristic for the various individuals or entities in the study
+\vspace{.2cm}
+
+- Every column of data in a dataset is a variable
+    + if the Unit of observation is students, each variable captures a specific characteristic of the students, for all the students in the study
+\vspace{.2cm}
+
+- We usually refer to a variable by its name
+    + *first\_name*, *test\_scores*
+
+## Notation
+- When defining new variables, we represent a variable and its contents in the following format:
+\vspace{.3cm}
+\begin{center} \textrm{\textit{X}} = \{10, 5, 8\}\end{center}
+
+\vspace{.2cm}
+- On the left-hand side of the equal sign, we identify the name of the variable: 
+\vspace{.1cm}
+    + what is the name of the variable here?
+\vspace{.2cm}
+
+- On the right-hand side of the equal sign and inside curly brackets, we have the content of the variable: multiple observations, separated by commas
+\vspace{.1cm}
+    + what are the observations in $X$?
+  
+\vspace{-1cm}
+
+## Notation
+\begin{center} \textrm{\textit{X}} = \{10, 5, 8\}\end{center}
+\vspace{.6cm}
+
+- To represent each observation we use \textit{X}$_i$
+    + where $i$ stands for the observation number
+    + the subscript $i$ means that we have a different value of \textit{X} for each value of $i$
+    + what is \textit{X}$_3$?
+\vspace{.2cm}
+
+- The total number of observations is denoted as $n$
+    + what does $n$ equal to here?    
+\vspace{-1cm}  
+  
+## Types of Variables Based on Content
+\begin{center}
+\begin{minipage}{0.8\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{center} \color{black}
+\begin{tikzpicture}
+\node [above] at (-1,10.3) {{variables}};
+\draw (-1,10.3)--(-1,10.1);
+\draw (-2,10.1)--(0,10.1);
+\draw (-2,10.1)--(-2,10);
+\draw (0,10.1)--(0,10);
+\node [below] at (-2,10.1) {{character}};
+\node [below] at (-2,9.7) {\color{gray}(if text)\color{black}};
+\node [below] at (0,10.1) {{numeric}};
+\node [below] at (0,9.7) {\color{gray}(if numbers)\color{black}};
+
+\draw (0,9.2)--(0,9);
+\draw (-2,9)--(2,9);
+\draw (-2,9)--(-2,8.9);
+\draw (2,9)--(2,8.9);
+
+\node [below] at (-2,9) {{binary}};
+\node [below] at (-2,8.6) {\color{gray}(if only 2 values)\color{black}};
+\node [below] at (2,9) {{non-binary}};
+\node [below] at (2,8.6) {\color{gray}(if more than 2 values)\color{black}};
+
+\end{tikzpicture}
+\end{center}
+\vspace{.2cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+
+## Character vs. Numeric
+- \concept{Character variables}\ contain text
+    + \textit{first\_names}=\{ana, elena, maria, ...\}
+\vspace{.2cm}
+    
+- \concept{Numeric variables}\ contain numbers
+    + \textit{test\_score}= \{80, 75, 99, ...\}
+ 
+## Numeric: Binary variables
+- \concept{Binary variables}\ can take only two values: 1s and 0s
+\vspace{.2cm}
+
+- They represent the presence/absence of a trait: 
+    + 1 if individual $i$ has the trait
+    + 0 if individual $i$ does not have the trait
+\vspace{.2cm}
+
+- Example: \textit{voted}= \{1, 0, 0, 1, 1, 1, 0\} where\newline
+\vspace{-.1cm}
+$$\textrm{\textit{voted}}_i = \begin{cases} 1 \text{ if individual \textit{i} voted} \\[3pt] 
+0 \text{ if individual \textit{i} didn't vote} \end{cases}$$
+\vspace{-.4cm}
+
+- Can you think of another example?
+\vspace{-1cm}
+
+## Numeric: Non-binary variables
+- \concept{Non-binary variables}\ can take more than two values
+\vspace{.2cm}
+    + \textit{distance}=\{1.452, 2.345, 0.298\}
+    + \textit{dice\_roll}=\{2, 4, 6\}
+\vspace{.2cm}
+
+- Can you think of another example?
+
+## Summary
+
+* **Today's Class:**
+  + Theory and scientific theories
+  + Data/datasets
+  + Observations and variables
+  + Unit of observation
+  + Character vs. numeric variables
+  + Binary vs. non-binary variables
+
+* Next class:
+  + Computing and interpreting means
+  
+# Questions?
+
+# See you in the next class!

@@ -1,0 +1,389 @@
+---
+title: |
+    | **POLI 30 D: Political Inquiry**
+    | \vspace{-.8cm}
+author: |
+    | \large\textbf{Professor Umberto Mignozzetti\\(Based on DSS Materials)}\vspace{.3cm}
+date: |
+    | \large\textbf{Lecture 04 | Estimating Causal Effects \newline with Randomized Experiments}
+fontsize: 12pt
+output:
+  beamer_presentation:
+    highlight: tango
+    includes:
+      in_header: ../../latex/style.tex # changes style to match the style of the book
+    incremental: true # if true: pauses are inserted after each item in a list
+    keep_tex: false # if true: .tex files are kept (helpful when fixing errors)
+    slide_level: 2
+classoption: "handout" # overrides incremental, removes all pauses
+---
+
+## Before we start
+
+**Announcements:**
+
+- Quizzes and Participation:
+  + Starts now! Check the board for the attendance check password!
+
+- How was your Lab last week?
+  + I hope R is treating your well :)
+  + And don't forget: we are here to help!
+
+- Github page: [https://github.com/umbertomig/POLI30Dpublic](https://github.com/umbertomig/POLI30Dpublic)
+
+- Piazza forum: [https://piazza.com/ucsd/winter2023/17221](https://piazza.com/ucsd/winter2023/17221)
+
+## Before we start
+
+**Recap:**
+
+- We learned the definitions of Theory, Scientific Theory, and Hypotheses.
+- Data, datasets, variables, and how to compute means.
+
+**Great job!**
+
+- Do you have any questions about these contents?
+
+***
+\begin{center}
+\begin{minipage}{0.8\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.5cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{\textbf{Plan for Today}}}\normalsize\\\\
+- Causal Effects\\
+- Treatment and Outcome Variables\\
+- Individual Causal Effects\\
+- Average Causal Effects\\
+- Randomized Experiments\\
+- Difference-in-Means Estimator\\
+\end{tabular}
+\end{center}
+\vspace{.5cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+
+***
+\vspace{.5cm}
+\begin{mdframed}[linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{Why Do We Analyze Data?}\normalsize}\\\\
+\color{gray}{1.} \color{black} MEASURE: \concept{To infer population characteristics}\\
+\,\,\,\,\,\,\,\, - what proportion of constituents support\\
+\,\,\,\,\,\,\,\,\,\,\,\, a particular policy?\\\\
+
+\color{gray}{2.} \color{black}  PREDICT: \concept{To make predictions} \\
+\,\,\,\,\,\,\,\, - who is the most likely candidate to win\\
+\,\,\,\,\,\,\,\,\,\,\,\, an upcoming election?\\\\
+
+\color{gray}{3.} \color{black}  EXPLAIN: \concept{To estimate the causal effect of}\\
+\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\concept{a treatment on an outcome} \\
+\,\,\,\,\,\,\,\, - what is the effect of small classrooms\\
+\,\,\,\,\,\,\,\,\,\,\,\, on student performance?\\
+\end{tabular}
+\end{center}
+\end{mdframed}
+
+***
+- We will progress from simple to more complex methods
+\vspace{.1cm}
+
+- We begin with \concept{EXPLAIN}\ by learning how to estimate causal effects with randomized experiments
+\vspace{-.1cm}
+    + involves relatively simple math
+\vspace{.1cm}
+
+- Then, we will learn how to \concept{MEASURE}\ the characteristics of an entire population from a sample
+\vspace{-.1cm}
+    + visualizations, descriptive statistics, correlation
+\vspace{.1cm}
+
+- Then, we will learn how to \concept{PREDICT}\ outcome variables
+\vspace{-.1cm}    
+    + simple linear regression
+\vspace{.1cm}
+
+- Then, we will return to \concept{EXPLAIN}\ and estimate causal effects with observational data
+\vspace{-.1cm}
+    + multiple linear regression
+
+*** 
+\vspace{.5cm}
+\begin{mdframed}[linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{Why Do We Analyze Data?}\normalsize}\\\\
+\color{gray}{1.} MEASURE: \textbf{To infer population}\\
+\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\color{gray}\textbf{characteristics via survey research}\\
+\,\,\,\,\,\,\,\, \color{gray}- what proportion of constituents support\\
+\,\,\,\,\,\,\,\,\,\,\,\, \color{gray}a particular policy?\\\\
+
+\color{gray}{2. PREDICT: \textbf{To make predictions}} \\
+\,\,\,\,\,\,\,\, \color{gray} - who is the most likely candidate to win\\
+\,\,\,\,\,\,\,\,\,\,\,\, \color{gray} an upcoming election?\\\\
+
+\color{gray}{3.} \color{black} EXPLAIN: \concept{To estimate the causal effect of}\\
+\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\concept{a treatment on an outcome} \\
+\,\,\,\,\,\,\,\, - what is the effect of small classrooms\\
+\,\,\,\,\,\,\,\,\,\,\,\, on student performance?\\
+\end{tabular}
+\end{center}
+\end{mdframed}
+
+## Does Social Pressure Affect Turnout?
+\vspace{.4cm}\begin{center}\includegraphics[height=.6\textheight]{../../images/vote.jpg}\end{center}\vspace{-.3cm}
+
+\footnotesize
+(Based on \href{http://www.donaldgreen.com/wp-content/uploads/2015/09/Gerber_Green_Larimer-APSR-2008.pdf}{Alan S. Gerber, Donald P. Green, and Christopher W. Larimer. 2008. ``Social Pressure and Voter Turnout: Evidence from a Large-Scale Field Experiment." \textit{American Political Science Review}, 102 (1): 33-48.})
+
+## Does Social Pressure Affect Turnout?
+- To answer, we will analyze data from an experiment where registered voters were randomly assigned to either:
+    + (a) receive a message designed to induce social pressure to vote, or
+    + (b) receive nothing
+\vspace{.2cm}
+
+- The message told voters that after the election their neighbors would be informed about whether they voted
+\vspace{-1cm}
+
+## Does Social Pressure Affect Turnout?
+
+Dear Registered Voter: \concept{WHAT IF YOUR NEIGHBORS KNEW WHETHER YOU VOTED?} ... We’re sending this mailing to you and your neighbors to publicize who does and does not vote. The chart shows the names of some of your neighbors, showing which have voted in the past. After the August 8 election, we intend to mail an updated chart. You and your neighbors will all know who voted and who did not. \concept{DO YOUR CIVIC DUTY--VOTE!}
+
+\vspace{.5cm}
+\begin{footnotesize}
+\begin{tabular}{lrrr}
+MAPLE DR  & Aug 2004 & Nov 2004 & Aug 2006 \\
+9995 JOSEPH JAMES SMITH & Voted & Voted & ??? \\
+995 JENNIFER KAY SMITH & Didn't vote & Voted & ???  \\
+9997 RICHARD B JACKSON & Didn't vote & Voted &  ??? \\
+9999 KATHY MARIE JACKSON & Didn't vote & Voted & ??? \\
+\end{tabular}
+\end{footnotesize}
+\vspace{-1cm}
+
+## The *voting* dataset
+
+\vspace{1cm}
+\begin{table}
+\begin{center}
+\begin{tabular}{ll}											
+\multicolumn{2}{l}{Unit of observation: registered voters}\\\\
+\multicolumn{2}{l}{Description of variables:}\\\\
+\midrule
+variable & description\\
+\midrule \addlinespace[1.5pt]
+\textit{birth} &  year of birth of registered voter \\\addlinespace[1.5pt]
+\textit{message} & whether registered voter received message:\\
+ & "yes", "no" \\\addlinespace[1.5pt]
+\textit{voted} & whether registered voter voted:\\
+& 1{=}voted, 0{=}didn't vote \\\addlinespace[1.5pt]
+\midrule
+\end{tabular}
+\end{center}
+\end{table}
+
+- Let's check it quickly?!
+
+## Causal Effects
+- Many of the most important research questions in politics involve estimating a causal effect:
+    \vspace{.2cm}
+    + Does foreign aid promote democratic government?
+    + Do women promote different policies than men?
+    + Do small classes improve student performance?
+    + Does social pressure increase the probability of turning out to vote?
+
+## Causal Effects
+- \concept{Causal effects}\ refer to the cause-and-effect connection between two variables 
+    + A \concept{treatment variable (X)} (independent variable), whose change may produce a change in the outcome variable
+    + An \concept{outcome variable (Y)} (dependent variable), that may change as a result of a change in the treatment variable
+\vspace{.2cm}
+
+- The causal relationship we are interested in is:
+\vspace{.4cm}
+\begin{center}$\textrm{\textit{X}} \rightarrow \textrm{\textit{Y}}$\end{center}
+
+## Causal Effects
+
+\begin{center}\textbf{Does social pressure increase the probability of turning out to vote?}\end{center}
+
+- In the voting dataset we have three variables, \textit{birth}, \textit{message}, and \textit{voted}. We aim to answer this research question.
+
++ What is the treatment variable? 
+ 
++ What is the outcome variable?
+
++ What is the causal relationship?
+
+## Treatment Variables
+- In this class, treatment variables will always be binary 
+\vspace{.2cm}
+\begin{center}$ \textrm{\textit{X}}_i = \begin{cases} \textrm{1} \text{ if individual \textit{i} takes the treatment} \\ \textrm{0} \text{ if inidividual \textit{i} does not take the treatment}\end{cases}$\end{center} 
+\vspace{.4cm}
+
+- In the voting experiment, the treatment variable is:
+\vspace{.2cm}
+\begin{center}$ \textrm{\textit{message}}_i = \begin{cases} \textrm{1} \text{ if registered voter \textit{i}}\\[-.2cm] \text{\,\,\, received the message} \\ \textrm{0} \text{ if registered voter \textit{i}}\\[-.2cm] \text{\,\,\, did not receive the message}\end{cases}$\end{center}
+\vspace{-1cm}
+
+## Treatment Variables
+- Based on whether the individual takes the treatment, we speak of two different conditions:
+\vspace{.2cm}
+    + \concept{treatment}\ is the condition with the treatment
+        + $X_i=\textrm{1}$
+    + \concept{control}\ is the condition without the treatment
+        + $X_i=\textrm{0}$
+
+## Outcome Variables
+- We will see different types of outcome variables
+\vspace{.2cm}
+    + binary 
+    + non-binary
+\vspace{.4cm}
+
+-  In the voting experiment, the outcome variable is:
+\vspace{.2cm}
+\begin{center}$ \textrm{\textit{voted}}_i = \begin{cases} \textrm{1} \text{ if registered voter \textit{i} voted}\\ \textrm{0} \text{ if registered voter \textit{i} didn't vote}\end{cases}$\end{center}
+\vspace{.3cm}
+    +  what type of variable do you think this is? 
+
+
+## Individual Causal Effects
+- The \concept{causal effect of \textit{X} on \textit{Y}}\ is \textit{the change in the outcome variable} caused by a change in the treatment variable
+\vspace{.2cm}
+
+- Ideally, we would like to compare two potential outcomes: 
+    + outcome when the treatment is present: \concept{$Y_i(X_i=\textrm{1})$}
+    + outcome when the treatment is absent: \concept{$Y_i(X_i=\textrm{0})$}
+\vspace{.2cm}
+
+- If we could observe *both* potential outcomes for each individual $i$, the individual causal effect would be:
+\begin{center}\concept{$\triangle Y_i = Y_i(X_i=\textrm{1}) - Y_i(X_i=\textrm{0})$}\end{center}
+    + $\triangle Y_i$ represents the change in $Y$ for individual $i$
+\vspace{-1cm}    
+    
+## Individual Causal Effects
+- In the voting experiment, we aim to measure the extent to which the probability of voting changes as a result of receiving the social pressure message
+
+- Ideally, for each registered voter we would like to observe:
+    + whether they voted after receiving the social pressure message: \textit{voted}$_i$(\textit{message}$_i$=1)
+    + whether they voter after NOT receiving the social pressure message: \textit{voted}$_i$(\textit{message}$_i$=0)
+\vspace{.2cm}
+
+## Individual Causal Effects
+- If this were possible, we could measure the effect of receiving the social pressure message on the probability of voting as:
+\vspace{-.2cm}
+$$\triangle \textrm{\textit{voted}}_i = \textrm{\textit{voted}}_i (\textrm{\textit{message}}_i = \textrm{1}) - \textrm{\textit{voted}}_i(\textrm{\textit{message}}_i = \textrm{0})$$
+\vspace{-.8cm}
+    + should be interpreted as an increase if positive, a decrease if negative, and as no effect if zero
+
+## Individual Causal Effects
+\begin{center}\includegraphics[height=.3\textheight]{../../images/fork2.png}\end{center}
+
+- Do we ever observe both potential outcomes for the same individual at the exact same time under the same circumstances? 
+    + No, we can never observe what would have happened had we made different decisions: \concept{the counterfactual outcome}
+\vspace{.2cm}
+
+
+## Counterfactual Outcome
+\begin{center}\includegraphics[height=.4\textheight]{../../images/counterfactual.png}\end{center}
+
+- **Fundamental problem of causal inference:** We can **never** observe the counterfactual outcome
+- As a result, we cannot compute causal effects at the individual level
+
+## Average Causal Effects
+- To get around the fundamental problem of causal inference, we must find *good approximations* for the counterfactual outcomes
+\vspace{.2cm}
+
+- We move away from individual-level effects and focus on the *average causal effects* across a *group of individuals*
+\vspace{.2cm}
+
+- The \concept{average causal effect} (a.k.a. average treatment effect) is the average of all the individual causal effects of \textit{X} on \textit{Y}
+\vspace{.1cm}
+    - It is the average change in Y caused by a change in X for a group of individuals
+\vspace{-1cm}
+
+## Average Causal Effects
+- How can we obtain good approximations for the counterfactual outcomes?
+\vspace{.2cm}
+    + We must find or create a situation in which treated and untreated observations are similar
+\vspace{.2cm}
+    + Then, we can use the *factual outcome* of one group as a *proxy* for the *counterfactual outcome* of the other
+\vspace{.2cm}   
+
+- The best way to accomplish this is by conducting a **randomized experiment**
+
+## Randomized Experiments
+- A \concept{randomized experiment}\ is a type of study design in which treatment assignment is randomized
+    + researchers decide who takes the treatment based on a *random* process (\includegraphics[height=.075\textheight]{../../images/coins.png})
+\vspace{.2cm}   
+
+- Once treatment is administered, we can differentiate between:
+    + the \concept{treatment group}: individuals who received the treatment
+    + the \concept{control group}: individuals who did not receive the treatment 
+\vspace{.2cm}   
+
+- In the voting experiment, what are the treatment and control groups?
+\vspace{-1cm}
+
+## Randomized Experiments
+\begin{mdframed}[backgroundcolor=white,linecolor=concept, linewidth=0.05cm]
+\concept{Random treatment assignment}\ makes the treatment and control groups \textit{on average} identical in all observed and unobserved characteristics
+\end{mdframed}
+
+- When the assignment is randomized, the only thing that distinguishes treatment and control is chance
+    \vspace{.2cm}
+    + although the groups consist of different individuals, they are, as a whole, comparable to each other
+
+## Randomized Experiments
+- If the treatment and control groups are comparable before the treatment is administered
+\vspace{.2cm}
+    + we can use the factual outcome of one group as a proxy for the counterfactual outcome
+\vspace{.2cm}
+    + we can estimate the average treatment effect by calculating the difference-in-means estimator
+    
+## Difference-in-Means Estimator  
+\begin{mdframed}[backgroundcolor=white,linecolor=concept, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{center}
+\color{concept}$\overline{Y}_\text{treatment group} - \overline{Y}_\text{control group}$\\[.3cm]
+\color{gray}
+$\overline{Y}_\text{treatment group}$: average outcome for the treatment group\\
+$\overline{Y}_\text{control group}$: average outcome for the control group
+\end{center}
+\end{mdframed}
+\vspace{.2cm}
+
+- Only when treatment and control groups are comparable the diffs-in-means estimator produce a \textit{valid} estimate of the average treatment effect
+\vspace{.2cm}
+    + $\widehat{\textrm{average\_effect}} = \overline{Y_\text{treatment group}} - \overline{Y_\text{control group}}$
+    + the "hat" on top of the name denotes that this is an estimate (not the truth...)
+\vspace{-1cm}
+
+## How to Run an Experiment
+\begin{center}
+\includegraphics[height=.65\textheight]{../../images/experiment.png}\\
+\href{https://www.youtube.com/watch?v=UlJfIybvNKQ&feature=youtu.be}{(link to video)}
+\end{center}
+\vspace{-1cm}
+
+## Summary
+
+- **Today's Class:**
+  + Causal Effects
+  + Treatment and Outcome Variables
+  + Individual vs. Average Causal Effects
+  + Randomized Experiments
+  + Difference-in-Means Estimator
+
+- **Next class:**
+  + Hands on! We are going to Estimate the ATE (Average Treatment Effect) in the voting dataset.
+  + Bring your own computer!
+  
+# Questions?
+
+# See you in the next class!

@@ -1,0 +1,565 @@
+---
+title: |
+    | **POLI 30 D: Political Inquiry**
+    | \vspace{-.8cm}
+author: |
+    | \large\textbf{TA Sessions}\vspace{.3cm}
+date: |
+    | \large\textbf{Lab 06 | R Graphs II}
+fontsize: 12pt
+output:
+  beamer_presentation:
+    highlight: tango
+    includes:
+      in_header: ../latex/style.tex # changes style to match the style of the book
+    incremental: true # if true: pauses are inserted after each item in a list
+    keep_tex: false # if true: .tex files are kept (helpful when fixing errors)
+    slide_level: 2
+classoption: "handout" # overrides incremental, removes all pauses
+---
+
+## Before we start
+
+**Announcements:**
+
+- Quizzes and Participation:
+  + Start this week.
+
+- Github page:
+
+\vspace{0.2cm}
+
+[**https://github.com/umbertomig/POLI30Dpublic**](https://github.com/umbertomig/POLI30Dpublic)
+
+
+## Before we start
+
+**Recap:** You learned
+
+- How to install R and R Studio in your computer.
+- How to do basic math operations in R.
+
+
+**Great job!**
+
+- Do you have any questions about these contents?
+
+***
+
+\begin{center}
+\begin{minipage}{0.6\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.5cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{\textbf{Plan for Lab 03}}}\normalsize\\\\
+- Become familiar with RStudio \\\\
+- Become familiar with R \\
+\,\,\,\,\,\,\,\,- do calculations: \fu{+}, \fu{-}, \fu{*}, \fu{/}\\
+\,\,\,\,\,\,\,\,- create objects: \fu{<-}, \fu{"}\\
+\,\,\,\,\,\,\,\,- use functions: \fu{()}, \fu{sqrt()}, \fu{\color{gray}\#\color{text}}\\
+\end{tabular}
+\end{center}
+\vspace{.5cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+
+# Why is it so hard to code?
+
+## If you are worried because...
+- You have never done any statistics or coding...
+\vspace{.1cm}    
+    + Don't worry, we assume you haven't
+- Math is your "mortal enemy" or "you are not good at it"...
+    + We will start from zero and progress slowly
+    + There is plenty of help available
+    + As long as you put in the time to do the work every week, you will do great!
+- You don't think you will be able to "memorize" all the equations ...
+\vspace{.1cm}
+    + Just start slow and progress. Understand trumps memorization!
+\vspace{-1cm}
+
+## Why is it so hard to code?
+
+* Can you read this sentence: "4 exampel in Ingli$h you kin get prackicly evRiThing rong-rong-rong and sti11 be undr3stud."
+
+* You can do it because English is a *Natural language*.
+
+* R, Python, and other programming languages are *formal languages*.
+
+* This means that you should pass the exact instructions for the computer to it do what you want to get done.
+
+* Learning how to code is to learn how to speak a very formal language. As with learning any language, **practice makes it perfect**!
+
+# Learning your R Studio
+
+## R and RStudio
+- In Lab 01, you should have installed two programs in your computer: 
+    + R (\includegraphics[height=.05\textheight]{../images/Rlogo.png}) and RStudio (\includegraphics[height=.05\textheight]{../images/RStudio_logo.png})
+\vspace{.2cm}   
+
+- \concept{R}\ is the statistical program that will perform calculations and create graphics for us (it's the engine)
+\vspace{.2cm}
+
+- \concept{RStudio}\ is the user-friendly interface that we will use to communicate with R
+\vspace{.2cm}
+
+- We will never open R directly; we will always start by opening RStudio 
+    + RStudio will open R by itself
+\vspace{-1cm}
+
+## RStudio
+- Go ahead and open RStudio (\includegraphics[height=.05\textheight]{../images/RStudio_logo.png})
+\vspace{.2cm}
+
+- Then, open a new R script: 
+    + dropdown menu: File > New File > R Script
+\vspace{.2cm}
+
+- What is an \concept{R script}? 
+    + type of file we use to store the code we write to analyze data    
+
+## RStudio Layout
+
+\begin{center}\includegraphics[height=.65\textheight]{../images/rstudio_windows5}\end{center}
+
+
+## RStudio Layout
+
+- \concept{R Script}\ (upper left window): where we write and run code
+\vspace{.2cm}
+
+- \concept{R Console}\ (lower left window): where R provides the executed code and its outputs, including errors
+\vspace{.2cm}
+
+- \concept{Environment}\ (upper right window): storage room of current R session; lists objects that we have created
+\vspace{.2cm}
+
+- \concept{Help}\ and \concept{Plots}\ tabs (lower right window)
+
+## We will use R to:
+
+\begin{center}
+\begin{tabular}{rl}
+\color{text} 1. & Do calculations \\[.3cm]
+\color{text} 2. & Create objects \\[.3cm]
+\color{text} 3. & Use functions\\
+\end{tabular}
+\end{center}
+
+## 1. Do calculations
+- We can use R as a calculator
+\vspace{-.1cm}
+    + R understands arithmetic operators such as \fu{+}, \fu{-}, \fu{*}, \fu{/}
+\vspace{.2cm}
+
+- Let's ask R to calculate 20 plus 5
+\vspace{.2cm}
+
++ First, we type on the R script (upper left window): \fu{20+5}
+\vspace{.2cm}
+
++ Then, to run this code: we highlight it and either 
+\vspace{-.1cm}
+    - (a) manually hit the run icon (\includegraphics[height=.5cm]{../images/run.jpg}) or
+    - (b) use the shortcut *command+enter* in Mac or *ctrl+enter* in Windows
+\vspace{.2cm}
+
++ Go ahead and do it
+\vspace{-1cm}
+
+***       
+- In the Console, you should see the following:
+\vspace{.2cm}
+\begin{center}
+\begin{minipage}{0.375\paperwidth}
+\begin{Shaded}
+\color{blue}{> 20+5}\\
+\color{black}{[1] 25}
+\end{Shaded}
+\end{minipage}
+\end{center}
+\vspace{.2cm}
+    - first, the executed code in \color{blue} blue \color{black} (after \color{blue}>\color{black})
+  - then, the output of the executed code in black
+  - what does the [1] mean? 
+  + it indicates that the output immediately to its right is the first (and only, in this case) output
+\vspace{.2cm}
+
+- The title of the R script is now \color{red} red \color{black} to indicate that you have unsaved changes
+    + to save the R script either use shortcuts (*command+S* or *ctr+S*) or click on File > Save or Save As...
+    + name it "lab02" so that you know what it refers to
+    
+***
+- In the book as well as in the lectures, we show the output that you should see in the Console right after the code that produces it, like so:
+\vspace{.2cm}
+\begin{center}
+\begin{minipage}{0.375\paperwidth}
+\begin{Shaded}
+\color{cyan}{20+5}\\
+\color{gray}{\#\# [1] 25}
+\end{Shaded}
+\end{minipage}
+\end{center}
+\vspace{.2cm}
+\vspace{.2cm}
+    + \color{cyan}{20+5} \color{black} is the code to be typed and run on the R script (the code that R will execute)
+  + the symbol \color{gray}\#\# \color{text} indicates the beginning of the output 
+  + \color{gray}{[1] 25} \color{black} is the output (what you should see in the Console after the executed code)
+
+## 2. Create objects
+- R stores information in the form of \concept{objects}
+- In order to analyze data, we will need to create objects
+- An object is like a box that can contain anything\newline
+\vspace{.4cm}
+\begin{minipage}{0.4\paperwidth}
+\begin{center}\includegraphics[width=4cm]{../images/box3}\end{center}
+\end{minipage}\begin{minipage}{0.4\paperwidth}
+\color{black}To create one, we need to: 
+\begin{itemize}
+\item give it a name 
+\item specify its contents
+\item use the assignment operator \fu{<-}
+\end{itemize}
+\end{minipage}
+
+***
+\color{black} In R, we use the assignment operator \fu{<-} to create an object:
+\vspace{.2cm}
+
+- To its left, we specify the name of the object
+    + name cannot begin with a number or contain spaces or special symbols like \$ or \% that are reserved for other purposes
+    + name can contain \fu{\_} underscores, which are good substitutes for spaces
+\vspace{.2cm}
+
+- To its right, we specify the content of the object
+\vspace{.8cm}
+\begin{mdframed}[backgroundcolor=white,linecolor=function, linewidth=0.05cm]
+\begin{center}\fu{\textit{object\_name} <- \textit{object\_content}}\end{center}
+\vspace{-.1cm}
+\end{mdframed}
+
+***
+\begin{mdframed}[backgroundcolor=white,linecolor=function, linewidth=0.05cm]
+\begin{center}\fu{\textit{object\_name} <- \textit{object\_content}}\end{center}
+\vspace{-.1cm}
+\end{mdframed}
+\vspace{.4cm}
+
+- For example, type and run:
+    ```{r, collapse=TRUE, comment='##'}
+    twentyfive <- 25
+    ```
+- After running this code, the object *twentyfive* will show up in the Environment (the upper right window of RStudio)
+
+- To find out the contents of an object, you can run the name of the object in R:
+    ```{r, collapse=TRUE, comment='##'}
+    twentyfive 
+    ```
+
+- This is equivalent of asking to R: what is inside of *twentyfive*?
+
+***
+- Objects can contain text (called strings of characters) as well as numbers
+
+- Run for example:
+    ```{r, collapse=TRUE, comment='##'}
+    class <- "POLI30D" 
+    ```
+
+- Now in the environment there should be two objects
+    + What are they? 
+\vspace{.2cm}    
+
+- Note that in this last piece of code we used \fu{"} around the contents, but we did not use \fu{"} in the previous piece of code
+
+\vspace{.1cm}\pause
+\begin{center} \fu{twentyfive <- 25} \,\,\,\,\,\,\color{black}vs.\,\,\,\,\,\, \fu{class <- "POLI30D"} \end{center}
+- Why?
+
+***
+\begin{mdframed}[backgroundcolor=white,linecolor=function, linewidth=0.05cm]
+When do we need to use \fu{"} when writing code in R?
+
+\begin{itemize}
+\tightlist
+\item the names of objects, names of functions, and names of arguments as well as special values such as TRUE, FALSE, NA, and NULL should NOT be in quotes
+\item all other text should be in quotes
+\item numbers should never be in quotes unless you want R to treat them as text
+\end{itemize}
+
+\vspace{.1cm}
+\end{mdframed}    
+
+***
+- What would happen if you run instead: \fu{class <- POLI30D}?
+
+-
+\vspace{.2cm}
+\begin{minipage}{0.7\paperwidth}
+\begin{Shaded}
+\NormalTok{class <- POLI30D}\\
+\color{red}\#\# Error: object 'POLI30D' not found
+\end{Shaded}
+\end{minipage}
+\vspace{.2cm}
+    + without the \fu{"}, R thinks that *POLI30D* is the name of an object and R is right; there is no object called *POLI30D* in the environment 
+\vspace{.2cm}
+
+- \color{black}**Running into errors is part of the coding process**
+    + do not be discouraged
+    + if you have problems figuring out what a particular error means, google it; there are lots of Q\&A sites
+    + if that doesn't help, post the code and error in our Canvas Discussion
+
+***
+- R will overwrite objects if you assign new content to an existing object name
+    ```{r, collapse=TRUE, comment='##'}
+    class <- "data analysis" 
+    ```
+    - After running the code above, *class* will contain the text "data analysis" instead of "POLI30D"
+\vspace{.2cm}
+
+- R is case sensitive: 
+    + *class* is different than *Class*
+    + to avoid confusion, we use lower-case letters when naming objects
+    
+## 3. Use functions
+- Think of a function as an action that you request R to perform on a particular object or piece of data, such as calculating the square root of 25
+
+\vspace{.2cm}
+\begin{center}
+\includegraphics[width=.25\textwidth]{../images/robot.jpg}
+\end{center}
+\vspace{-1cm}
+
+***
+\begin{center}
+\begin{mdframed}[backgroundcolor=white,linecolor=function, linewidth=0.05cm] \vspace{.2cm}
+\begin{center}\tip{AN R FUNCTION}\end{center}\color{text}
+\begin{center}
+\begin{minipage}{0.28\textwidth}\begin{mdframed}[backgroundcolor=shadecolor,linecolor=shadecolor, linewidth=0.1cm, align=center] \color{text}
+\begin{center}takes input(s)\end{center}
+\end{mdframed}\end{minipage}
+\begin{minipage}{0.05\textwidth}
+\color{gray}$\rightarrow$
+\end{minipage}
+\begin{minipage}{0.28\textwidth}\begin{mdframed}[backgroundcolor=shadecolor,linecolor=shadecolor, linewidth=0.1cm, align=center] \color{text}
+\begin{center}performs action(s) with the input(s)\end{center}
+\end{mdframed}\end{minipage}
+\begin{minipage}{0.05\textwidth}
+\color{gray}$\rightarrow$
+\end{minipage}
+\begin{minipage}{0.28\textwidth}\begin{mdframed}[backgroundcolor=shadecolor,linecolor=shadecolor, linewidth=0.1cm, align=center] \color{text}
+\begin{center}produces output(s)\end{center}
+\end{mdframed}\end{minipage}\end{center}
+\vspace{.1cm}
+\end{mdframed}
+\end{center}
+\vspace{.4cm}
+
+- A \concept{function}:
+    + takes input(s) 
+        + example: takes the number 25
+    - performs an action with the input(s) 
+        + computes $\sqrt{\textrm{25}}$
+    - produces an output 
+        + produces the number 5
+\vspace{-1cm}
+
+***
+- We will learn how to use these functions:
+\vspace{.1cm}
+    + \fu{sqrt()}, \fu{setwd()}, \fu{read.csv()}, \fu{View()}, \fu{head()}, \fu{dim()}, \fu{mean()}, \fu{ifelse()}, \fu{table()}, 
+\fu{prop.table()}, 
+<!-- \fu{na.omit()},  -->
+\fu{hist()}, \fu{median()}, \fu{sd()}, \fu{var()}, \fu{plot()}, \fu{abline()}, \fu{cor()}, \fu{lm()}, 
+<!-- \fu{log()},  -->
+\fu{c()}, \fu{sample()}, 
+\fu{rnorm()}, \fu{pnorm()}, \fu{print()},
+<!-- \fu{nrow()},  -->
+<!-- \fu{predict()},  -->
+\fu{abs()}, and \fu{summary()}
+
+\vspace{.2cm}
+- In time, we will learn:
+\vspace{.1cm}
+    + their names
+    + the actions they perform
+    + the inputs they require
+    + the outputs they produce
+
+***
+- The name of a function (without quotes) is always followed by parentheses: \fu{\textit{function\_name}()}
+\vspace{.2cm}
+
+- Inside the parentheses, we specify the inputs, which we refer to as arguments: \fu{\textit{function\_name}(\textit{arguments})}
+\vspace{.2cm}
+
+- Most functions require that we specify at least one argument but can take many optional arguments 
+    + some arguments are required, others are optional
+\vspace{.2cm}
+
+- When multiple arguments are specified inside the parentheses, they are separated by commas: \fu{\textit{function\_name}(\textit{argument1}, \textit{argument2})}
+\vspace{.2cm}
+
+***
+- To specify the arguments, we enter them in a particular order or include the name of the argument (without quotes) in our specification: 
+    + \fu{\textit{function\_name}(\textit{argument1}, \textit{argument2})} or
+    + \fu{\textit{function\_name}(\textit{argument1\_name} = \textit{argument1}, \newline $\textrm{\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,}$\textit{argument2\_name} = \textit{argument2})}
+\vspace{.1cm}
+
+- We always specify required arguments first
+\vspace{.1cm}
+
+- If there is more than one required argument, we enter them in the order expected by R
+\vspace{.1cm}
+
+- We specify any optional arguments we want next and include their names:
+    + \fu{\textit{function\_name}(\textit{required\_argument},}\newline $\textrm{\,\,\,\,\,\,\,\fu{\textit{optional\_argument\_name} = \textit{optional\_argument})}}$
+
+***
+\begin{mdframed}[backgroundcolor=white,linecolor=function, linewidth=0.05cm] \vspace{.2cm} \color{text}
+\begin{center} 
+\tip{Using R Functions}: 
+
+We typically write code in one of these two formats:
+
+\vspace{.4cm}
+\fu{\textit{function\_name}(\textit{required\_argument})}  \\
+\vspace{.2cm}
+or \\
+\vspace{.2cm}
+\fu{\textit{function\_name}(\textit{required\_argument},} \,\,\,\,\,\,\,\fu{\textit{optional\_argument\_name} = \textit{optional\_argument})}
+\vspace{.2cm} 
+\end{center}
+\vspace{-.1cm}
+\end{mdframed}    
+
+***
+- Fictitious Example: Suppose R were capable of baking and that it had a function named \fu{bake()} that, by default, bakes the specified ingredient for 60 minutes at 400$^{\circ}$F
+\vspace{.2cm}
+    - Required argument: the ingredient
+    \vspace{.1cm}
+        + example: cake mix
+    - Optional arguments: named \fu{degrees} and \fu{minutes} to change the default temperature and duration of the bake, respectively
+    \vspace{.1cm}
+        + \fu{degrees=350} changes temperature to 350$^{\circ}$F
+        + \fu{minutes=30} changes duration of bake to 30 minutes
+
+***
+- The following code would ask R to bake a cake mix for 30 minutes at 350$^{\circ}$F, so that we can have cake as the output:
+
+\vspace{.4cm}
+\begin{center}
+\begin{mdframed}[backgroundcolor=white,linecolor=function, linewidth=0.05cm] \vspace{.2cm}
+\begin{center}
+\tip{Fictitious Example}\\
+
+\fu{bake( cake\_mix, degrees = 350, minutes = 30 )}
+\vspace{.2cm}
+
+\begin{minipage}{0.35\paperwidth}
+\begin{mdframed}[backgroundcolor=shadecolor,linecolor=shadecolor, linewidth=0.1cm, align=center]
+\begin{center}\tip{INPUTS}\end{center}
+\begin{center}
+\color{gray} required argument = \color{text} cake\_mix\\
+\color{gray} optional argument \fu{degrees} = \color{text} 350 \\
+\color{gray} optional argument \fu{minutes} = \color{text} 30
+\end{center}
+\vspace{-.1cm}
+\end{mdframed}\end{minipage}
+\begin{minipage}{0.02\paperwidth}
+\begin{center}
+\color{gray}$\rightarrow$\\
+\end{center}
+\end{minipage}
+\begin{minipage}{0.18\paperwidth}
+\begin{mdframed}[backgroundcolor=shadecolor,linecolor=shadecolor, linewidth=0cm, align=center]
+\tip{ACTION}
+\begin{center}
+\color{text} bake \\
+\end{center}\end{mdframed}\end{minipage}
+\begin{minipage}{0.02\paperwidth}
+\begin{center}
+\color{gray}$\rightarrow$ \\
+\end{center}
+\end{minipage}
+\begin{minipage}{0.19\paperwidth}
+\begin{mdframed}[backgroundcolor=shadecolor,linecolor=shadecolor, linewidth=0cm, align=center]
+\tip{OUTPUT}
+\begin{center}
+\color{text} cake\\
+\end{center}\end{mdframed}\end{minipage}
+\vspace{.2cm}\end{center}\end{mdframed}
+\end{center}
+\vspace{.5cm}
+
+***
+- Example: \fu{sqrt()} computes the square root of the argument specified inside the parentheses. To compute $\sqrt{\textrm{25}}$, run:
+    ```{r, collapse=TRUE, comment='##'}
+    sqrt(25)
+    ```
+    + \fu{sqrt} is the name of the function, which, as all function names, is followed by parentheses \fu{()}
+    +  \fu{25} is the required argument
+    + \color{gray} 5 \color{text} is the output
+
+***
+- Alternatively, since the object *twentyfive* contains the number 25, we can run:
+    ```{r, collapse=TRUE, comment='##'}
+    sqrt(twentyfive)
+    ```
+
+\vspace{.2cm}
+- R will give you an error message if you run this line of code before creating the object *twentyfive*
+
+- Code is sequential! One must run code in order
+    + Whenever returning to work on an R script, run all the code from the beginning
+    
+***
+- It is good practice to comment code
+    + include short notes to yourself or your collaborators explaining what the code does
+    
+- To comment code, we use \fu{\color{gray}\#\color{black}}
+    + R ignores everything that follows this character until the end of the line
+    
+- Examples:    
+    ```{r, collapse=TRUE, comment='##'}
+    sqrt(25) # calculates square root of 25
+    ```
+    ```{r, collapse=TRUE, comment='##'}
+    # sqrt(25) calculates square root of 25
+    ```
+
+***
+- Before closing your computer, remember to save the R script, otherwise you risk losing unsaved changes
+\vspace{.1cm}
+    + either use shortcuts (*command+S* or *ctr+S*) or 
+    + click on File > Save
+\vspace{.2cm}
+
+- If you quit RStudio, R will ask whether you want to save the workspace image, which contains all the objects you have created during the R session
+\vspace{.1cm}
+    + I recommend that you do not save it
+    + You can always re-create the objects by re-running the code in your R script 
+    
+***
+\color{black}
+\begin{center}
+\begin{tabular}{l}
+\concept{\textbf{Today's Lab}}\\
+- RStudio: R script, R console, and the environment \\
+- R: do calculations: \fu{+}, \fu{-}, \fu{*}, \fu{/}\\
+\,\,\,\,\,\,\,\,\,\, create objects: \fu{<-}, \fu{"}\\
+\,\,\,\,\,\,\,\,\,\, use functions: \fu{()}, \fu{sqrt()}, \fu{\color{gray}\#\color{text}}\\
+\\
+\concept{\textbf{Next Lab}}\color{black}\\
+- How to load and make sense of data in R\\
+- \textbf{Bring your computers!}\\
+\end{tabular}
+\end{center}
+\vspace{-1cm}
+  
+# Questions?
+
+# See you in the next lab!

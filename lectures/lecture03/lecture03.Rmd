@@ -1,0 +1,345 @@
+---
+title: |
+    | **POLI 30 D: Political Inquiry**
+    | \vspace{-.8cm}
+author: |
+    | \large\textbf{Professor Umberto Mignozzetti\\(Based on DSS Materials)}\vspace{.3cm}
+date: |
+    | \large\textbf{Lecture 03 | Observations, Variables, and Means}
+fontsize: 12pt
+output:
+  beamer_presentation:
+    highlight: tango
+    includes:
+      in_header: ../latex/style.tex # changes style to match the style of the book
+    incremental: true # if true: pauses are inserted after each item in a list
+    keep_tex: false # if true: .tex files are kept (helpful when fixing errors)
+    slide_level: 2
+classoption: "handout" # overrides incremental, removes all pauses
+---
+
+***
+\begin{center}
+\begin{minipage}{0.8\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.5cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{\textbf{Plan for Today}}}\normalsize\\\\
+- What are data/datasets?\\
+\,\,\,\,\,\,\,\, - what is an observation?\\
+\,\,\,\,\,\,\,\, - what is a variable?\\\\
+- Types of variables based on content\\
+\,\,\,\,\,\,\,\, - character vs. numeric variables\\
+\,\,\,\,\,\,\,\, - binary vs. non-binary variables\\\\
+- Average or mean of a variable\\
+\,\,\,\,\,\,\,\, - how to compute it?\\
+\,\,\,\,\,\,\,\, - how to interpret it?\\\\
+\end{tabular}
+\end{center}
+\vspace{.5cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+
+## Before we start
+
+**Announcements:**
+
+- I hope you had a great break! Next one is on President's Day.
+
+- Quizzes and Participation:
+  + Start at Week 03. I will give full marks on Quiz 1 for everyone on week 03. You're welcome :)
+
+- How was your Lab last week?
+
+- Github page: [https://github.com/umbertomig/POLI30Dpublic](https://github.com/umbertomig/POLI30Dpublic)
+
+- Piazza forum: [https://piazza.com/ucsd/winter2023/17221](https://piazza.com/ucsd/winter2023/17221)
+
+## Before we start
+
+**Recap:**
+
+- We learned the definitions of Theory, Scientific Theory, and Hypotheses.
+
+**Great job!**
+
+- Do you have any questions about these contents?
+
+# Political Science Data
+
+## What are Data/Datasets?
+- To test theories, we need data. What is data? What are datasets?
+
+- Datasets capture the characteristics of a particular set of individuals or entities: 
+    + students, classrooms, schools, etc.
+\vspace{.2cm}
+
+- Datasets are typically organized as \concept{dataframes}\ where rows are observations and columns are variables\newline
+\begin{center}
+\begin{tabular}{@{}c@{\,\,}c@{\,\,}|c|c|c|c}
+\multicolumn{1}{@{}c@{}}{}&\multicolumn{1}{@{}c@{}}{}& \multicolumn{3}{@{}c@{\,\,}}{variables}\\
+\multicolumn{1}{@{}c@{}}{}&\multicolumn{1}{@{}c@{}}{}&
+\multicolumn{1}{@{}c@{\,\,}}{1} & \multicolumn{1}{@{}c@{\,\,}}{2} & \multicolumn{1}{@{}c@{\,\,}}{...}\\
+\multicolumn{1}{@{}c@{}}{}&\multicolumn{1}{@{}c@{}}{}& \multicolumn{1}{@{}c@{}}{$\downarrow$} & \multicolumn{1}{@{}c@{}}{$\downarrow$} & \multicolumn{1}{@{}c@{}}{} \\[.03in]
+\cline{3-5}
+\multicolumn{1}{r@{\,\,}}{\textrm{1}\,\,} & $\rightarrow$  && &&  \\
+\cline{3-5}
+\textrm{observations \,\, 2\,\,} & $\rightarrow$ & &&&\\
+\cline{3-5}
+\multicolumn{1}{r@{\,\,}}{...\,\,}&&&&&\\
+\cline{3-5}
+\end{tabular}
+\end{center}
+\vspace{-1.2cm}
+
+## Example of a Dataframe
+\begin{center}\includegraphics[height=.7\textheight]{../images/data3.png}\end{center}
+\vspace{-1cm}
+
+## What is an observation? 
+- It is the information collected from a particular entity or individual in the study
+\vspace{.2cm}
+
+- The \concept{Unit of observation}\ of the dataset defines the individuals or the entities that each observation in the dataset represents
+    + if the Unit of observation is students, each row in the dataset represents a different student
+\vspace{.2cm}
+    
+- We usually refer to an observation by the row number in the dataset, which we denote as $i$
+    + what is the first observation ($i$=1) in the dataframe above?
+\vspace{-1cm}
+
+## What is a variable?
+- A variable contains the values of a changing characteristic for the various individuals or entities in the study
+\vspace{.2cm}
+
+- Every column of data in a dataset is a variable
+    + if the Unit of observation is students, each variable captures a specific characteristic of the students, for all the students in the study
+\vspace{.2cm}
+
+- We usually refer to a variable by its name
+    + *first\_name*, *test\_scores*
+
+## Notation
+- When defining new variables, we represent a variable and its contents in the following format:
+\vspace{.3cm}
+\begin{center} \textrm{\textit{X}} = \{10, 5, 8\}\end{center}
+
+\vspace{.2cm}
+- On the left-hand side of the equal sign, we identify the name of the variable: 
+\vspace{.1cm}
+    + what is the name of the variable here?
+\vspace{.2cm}
+
+- On the right-hand side of the equal sign and inside curly brackets, we have the content of the variable: multiple observations, separated by commas
+\vspace{.1cm}
+    + what are the observations in $X$?
+  
+\vspace{-1cm}
+
+## Notation
+\begin{center} \textrm{\textit{X}} = \{10, 5, 8\}\end{center}
+\vspace{.6cm}
+
+- To represent each observation we use \textit{X}$_i$
+    + where $i$ stands for the observation number
+    + the subscript $i$ means that we have a different value of \textit{X} for each value of $i$
+    + what is \textit{X}$_3$?
+\vspace{.2cm}
+
+- The total number of observations is denoted as $n$
+    + what does $n$ equal to here?    
+\vspace{-1cm}  
+  
+## Types of Variables Based on Content
+\begin{center}
+\begin{minipage}{0.8\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{center} \color{black}
+\begin{tikzpicture}
+\node [above] at (-1,10.3) {{variables}};
+\draw (-1,10.3)--(-1,10.1);
+\draw (-2,10.1)--(0,10.1);
+\draw (-2,10.1)--(-2,10);
+\draw (0,10.1)--(0,10);
+\node [below] at (-2,10.1) {{character}};
+\node [below] at (-2,9.7) {\color{gray}(if text)\color{black}};
+\node [below] at (0,10.1) {{numeric}};
+\node [below] at (0,9.7) {\color{gray}(if numbers)\color{black}};
+
+\draw (0,9.2)--(0,9);
+\draw (-2,9)--(2,9);
+\draw (-2,9)--(-2,8.9);
+\draw (2,9)--(2,8.9);
+
+\node [below] at (-2,9) {{binary}};
+\node [below] at (-2,8.6) {\color{gray}(if only 2 values)\color{black}};
+\node [below] at (2,9) {{non-binary}};
+\node [below] at (2,8.6) {\color{gray}(if more than 2 values)\color{black}};
+
+\end{tikzpicture}
+\end{center}
+\vspace{.2cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+
+## Character vs. Numeric
+- \concept{Character variables}\ contain text
+    + \textit{first\_names}=\{ana, elena, maria, ...\}
+\vspace{.2cm}
+    
+- \concept{Numeric variables}\ contain numbers
+    + \textit{test\_score}= \{80, 75, 99, ...\}
+ 
+## Numeric: Binary variables (AKA dummy variables)
+- \concept{Binary variables}\ can take only two values: 1s and 0s
+\vspace{.2cm}
+
+- They represent the presence/absence of a trait: 
+    + 1 if individual $i$ has the trait
+    + 0 if individual $i$ does not have the trait
+\vspace{.2cm}
+
+- Example: \textit{voted}= \{1, 0, 0, 1, 1, 1, 0\} where\newline
+\vspace{-.1cm}
+$$\textrm{\textit{voted}}_i = \begin{cases} 1 \text{ if individual \textit{i} voted} \\[3pt] 
+0 \text{ if individual \textit{i} didn't vote} \end{cases}$$
+\vspace{-.4cm}
+
+- Can you think of another example?
+\vspace{-1cm}
+
+## Numeric: Non-binary variables
+- \concept{Non-binary variables}\ can take more than two values
+\vspace{.2cm}
+    + \textit{distance}=\{1.452, 2.345, 0.298\}
+    + \textit{dice\_roll}=\{2, 4, 6\}
+\vspace{.2cm}
+
+- Can you think of another example?
+
+# Mean of a Variable
+
+## Average or Mean of a Variable: \newline How to Compute it?
+- Sum the values across all observations and divide the result by the total number of observations 
+
+\vspace{-.5cm}
+$$\overline{X} = \frac{\sum^{n}_{i=1}{X_i}}{n} = \frac{X_1+X_2+...+X_n}{n}$$
+\vspace{-.4cm} 
+
+\begin{itemize}
+\item $\overline{X}$ (pronounced X-bar) stands for the average of \textit{X}
+\item $\sum^{n}_{i=1} X_i$ stands for the sum of all $X_i$ (observations of $X$) from $i$=1 to $i=n$, meaning from the first observation of the variable $X$ to the last one ($\sum$ is Greek letter sigma)
+\item $X_i$ stands for a particular observation of $X$, where $i$ denotes the position of the observation and $n$ is the total number of observations in the variable
+\end{itemize}
+\vspace{-1cm}
+
+***
+- Example: if \textit{X}=\{10, 4, 6, 8, 22\}, then:
+\vspace{.5cm}
+    + $n$ = ?
+    + $\overline{X}$ = ?
+    + Let's compute it!
+    \begin{eqnarray*}
+\overline{X} = \frac{\sum^{n}_{i=1}{X_i}}{n} &=& \pause \frac{X_1 + X_2 + X_3 + X_4 + X_5}{5} \\[6pt] 
+&=& \pause \frac{\textrm{10{+}4{+}6{+}8{+}22}}{\textrm{5}} = \pause \frac{\textrm{50}}{\textrm{5}}=\textrm{10}
+\end{eqnarray*}
+
+## Average or Mean of a Variable: \newline How to Interpret it?
+- First, we need to figure out the quantity in which the value is measured
+\vspace{.2cm}
+    - Whenever interpreting numeric results, you should make it clear whether the number is measured in points, percents, miles, kilometers, etc.
+\vspace{.2cm}
+    - This is called the \concept{unit of measurement}
+
+
+## Unit of Measurement of the Mean of a Variable
+\begin{mdframed}[backgroundcolor=white,linecolor=titleline, linewidth=0.05cm]
+\begin{center} \color{text}
+\begin{tikzpicture}
+\node [above] at (0,10.3) {{interpretation of the mean of a variable}};
+\draw (0,10.3)--(0,10.1);
+\draw (-2.4,10.1)--(2.4,10.1);
+\draw (-2.4,10.1)--(-2.4,10);
+\draw (2.4,10.1)--(2.4,10);
+\node [below] at (-2.4,10) {{\color{title}if variable is non-binary:}};
+\node [below] at (-2.4,9.6) {{as an average, in the same}};
+\node [below] at (-2.4,9.2) {{unit of measurement}};
+\node [below] at (-2.4,8.8) {{as the variable}};
+
+\node [below] at (2.4,10) {{\color{title}if variable is binary:}};
+\node [below] at (2.4,9.6) {{as a proportion, in \%}};
+\node [below] at (2.4,9.2) {{after multipying}};
+\node [below] at (2.4,8.8) {{the result by 100}};
+\end{tikzpicture}
+\end{center}
+\end{mdframed}
+
+
+***
+- When the variable is \concept{non-binary}, the mean should be interpreted as an average in the same unit of measurement as the values in the variable
+\vspace{.2cm}
+
+- Example: if \textit{X}=\{10, 4, 6, 8, 22\} and measured in miles
+\vspace{.2cm}
+    + $\overline{X}$ = ?
+    + what type of variable is $X$ (binary or non-binary)?
+    + shall we interpret $\overline{X}$ as an average or a proportion?
+    + unit of measurement of $\overline{X}$ = 10?
+
+***
+- When the variable is \concept{binary}\, the mean should be interpreted as a proportion, in \% after multiplying the result by 100 
+\vspace{.2cm}
+
++ Why? 
+    + Because the mean of a binary variable is equivalent to the proportion of the observations that have the characteristic identified by the variable (i.e., that meet a criterion)
+
+***
+- Example: if \textit{X}=\{1, 1, 1, 0, 0, 0\}, then:
+\begin{eqnarray*}
+\overline{X} = \frac{\sum^{n}_{i=1}{X_i}}{n} &=& \frac{X_1 + X_2 + X_3 + X_4 + X_5 + X_6}{\textrm{6}} \\[3pt] 
+&=& \pause \frac{\textrm{1{+}1{+}1{+}0{+}0{+}0}}{\textrm{6}} = \frac{\textrm{3}}{\textrm{6}}= \textrm{0.5} \pause
+\end{eqnarray*}
+\vspace{-.1cm}
+    + what type of variable is $X$ (binary or non-binary)?
+    + shall we interpret $\overline{X}$ as an average or a proportion?
+    - interpretation of $\overline{X}$ = 0.5 (including units)? 
+    \vspace{.1cm}
+        + 50\% of the observations are 1s, that is, have the characteristic identified by $X$ (0.5x100=50\%)
+    - note that the fraction $\frac{\textrm{3}}{\textrm{6}}$ is equivalent to the proportion of the observations that are 1s
+
+***
+- The proportion of observations in a variable that meet a criterion is calculated as:
+
+\vspace{-.6cm}
+$$\textrm{number of observations}$$
+\vspace{-.6cm}
+$$\frac{\textrm{that meet criterion}}{\textrm{total number of observations}}$$
+\vspace{.2cm}
+
+- Example: if \textit{X}=\{1, 1, 1, 0, 0, 0\}, the proportion of observations in \textit{X} that are 1s is:
+    \vspace{.2cm}
+    + $\frac{\textrm{3}}{\textrm{6}}$= 0.50
+    - to interpret the result of this fraction as a percentage, we multiply the decimal by 100 (0.50x100=50\%)
+    - interpretation: 50\% of the observations in \textit{X} are 1s
+
+## Summary
+
+* **Today's Class:**
+  + Data/datasets
+  + Observations and variables
+  + Character vs. numeric variables
+  + Binary vs. non-binary variables
+  + Computing and interpreting means
+
+* Next class:
+  - Causal effects
+  - Randomized experiments
+  - Difference-in-means estimator
+  
+# Questions?
+
+# See you in the next class!

@@ -1,0 +1,366 @@
+---
+title: |
+    | **POLI 30 D: Political Inquiry**
+    | \vspace{-.8cm}
+author: |
+    | \large\textbf{Professor Umberto Mignozzetti\\(Based on DSS Materials)}\vspace{.3cm}
+date: |
+    | \large\textbf{Lecture 05 | Does Social Pressure Increase Probability of Turning Out to Vote?}
+fontsize: 12pt
+output:
+  beamer_presentation:
+    highlight: tango
+    includes:
+      in_header: 'https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/latex/style.tex'
+    incremental: true # if true: pauses are inserted after each item in a list
+    keep_tex: false # if true: .tex files are kept (helpful when fixing errors)
+    slide_level: 2
+classoption: "handout" # overrides incremental, removes all pauses
+---
+
+```{r echo=FALSE} 
+knitr::opts_chunk$set(echo = TRUE)
+knitr::knit_hooks$set(mysmall = function(before, options, envir) { 
+  if (before) { 
+    return("\\small") 
+  } else { 
+    return("\\normalsize") 
+  } 
+}) 
+knitr::knit_hooks$set(myfntsize = function(before, options, envir) { 
+  if (before) { 
+    return("\\footnotesize") 
+  } else { 
+    return("\\normalsize") 
+  } 
+}) 
+knitr::knit_hooks$set(mytiny = function(before, options, envir) { 
+  if (before) { 
+    return("\\tiny") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::opts_chunk$set(mysmall = TRUE)
+```
+
+## Before we start
+
+**Announcements:**
+
+- Quizzes and Participation: On Canvas.
+
+- Github page: [https://github.com/umbertomig/POLI30Dpublic](https://github.com/umbertomig/POLI30Dpublic)
+
+- Piazza forum: [https://piazza.com/ucsd/winter2023/17221](https://piazza.com/ucsd/winter2023/17221)
+
+## Before we start
+
+**Recap:**
+
+- We learned the definitions of Theory, Scientific Theory, and Hypotheses.
+- Data, datasets, variables, and how to compute means.
+- Causal effect, treatments, outcomes, and randomization.
+
+**Great job!**
+
+- Do you have any questions about these contents?
+
+
+***
+\begin{center}
+\begin{minipage}{0.8\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.5cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{\textbf{Plan for Today}}}\normalsize\\\\
+- Percentage Points\\
+- Review: Unit of Measurement of Means\\
+- Unit of Measurement of Diffs-in-Means\\\\
+- In-Class Exercise: Does Social Pressure \\
+\,\,\,Increase the Probability of Turning Out To Vote? \\
+\end{tabular}
+\end{center}
+\vspace{.5cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+
+## What is a percentage point? 
+
+Unit of measurement for the arithmetic difference between two percentages:
+\begin{center}\concept{\% - \% = p.p.}\end{center}
+
++ Example: if a candidate's vote share increases from 50\% to 60\%, the vote share increases by
+\vspace{-.2cm}
+$$\triangle\textrm{vshare} = \textrm{vshare}_{\textrm{final}} - \textrm{vshare}_{\textrm{initial}}  =  \textrm{60\%} -  \textrm{50\%} =  \textrm{10 p.p.}$$
+\vspace{-.8cm}
+
+-  Why not 10\%?
+    +  What is 10\% of 50\%?  $\textrm{0.10}{\times}\textrm{50}=\textrm{5 p.p.}$
+\vspace{-.2cm}
+$$\textrm{vshare}_{\textrm{final}} = \textrm{vshare}_{\textrm{initial}} + \triangle \textrm{vshare}  = \textrm{50\%} +  \textrm{5 p.p.} =  \textrm{55\%}$$
+\vspace{-1.6cm}
+
+## Unit of Measurement of the Diffs-in-Means Estimator
+\begin{mdframed}[backgroundcolor=white,linecolor=titleline, linewidth=0.05cm]
+\begin{center} \color{text}
+\begin{tikzpicture}
+\node [above] at (0,10.3) {{unit of measurement of the difference-in-means estimator}};
+\draw (0,10.3)--(0,10.1);
+\draw (-2.4,10.1)--(2.4,10.1);
+\draw (-2.4,10.1)--(-2.4,10);
+\draw (2.4,10.1)--(2.4,10);
+\node [below] at (-2.4,10) {{\color{title}if outcome variable}};
+\node [below] at (-2.4,9.6) {{\color{title}is non-binary:}};
+\node [below] at (-2.4,9.2) {{in the same}};
+\node [below] at (-2.4,8.8) {{unit of measurement}};
+\node [below] at (-2.4,8.4) {{as the outcome variable}};
+
+\node [below] at (2.4,10) {{\color{title}if outcome variable}};
+\node [below] at (2.4,9.6) {{\color{title}is binary:}};
+\node [below] at (2.4,9.2) {{in percentage points}};
+\node [below] at (2.4,8.8) {{(after multipying}};
+\node [below] at (2.4,8.4) {{the result by 100)}};
+\end{tikzpicture}
+\end{center}
+\end{mdframed}
+
+## Does Social Pressure Affect Turnout?
+\vspace{.4cm}\begin{center}\includegraphics[height=.6\textheight]{../../images/vote.jpg}\end{center}\vspace{-.3cm}
+
+\footnotesize
+(Based on \href{http://www.donaldgreen.com/wp-content/uploads/2015/09/Gerber_Green_Larimer-APSR-2008.pdf}{Alan S. Gerber, Donald P. Green, and Christopher W. Larimer. 2008. ``Social Pressure and Voter Turnout: Evidence from a Large-Scale Field Experiment." \textit{American Political Science Review}, 102 (1): 33-48.})
+
+## Does Social Pressure Affect Turnout?
+
+- We will answer by analyzing data from an experiment where registered voters were randomly assigned to either 
+    + (a) receive a message designed to induce social pressure to vote, or
+    + (b) receive nothing
+
+\vspace{.2cm}
+
+- The message told that after the election, their neighbors would be informed about their voting decision:
+    + What do you think the effect might be?
+\vspace{-1cm}
+
+## Does Social Pressure Affect Turnout?
+
+- What do we need to calculate the ATE of receiving the message on the probability of turning out to vote?
+\vspace{.1cm}
+    + the difference-in-means estimator
+
+\vspace{.2cm}    
+
+- Why does the difference-in-means estimator provide a *valid* estimate of the ATE?
+\vspace{.1cm}
+    + the data come from a randomized experiment (where treatment was randomly assigned)
+    + as a result, treatment and control groups are comparable
+    
+## Does Social Pressure Affect Turnout?
+
+- In this case, the difference-in-means estimator is:
+\vspace{.2cm}
+\begin{center}
+$\overline{\textrm{\textit{voted}}}_\text{treatment group} - \overline{\textrm{\textit{voted}}}_\text{control group}$
+\end{center}
+\vspace{.3cm}
++ $\overline{\textrm{\textit{voted}}}_\text{treatment group}$: proportion of registered voters who voted among those who received the message
+\vspace{.2cm}
++ $\overline{\textrm{\textit{voted}}}_\text{control group}$: proportion of registered voters who voted among those who did not receive the message
+
+## In-Class Exercise
+1. Open RStudio (RStudio will open R)
+\vspace{.2cm}
+
+2. Open **inclass01.R** from within RStudio. Find it on Canvas > Modules.
+    + RStudio: File >> Open File 
+
+\vspace{.2cm}
+
+3. Let's Run the code step-by-step.
+
+## Does Social Pressure Affect Turnout?
+
+```{r}
+## STEP 1. Load the dataset
+voting <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/voting.csv")
+```
+
+```{r}
+## STEP 2. Look at the data
+head(voting, 3) # shows the first three observations
+## what does each observation represent?
+## what is the outcome variable?
+## what is the treatment variable?
+```
+
+## STEP 3. Create a binary treatment variable
+- First, we need to learn how to use \fu{==} and \fu{ifelse()}
+\vspace{.2cm}
+
+- The operator \fu{==} \ tests whether the observations of a variable are equal to a particular value
+    + values should be in quotes if text but without quotes, if numbers
+    + examples: 
+        + \fu{\textit{data}\$\textit{variable}==1} 
+        + \fu{\textit{data}\$\textit{variable}=="yes"}
+        
+## STEP 3. Create a binary treatment variable
+
+The function \fu{ifelse()}
+\vspace{.2cm}
+
+- creates the contents of a new variable based on the values of an existing one
+
+- requires three arguments, separated by commas, in the following order: \newline (1) logical test (using \fu{==}), \newline (2) return value if logical test is true, \newline (3) return value if the logical test is false
+
+\vspace{.2cm}
+
+- Example: \fu{ifelse(\textit{data}\$\textit{variable}=="yes", 1, 0)} 
+    
+## STEP 3. Create a binary treatment variable
+
+```{r}
+## STEP 3. Create a binary treatment variable
+## create variable pressure inside dataframe voting
+voting$pressure <- # stores return values in new variable
+  ifelse(voting$message=="yes", # logical test
+         1, # return value if the logical test is true
+         0) # return value if the logical test is false
+```
+
+- You should run the code all at once (not line by line)
+
+## STEP 3. Create a binary treatment variable
+- Whenever we create a new variable, we should make sure it was created correctly by looking at it:
+
+```{r, myftnsize = TRUE}
+head(voting, 4) # shows first observations
+```
+
+- Note that when *message* equals "yes", *pressure* equals 1; and when *message* equals "no", *pressure* equals 0
+
+## STEP 4. Compute the difference-in-means estimator
+\vspace{.3cm}
+\begin{mdframed}[linecolor=gray, linewidth=0.05cm]
+\vspace{.1cm}
+\begin{center}
+\color{concept}$\overline{Y}_\text{treatment group} - \overline{Y}_\text{control group}$\\[.3cm]
+\color{gray}
+$\overline{Y}_\text{treatment group}$: average outcome for the treatment group\\
+$\overline{Y}_\text{control group}$: average outcome for the control group
+\end{center}
+\end{mdframed}
+\vspace{.2cm}
+
+- In the voting experiment:
+\vspace{.2cm}
+\begin{center}
+$\overline{\textrm{\textit{voted}}}_\text{treatment group} - \overline{\textrm{\textit{voted}}}_\text{control group}$
+\end{center}
+\vspace{.3cm}
++ $\overline{\textrm{\textit{voted}}}_\text{treatment group}$: mean of *voted* for treatment group
++ $\overline{\textrm{\textit{voted}}}_\text{control group}$: mean of *voted* for control group
+\vspace{-1cm}
+        
+## STEP 4. Compute the difference-in-means estimator
+- Let's start by practicing computing and interpreting means
+
+```{r}
+mean(voting$voted) # calculates the mean of voted
+```
+- Interpretation?
+    + 31\% of *all* the registered voters who were part of the experiment voted
+- Why in \%?
+    + Because *voted* is binary
+
+## STEP 4. Compute the difference-in-means estimator
+- \fu{mean(voting\$voted)} computes the mean of *voted* for all the observations in the dataset
+- To compute the difference-in-means estimator, we need to calculate the mean of *voted* for subsets of observations
+- Specifically, we need to compute:
+    + the mean of *voted* for the treatment group (for which *pressure* equals 1)
+    + the mean of *voted* for the control group (for which *pressure* equals 0)
+\vspace{.2cm}
+- To do this, we need to learn how to use the \fu{[]} \ operator
+
+## STEP 4. Compute the difference-in-means estimator
+- Operator \fu{[]}:
+\vspace{.1cm}
+    + extracts a selection of observations from a variable
+    + to its left, we specify the variable we want to subset
+    + inside the square brackets, we specify the criteria of selection
+    + example: \fu{\textit{data}\$\textit{var1}[\textit{data}\$\textit{var2}==1]} \newline \color{gray}\# extracts the observations of the variable \textit{var1} for which the variable \textit{var2} equals 1
+\vspace{-1cm}
+
+## STEP 4. Compute the difference-in-means estimator
+
+```{r, collapse=TRUE}
+mean(voting$voted[voting$pressure == 1]) # treatment
+mean(voting$voted[voting$pressure == 0]) # control
+```
+- Interpretation of the first mean?
+    + 38\% of the registered voters who received the message voted (38x100=38\%)
+
+\vspace{0.2cm}
+
+- Interpretation of the second mean?
+    + 30\% of the registered voters who did *not* receive the message voted (30x100=30\%)
+
+## STEP 4. Compute the difference-in-means estimator
+
+```{r, collapse=TRUE}
+mean(voting$voted[voting$pressure==1]) - 
+  mean(voting$voted[voting$pressure==0]) 
+```
+
+What are the effect's direction, size, and unit of measurement?
+
+## STEP 5. Write conclusion statement
+- What assumptions are we making when estimating the average causal effect? 
+    + registered voters who received the message are comparable to registered voters who did not
+
+\vspace{0.2cm}
+
+- Why is this a reasonable assumption?
+    + data come from a randomized experiment
+
+
+## STEP 5. Write conclusion statement
+- What's the treatment? 
+    + receiving the message inducing social pressure
+
+\vspace{0.2cm}
+
+- What's the outcome? 
+    + probability of voting
+
+\vspace{0.2cm}
+
+- What's the average causal effect's direction, size, and unit of measurement?
+    + an increase of 8 percentage points, on average
+
+
+## STEP 5. Write conclusion statement
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{center}\concept{\tip{conclusion statement}}\end{center}
+
+Assuming that \color{gray}[the treatment and control groups are comparable] \color{black} (a reasonable assumption because \color{gray}...\color{black}), \newline we estimate that \color{gray}[the treatment] [increases/decreases] \newline [the outcome] \color{black} by \color{gray} [size and unit of measurement of the effect]\color{black}, on average.
+\end{mdframed}
+\vspace{.2cm}
+ 
+- Assuming that \pause registered voters who received the message are comparable to the registered voters who did not \pause (a reasonable assumption because \pause the data come from a randomized experiment), \pause we estimate that \pause receiving the message inducing social pressure \pause increases \pause the probability of voting by \pause 8 \pause percentage points, \pause on average.
+
+## Summary
+
+* **Today's Class:**
+  + Units of Measurement of Means and Diffs-in-Means
+  + In-Class Exercise: Does Social Pressure Increase the Probability of Turning Out To Vote?
+
+* Next class:
+  + Surveys
+  
+# Questions?
+
+# See you in the next class!

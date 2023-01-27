@@ -1,0 +1,498 @@
+---
+title: |
+    | **POLI 30 D: Political Inquiry**
+    | \vspace{-.8cm}
+author: |
+    | \large\textbf{Professor Umberto Mignozzetti\\(Based on DSS Materials)}\vspace{.3cm}
+date: |
+    | \large\textbf{Lecture 06 | Measuring Population Characteristics I}
+fontsize: 12pt
+output:
+  beamer_presentation:
+    highlight: tango
+    includes:
+      in_header: ../../latex/style.tex
+    incremental: true # if true: pauses are inserted after each item in a list
+    keep_tex: false # if true: .tex files are kept (helpful when fixing errors)
+    slide_level: 2
+classoption: "handout" # overrides incremental, removes all pauses
+---
+
+```{r, include=FALSE}
+library(tidyverse)
+knitr::opts_chunk$set(echo = TRUE)
+knitr::knit_hooks$set(mysmall = function(before, options, envir) { 
+  if (before) { 
+    return("\\small") 
+  } else { 
+    return("\\normalsize") 
+  } 
+}) 
+knitr::knit_hooks$set(myfntsize = function(before, options, envir) { 
+  if (before) { 
+    return("\\footnotesize") 
+  } else { 
+    return("\\normalsize") 
+  } 
+}) 
+knitr::knit_hooks$set(mytiny = function(before, options, envir) { 
+  if (before) { 
+    return("\\tiny") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::opts_chunk$set(mysmall = TRUE)
+```
+
+## Before we start
+
+**Announcements:**
+
+- Quizzes and Participation: On Canvas.
+
+- Github page: [https://github.com/umbertomig/POLI30Dpublic](https://github.com/umbertomig/POLI30Dpublic)
+
+- Piazza forum: [https://piazza.com/ucsd/winter2023/17221](https://piazza.com/ucsd/winter2023/17221)
+
+## Before we start
+
+**Recap:**
+
+- We learned the definitions of Theory, Scientific Theory, and Hypotheses.
+- Data, datasets, variables, and how to compute means.
+- Causal effect, treatments, outcomes, randomization, and ATE.
+
+**Great job!**
+
+- Do you have any questions about these contents?
+
+***
+\begin{center}
+\begin{minipage}{0.8\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.5cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{\textbf{Plan for Today}}}\normalsize\\\\
+- Sample vs. Population\\
+- Representative samples\\
+- Random Sampling\\
+- Random Treatment Assignment vs. \\
+\,\,\,\, Random Sampling\\\\
+- Exploring One Variable At a Time\\
+\,\,\,\,\,\,\,- Table of frequencies\\
+\,\,\,\,\,\,\,- Table of proportions\\
+\,\,\,\,\,\,\,- Histogram\\
+\,\,\,\,\,\,\,- Descriptive Statistics: mean, median, \\
+\,\,\,\,\,\,\,\,\,\,\,standard deviation, and variance
+\end{tabular}
+\end{center}
+\vspace{.5cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+
+
+***
+\vspace{.5cm}
+\begin{mdframed}[linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{Why Do We Analyze Data?}\normalsize}\\\\
+\color{gray}{1.} \color{black} MEASURE: \concept{To infer population}\\
+\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\concept{characteristics via survey research}\\
+\,\,\,\,\,\,\,\, - what proportion of constituents support\\
+\,\,\,\,\,\,\,\,\,\,\,\, a particular policy?\\\\
+
+\color{gray}{2.} \color{black}  PREDICT: \concept{To make predictions} \\
+\,\,\,\,\,\,\,\, - who is the most likely candidate to win\\
+\,\,\,\,\,\,\,\,\,\,\,\, an upcoming election?\\\\
+
+\color{gray}{3.} \color{black}  EXPLAIN: \concept{To estimate the causal effect of}\\
+\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\concept{a treatment on an outcome} \\
+\,\,\,\,\,\,\,\, - what is the effect of small classrooms\\
+\,\,\,\,\,\,\,\,\,\,\,\, on student performance?\\
+\end{tabular}
+\end{center}
+\end{mdframed}
+
+***
+\vspace{.5cm}
+\begin{mdframed}[linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{Why Do We Analyze Data?}\normalsize}\\\\
+\color{gray}{1.} \color{black} MEASURE: \concept{To infer population}\\
+\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\concept{characteristics via survey research}\\
+\,\,\,\,\,\,\,\, - what proportion of constituents support\\
+\,\,\,\,\,\,\,\,\,\,\,\, a particular policy?\\\\
+
+\color{gray}{2.} \color{gray}  PREDICT: \textbf{To make predictions} \\
+\,\,\,\,\,\,\,\, \color{gray}- who is the most likely candidate to win\\
+\,\,\,\,\,\,\,\,\,\,\,\, \color{gray}an upcoming election?\\\\
+
+\color{gray}{3.} \color{gray}  EXPLAIN: \textbf{To estimate the causal effect of}\\
+\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\color{gray}\textbf{a treatment on an outcome} \\
+\,\,\,\,\,\,\,\, \color{gray}- what is the effect of small classrooms\\
+\,\,\,\,\,\,\,\,\,\,\,\, \color{gray}on student performance?\\
+\end{tabular}
+\end{center}
+\end{mdframed}
+
+
+## Sample vs. Population
+
+\vspace{.2cm}
+
+- We often want to know the characteristics of a large \concept{population}\ such as the residents of a country
+\vspace{.2cm}
+
+- Yet collecting data from every individual in the population is either prohibitively expensive or infeasible.
+\vspace{.2cm}
+
+- In the US, we try to collect data from each individual every ten years
+    + The 2020 census cost \$14.2 billion, approximately (population at that time was around 331 million)
+    + This is not feasible for research purposes!
+
+- We use surveys to collect data from a small subset of observations in order to understand the population
+
+## Sample vs. Population
+
+- The subset of individuals chosen for study is called a \concept{sample}
+\begin{center} \includegraphics[width=.6\textwidth]{../../images/sample.png}\end{center}
+\vspace{.2cm}
+
+- Researchers typically survey about 1,000 people to infer the characteristics of more than 200 million US citizens
+
+- n=1,000, N=200 million
+\vspace{-1cm}
+
+## Representative Samples
+- In survey research, it is vital for the sample to be representative of the population of interest
+\vspace{.2cm}
+
+- \concept{Representative sample}\: Accurately reflects the characteristics of the population from which it is drawn
+\vspace{.2cm}
+
+- If the sample is not representative, our inferences regarding the population characteristics will be wrong
+\vspace{-1cm}
+
+## Representative Samples
+- Are you a representative sample of U.S. residents?
+\vspace{.2cm}
+
+- Are you a representative sample of UCSD students?
+\vspace{.2cm}
+
+- Are you a representative sample of UCSD Poli majors?
+\vspace{.2cm}
+
+- Are you a representative sample of POLI 30 D students?
+\vspace{.2cm}
+
+- What would be the best way to draw a representative sample of UCSD students?
+
+## Random Sampling
+
+- The best way to draw a representative sample is to select individuals at *random* from the population.
+\vspace{.4cm}\pause
+
+\begin{mdframed}[backgroundcolor=white,linecolor=concept, linewidth=0.05cm]
+\concept{Random sampling}\ makes the \textbf{sample} and the \textbf{target population} \textit{on average} identical.
+\end{mdframed}
+\vspace{.2cm}
+
+- Random sampling: enables us to infer *valid* population characteristics from the sample,
+\vspace{.2cm}
+
+## Random Treatment Assignment vs. Random Sampling
+
+- They both use a random process but are different concepts.
+\vspace{.1cm}
+
+- \concept{Random treatment assignment}\ means that treatment is assigned at random:
+    + makes treatment and control groups comparable.
+
+\vspace{.1cm}
+
+- \concept{Random sampling}\ means that individuals are selected at random from the population into the sample:
+    + makes sample representative of the population.
+
+\vspace{.1cm}
+
+- For the purpose of this class, we assume that we are always studying a representative sample.
+
+## Exploring One Variable At a Time
+
+- Suppose we have collected data from a sample, now what?
+
+- To understand the content and distribution of each variable we can:
+    + create a table of frequencies
+    + create a table of proportions
+    + create a histogram
+    + compute descriptive statistics
+\vspace{.2cm}
+
+- Let's return to the voting experiment
+    +  data collected from a sample of registered voters in the state of Michigan
+\vspace{-1cm}
+
+## The *voting* dataset
+
+\vspace{1cm}
+\begin{table}
+\begin{center}
+\begin{tabular}{ll}											
+\multicolumn{2}{l}{Unit of observation: registered voters}\\\\
+\multicolumn{2}{l}{Description of variables:}\\\\
+\midrule
+variable & description\\
+\midrule \addlinespace[1.5pt]
+\textit{birth} &  year of birth of registered voter \\\addlinespace[1.5pt]
+\textit{message} & whether registered voter received message:\\
+& "yes", "no" \\\addlinespace[1.5pt]
+\textit{voted} & whether registered voter voted:\\
+& 1{=}voted, 0{=}didn't vote \\\addlinespace[1.5pt]
+\midrule
+\end{tabular}
+\end{center}
+\end{table}
+
+## Table of Frequencies
+- The \concept{frequency table}\ shows the values the variable takes and the number of times each value appears in the variable
+\vspace{.2cm}
+
+- R function: \fu{table()}
+
+```{r, collapse=TRUE, comment='##', echo=FALSE} 
+voting <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/voting.csv")
+```
+```{r, collapse=TRUE, comment='##'} 
+table(voting$voted)
+```
+
+- Interpretation?
+  \vspace{-1cm}
+
+## Table of Proportions
+
+- The \concept{table of proportions}\ shows the proportion of observations that take each value in the variable
+\vspace{.2cm}
+
+- The proportions in the table should add up to 1
+\vspace{.2cm}
+
+- R function: \fu{prop.table(table( ))}
+
+```{r, collapse=TRUE, comment='##'} 
+prop.table(table(voting$voted))
+```
+
+- Interpretation?
+  \vspace{-1cm}
+
+## Histogram
+
+- The \concept{histogram}\ is the visual representation of a variable\'s distribution through bins of different heights
+\vspace{.2cm}
+
+- The position of the bins along the x-axis indicate the interval of values
+\vspace{.2cm}
+
+- The height of the bins indicate the frequency (or count) of the interval of values
+\vspace{.2cm}
+
+- R functions: \fu{hist()} or \fu{ggplot() + geom\_histogram()}
+
+- Great for `quantitative` variables (the numeric R data types)
+
+## Histogram
+
+```{r, fig.height=2, fig.width=4, fig.align='center', collapse = T}
+ggplot(voting, aes(x = birth)) + 
+  geom_histogram(binwidth = 5) + theme_light()
+```
+
+- Interpretation?
+
+\vspace{-2cm}
+
+## Barplots
+
+- The \concept{barplot}\ is similar to a histogram, but discretizes the variation
+\vspace{.2cm}
+
+- The position of the bins along the x-axis indicate a value
+\vspace{.2cm}
+
+- The height of the bins indicate the frequency (or count) of the values
+\vspace{.2cm}
+
+- R functions: \fu{barplot(table())} or \fu{ggplot() + geom\_bar()}
+
+- Great for `qualitative` variables (numeric binary or character)
+
+## Barplots
+
+```{r, fig.height=2, fig.width=4, fig.align='center', collapse = T}
+ggplot(voting, aes(x = voted)) + 
+  geom_bar(aes(x = as.character(voted))) + theme_light()
+```
+
+- Interpretation?
+
+\vspace{-2cm}
+
+## Descriptive Statistics
+  
+- The \concept{descriptive statistics}\ of a variable numerically summarize the main characteristics of its distribution
+\vspace{.5cm}
+- Measures of centrality \newline (center of the distribution): 
+  + mean
+  + median
+\vspace{.2cm}
+- Measures of spread \newline (amount of variation from the center): 
+  + standard deviation 
+  + variance
+\vspace{-1cm}
+
+## Mean
+
+- The \concept{mean}\ of a variable equals the sum of the values across all observations divided by the total number of observations
+\vspace{.2cm}
+
+- What is the function in R?
+  
+- Example:
+```{r, collapse=TRUE, comment='##'}
+mean(voting$birth)
+mean(voting$voted)
+```
+
+- Interpretations?
+\vspace{-1cm}
+
+## Median
+- The \concept{median}\ of a variable is the value at the midpoint of the distribution that divides the data into two equal-size groups
+\vspace{.2cm}
+
+- When the variable contains an odd number of observations, the median is the middle value of the distribution 
+\vspace{.2cm}
+
+- When the variable contains an even number of observations, the median is the average of the two middle values
+\vspace{-1cm}
+
+## Median
+
+- Example, if \textit{X}=\{10, 4, 6, 8, 22\}, what is the median of $X$?
+  + First, we need to sort the values of $X$ in ascending order (as they would be in the distribution): \newline  $\{4, 6, 8, 10, 22\}$
+  + The value in the middle of the distribution is $8$ so the median is $8$.
+
+\vspace{.1cm}
+
+- R function: \fu{median()}
+```{r, collapse=TRUE, comment='##'}
+median(voting$birth)
+```
+
+- Interpretations?
+
+## Standard Deviation
+- The \concept{standard deviation}\ of a variable is a measure of the spread of its distribution
+$$ \text{sd(X)} = \sqrt{\frac{\sum^n_{i=1}(X_i-\overline{X})^2}{n}} $$
+  
+\begin{center}
+\begin{tabular}{l}
+- $sd(X)$ stands for the standard deviation of $X$\\
+- $X_i$ is a particular observation of $X$\\
+- $\overline{X}$ stands for the mean of $X$\\
+- $n$ is the total number of observations in the variable\\
+- $\sum^{n}_{i=1} (X_i{-}\overline{X})^2$ means the sum of all $(X_i{-}\overline{X})^2$\\ 
+\,\,\,\,from $i = 1$ to $i = n$\\
+\end{tabular}
+\end{center}
+\vspace{-1cm}
+
+## Standard Deviation 
+
+\begin{mdframed}[backgroundcolor=white,linecolor=concept, linewidth=0.05cm]
+\begin{center} 
+The \concept{standard deviation}\ of a variable measures the average distance of the observations to the mean.
+\end{center}
+\end{mdframed}
+\vspace{.2cm}
+
+- The larger the standard deviation, the `flatter` the distribution
+
+- It gives us a sense of the range of the data, especially when dealing with bell-shaped distributions
+
+- In bell-shaped (normal) distributions, 95\% of the observations fall within two standard deviations from the mean
+
+## Standard Deviation 
+
+- R function: \fu{sd()}
+
+```{r, fig.width=6, fig.height=3, collapse=TRUE, comment='##'}
+sd(voting$birth)
+```
+
+- If \textit{birth} were normally distributed, about 95\% of the register voters would have been born between 1927 and 1985:
+  + $\overline{X}$ - 2 ${\times}$ sd(X) = 1956 - 2 $\times$ 14.5 = 1927 
+  + $\overline{X}$ + 2 $\times$ sd(X) = 1956 + 2 $\times$ 14.5 = 1985
+
+## Variance
+
+- Another measure of spread of the distribution
+
+- The \concept{variance}\ of a variable is simply the square of the standard deviation
+
+$$\text{var(X)} = [\text{sd(X)}]^2$$ 
+  
+\begin{center}
+\begin{tabular}{l}
+- $var(X)$ stands for the variance of $X$ \\
+- $sd(X)$ stands for the standard deviation of $X$\\
+\end{tabular}
+\end{center}
+
+## Variance
+
+- R function: \fu{var()}
+
+```{r, collapse=TRUE, comment='##'}
+var(voting$birth)
+```
+
+-  Alternatively: \fu{sd()\^{}2}
+
+```{r, fig.width=6, fig.height=3, collapse=TRUE, comment='##'}
+sd(voting$birth)^2
+```
+
+-  We are usually better off using standard deviations as our measure of spread:
+  + Same unit of measurement as the variable
+
+
+## Summary
+
+\vspace{0.2cm}
+
+- **Today's Class:**
+  + Sample vs. Population
+  + Representative Samples and Random Sampling
+  + Exploring a single variable
+
+\vspace{0.2cm}
+
+- **Next class:**
+  + Correlations
+  + Scatter-plots
+
+\vspace{-2cm}
+
+# Questions?
+
+# See you in the next class!
