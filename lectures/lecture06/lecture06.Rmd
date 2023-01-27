@@ -142,7 +142,6 @@ knitr::opts_chunk$set(mysmall = TRUE)
 \end{center}
 \end{mdframed}
 
-
 ## Sample vs. Population
 
 \vspace{.2cm}
@@ -154,7 +153,7 @@ knitr::opts_chunk$set(mysmall = TRUE)
 \vspace{.2cm}
 
 - In the US, we try to collect data from each individual every ten years
-    + The 2020 census cost \$14.2 billion, approximately (population at that time was around 331 million)
+    + The 2020 census cost \$14.2 billion, approximately (the population at that time was around 331 mi)
     + This is not feasible for research purposes!
 
 - We use surveys to collect data from a small subset of observations in order to understand the population
@@ -171,7 +170,7 @@ knitr::opts_chunk$set(mysmall = TRUE)
 \vspace{-1cm}
 
 ## Representative Samples
-- In survey research, it is vital for the sample to be representative of the population of interest
+- In survey research, the sample needs to be representative of the population of interest
 \vspace{.2cm}
 
 - \concept{Representative sample}\: Accurately reflects the characteristics of the population from which it is drawn
@@ -181,7 +180,7 @@ knitr::opts_chunk$set(mysmall = TRUE)
 \vspace{-1cm}
 
 ## Representative Samples
-- Are you a representative sample of U.S. residents?
+- Are you a representative sample of US residents?
 \vspace{.2cm}
 
 - Are you a representative sample of UCSD students?
@@ -194,6 +193,12 @@ knitr::opts_chunk$set(mysmall = TRUE)
 \vspace{.2cm}
 
 - What would be the best way to draw a representative sample of UCSD students?
+
+## Representative Samples
+
+- You should be careful about how representative your sample is:
+
+\begin{center} \includegraphics[width=.6\textwidth]{../../images/truman.jpg}\end{center}
 
 ## Random Sampling
 
@@ -219,24 +224,24 @@ knitr::opts_chunk$set(mysmall = TRUE)
 \vspace{.1cm}
 
 - \concept{Random sampling}\ means that individuals are selected at random from the population into the sample:
-    + makes sample representative of the population.
+    + makes the sample representative of the population.
 
 \vspace{.1cm}
 
-- For the purpose of this class, we assume that we are always studying a representative sample.
+- For this class, we assume we are always studying a representative sample.
 
 ## Exploring One Variable At a Time
 
-- Suppose we have collected data from a sample, now what?
+- Suppose we have collected data from a sample. Now what?
 
-- To understand the content and distribution of each variable we can:
-    + create a table of frequencies
-    + create a table of proportions
-    + create a histogram
-    + compute descriptive statistics
+- To understand the content and distribution of each variable, we can:
+    + Create a table of frequencies
+    + Create a table of proportions
+    + Create a histogram
+    + Compute descriptive statistics
 \vspace{.2cm}
 
-- Let's return to the voting experiment
+- Let us return to the voting experiment
     +  data collected from a sample of registered voters in the state of Michigan
 \vspace{-1cm}
 
@@ -299,10 +304,10 @@ prop.table(table(voting$voted))
 - The \concept{histogram}\ is the visual representation of a variable\'s distribution through bins of different heights
 \vspace{.2cm}
 
-- The position of the bins along the x-axis indicate the interval of values
+- The position of the bins along the x-axis indicates the interval of values
 \vspace{.2cm}
 
-- The height of the bins indicate the frequency (or count) of the interval of values
+- The height of the bins indicates the frequency (or count) of the interval of values
 \vspace{.2cm}
 
 - R functions: \fu{hist()} or \fu{ggplot() + geom\_histogram()}
@@ -325,10 +330,10 @@ ggplot(voting, aes(x = birth)) +
 - The \concept{barplot}\ is similar to a histogram, but discretizes the variation
 \vspace{.2cm}
 
-- The position of the bins along the x-axis indicate a value
+- The position of the bins along the x-axis indicates a value
 \vspace{.2cm}
 
-- The height of the bins indicate the frequency (or count) of the values
+- The height of the bins indicates the frequency (or count) of the values
 \vspace{.2cm}
 
 - R functions: \fu{barplot(table())} or \fu{ggplot() + geom\_bar()}
@@ -348,7 +353,7 @@ ggplot(voting, aes(x = voted)) +
 
 ## Descriptive Statistics
   
-- The \concept{descriptive statistics}\ of a variable numerically summarize the main characteristics of its distribution
+- The \concept{descriptive statistics}\ of a variable numerically summarizes the main characteristics of its distribution
 \vspace{.5cm}
 - Measures of centrality \newline (center of the distribution): 
   + mean
@@ -420,7 +425,7 @@ $$ \text{sd(X)} = \sqrt{\frac{\sum^n_{i=1}(X_i-\overline{X})^2}{n}} $$
 
 \begin{mdframed}[backgroundcolor=white,linecolor=concept, linewidth=0.05cm]
 \begin{center} 
-The \concept{standard deviation}\ of a variable measures the average distance of the observations to the mean.
+The \concept{standard deviation}\ of variable measures the average distance of the observations to the mean.
 \end{center}
 \end{mdframed}
 \vspace{.2cm}
@@ -439,13 +444,13 @@ The \concept{standard deviation}\ of a variable measures the average distance of
 sd(voting$birth)
 ```
 
-- If \textit{birth} were normally distributed, about 95\% of the register voters would have been born between 1927 and 1985:
+- If \textit{birth} were normally distributed, about 95\% of the registered voters would have been born between 1927 and 1985:
   + $\overline{X}$ - 2 ${\times}$ sd(X) = 1956 - 2 $\times$ 14.5 = 1927 
   + $\overline{X}$ + 2 $\times$ sd(X) = 1956 + 2 $\times$ 14.5 = 1985
 
 ## Variance
 
-- Another measure of spread of the distribution
+- Another measure of the spread of the distribution
 
 - The \concept{variance}\ of a variable is simply the square of the standard deviation
 

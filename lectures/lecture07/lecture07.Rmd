@@ -18,7 +18,8 @@ output:
 classoption: "handout" # overrides incremental, removes all pauses
 ---
 
-```{r echo=FALSE} 
+```{r, include=FALSE}
+library(tidyverse)
 knitr::opts_chunk$set(echo = TRUE)
 knitr::knit_hooks$set(mysmall = function(before, options, envir) { 
   if (before) { 
@@ -56,17 +57,16 @@ knitr::opts_chunk$set(mysmall = TRUE)
 
 ## Before we start
 
-**Recap:**
+**Recap:** We learned:
 
-- We learned the definitions of Theory, Scientific Theory, and Hypotheses.
+- The definitions of theory, scientific theory, and hypotheses.
 - Data, datasets, variables, and how to compute means.
 - Causal effect, treatments, outcomes, and randomization.
-- What are histograms and how to interpret them.
+- Sampling, descriptive statistics, and descriptive plots for one variable.
 
 **Great job!**
 
 - Do you have any questions about these contents?
-
 
 ***
 \begin{center}
@@ -76,11 +76,10 @@ knitr::opts_chunk$set(mysmall = TRUE)
 \begin{center}
 \begin{tabular}{l}
 \multicolumn{1}{c}{\large\concept{\textbf{Plan for Today}}}\normalsize\\\\
-- Percentage Points\\
-- Review: Unit of Measurement of Means\\
-- Unit of Measurement of Diffs-in-Means\\\\
-- In-Class Exercise: Does Social Pressure \\
-\,\,\,Increase the Probability of Turning Out To Vote? \\
+- Exploring the Relationship \\
+\,\,\,\,Between Two Variables\\
+\,\,\,\,\,\,\,- Scatter plots\\
+\,\,\,\,\,\,\,- Correlations\\
 \end{tabular}
 \end{center}
 \vspace{.5cm}
@@ -88,279 +87,464 @@ knitr::opts_chunk$set(mysmall = TRUE)
 \end{minipage}
 \end{center}
 
-## What is a percentage point? 
+## Scatter Plots
 
-Unit of measurement for the arithmetic difference between two percentages:
-\begin{center}\concept{\% - \% = p.p.}\end{center}
+- A \concept{scatter plot}\ enables us to visualize the relationship between two variables by plotting one against the other
+\vspace{.2cm}
 
-+ Example: if a candidate's vote share increases from 50\% to 60\%, the vote share increases by
+```{r, cache=FALSE, fig.width=10, fig.height=5, echo=F, out.width = '80%', fig.align='center'}
+star <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/STAR.csv")
+par(mfrow = c(1,2),
+          oma = c(0,0,0,0) + 0.1, # outer margin: bottom, left, top, right
+          mar = c(3,3,1,1) + 0.1, # inner margin, default: c(5,4,4,2) + 0.1
+          mgp = c(2,0.5,0), # margin line for axis title, default: c(3,1,0)
+    cex=1, adj=1, # 1: right-justified
+    yaxs="r", xaxs="r", las=1) # axis choice: "i" internal, "r" regular
+plot(star$reading, star$math, col="#d4d4d4", pch=19, main="", axes=F, col.lab="gray17", bty="n", ylab="", xlab="")
+mtext("Y", side = 2, line = 1, outer = FALSE, cex=1.5, col.lab="gray17", at=780, col="gray17")
+mtext("X", side = 1, line = 1, outer = FALSE, cex=1.5, col.lab="gray17", adj=1, col="gray17")
+box(col="gray17")
+
+plot(star$reading, -star$math, col="#d4d4d4", pch=19, main="", axes=F, col.lab="gray17", bty="n", ylab="", xlab="")
+mtext("Y", side = 2, line = 1, outer = FALSE, cex=1.5, col.lab="gray17", at=-509, col="gray17")
+mtext("X", side = 1, line = 1, outer = FALSE, cex=1.5, col.lab="gray17", adj=1, col="gray17")
+box(col="gray17")
+```
+\vspace{-1cm}
+
+## Scatter Plots
+
 \vspace{-.2cm}
-$$\triangle\textrm{vshare} = \textrm{vshare}_{\textrm{final}} - \textrm{vshare}_{\textrm{initial}}  =  \textrm{60\%} -  \textrm{50\%} =  \textrm{10 p.p.}$$
-\vspace{-.8cm}
+Imagine we have two variables:
+\begin{tabular}{ccl}
+ X & Y & \\
+ \cline{1-2}
+ 4 & 2 & \\
+ 8 & 5 & \\
+ 10 & 3 & \\
+\end{tabular}\pause
 
--  Why not 10\%?
-    +  What is 10\% of 50\%?  $\textrm{0.10}{\times}\textrm{50}=\textrm{5 p.p.}$
-\vspace{-.2cm}
-$$\textrm{vshare}_{\textrm{final}} = \textrm{vshare}_{\textrm{initial}} + \triangle \textrm{vshare}  = \textrm{50\%} +  \textrm{5 p.p.} =  \textrm{55\%}$$
-\vspace{-1.6cm}
+We can create the scatter plot by plotting one point at a time.
 
-## Unit of Measurement of the Diffs-in-Means Estimator
-\begin{mdframed}[backgroundcolor=white,linecolor=titleline, linewidth=0.05cm]
-\begin{center} \color{text}
-\begin{tikzpicture}
-\node [above] at (0,10.3) {{unit of measurement of the difference-in-means estimator}};
-\draw (0,10.3)--(0,10.1);
-\draw (-2.4,10.1)--(2.4,10.1);
-\draw (-2.4,10.1)--(-2.4,10);
-\draw (2.4,10.1)--(2.4,10);
-\node [below] at (-2.4,10) {{\color{title}if outcome variable}};
-\node [below] at (-2.4,9.6) {{\color{title}is non-binary:}};
-\node [below] at (-2.4,9.2) {{in the same}};
-\node [below] at (-2.4,8.8) {{unit of measurement}};
-\node [below] at (-2.4,8.4) {{as the outcome variable}};
+## Scatter Plots
 
-\node [below] at (2.4,10) {{\color{title}if outcome variable}};
-\node [below] at (2.4,9.6) {{\color{title}is binary:}};
-\node [below] at (2.4,9.2) {{in percentage points}};
-\node [below] at (2.4,8.8) {{(after multipying}};
-\node [below] at (2.4,8.4) {{the result by 100)}};
-\end{tikzpicture}
-\end{center}
-\end{mdframed}
+Imagine we have two variables:
+\begin{tabular}{ccl}
+ X & Y & \\
+ \cline{1-2}
+ 4 & 2 & >> First, let's plot this point: \concept{(x$_1$, y$_1$) = (4,2)}\\
+ 8 & 5 & \\
+ 10 & 3 & \\
+\end{tabular}
 
-## Does Social Pressure Affect Turnout?
-\vspace{.4cm}\begin{center}\includegraphics[height=.6\textheight]{../../images/vote.jpg}\end{center}\vspace{-.3cm}
+\vspace{-2cm}
 
-\footnotesize
-(Based on \href{http://www.donaldgreen.com/wp-content/uploads/2015/09/Gerber_Green_Larimer-APSR-2008.pdf}{Alan S. Gerber, Donald P. Green, and Christopher W. Larimer. 2008. ``Social Pressure and Voter Turnout: Evidence from a Large-Scale Field Experiment." \textit{American Political Science Review}, 102 (1): 33-48.})
+## Scatter Plots
 
-## Does Social Pressure Affect Turnout?
+Imagine we have two variables:
+\begin{tabular}{ccl}
+ X & Y & \\
+ \cline{1-2}
+ 4 & 2 & >> First, let's plot this point: \concept{(x$_1$, y$_1$) = (4,2)}\\
+ 8 & 5 & \\
+ 10 & 3 & \\
+\end{tabular}
 
-- We will answer by analyzing data from an experiment where registered voters were randomly assigned to either 
-    + (a) receive a message designed to induce social pressure to vote, or
-    + (b) receive nothing
+\vspace{-2cm}
 
-\vspace{.2cm}
+## Scatter Plots
 
-- The message told that after the election, their neighbors would be informed about their voting decision:
-    + What do you think the effect might be?
-\vspace{-1cm}
+```{r, echo=FALSE, fig.width=8, fig.height=3.5}
+Y <- c(2,5,3)
+X <- c(4,8,10)
+par(mfrow = c(1,1),
+          oma = c(0,0,0,0) + 0.1, # outer margin: bottom, left, top, right
+          mar = c(3,3,1,1) + 0.1, # inner margin, default: c(5,4,4,2) + 0.1
+          mgp = c(2,0.5,0), # margin line for axis title, default: c(3,1,0)
+    cex=1, adj=1, # 1: right-justified
+    yaxs="r", xaxs="r", las=1) # axis choice: "i" internal, "r" regular
 
-## Does Social Pressure Affect Turnout?
+plot(X,Y, col="white", ylim=c(0,7), xlim=c(0,12), xaxt = "n", yaxt="n", yaxs="r", xaxs="r", ylab="", xlab="", axes=F, col.lab="gray17", bty="n")
 
-- What do we need to calculate the ATE of receiving the message on the probability of turning out to vote?
-\vspace{.1cm}
-    + the difference-in-means estimator
+mtext("Y", side = 2, line = 1, outer = FALSE, cex=.8, col.lab="gray17", at=7, col="gray17")
+mtext("X", side = 1, line = 1, outer = FALSE, cex=.8, col.lab="gray17", adj=1, col="gray17")
 
-\vspace{.2cm}    
+axis(side = 1,at = c(0,1,2,3,4,5,6,7,8,9,10,11),c(0,1,2,3,4,5,6,7,8,9,10,11), col="white", col.ticks="gray", col.axis="gray17", tck=-0.02)
+axis(side = 2,at = c(0,1,2,3,4,5,6),c(0,1,2,3,4,5,6),col="white", col.ticks="gray", col.axis="gray17", tck=-0.02)
+box(col="gray17")
 
-- Why does the difference-in-means estimator provide a *valid* estimate of the ATE?
-\vspace{.1cm}
-    + the data come from a randomized experiment (where treatment was randomly assigned)
-    + as a result, treatment and control groups are comparable
-    
-## Does Social Pressure Affect Turnout?
-
-- In this case, the difference-in-means estimator is:
-\vspace{.2cm}
-\begin{center}
-$\overline{\textrm{\textit{voted}}}_\text{treatment group} - \overline{\textrm{\textit{voted}}}_\text{control group}$
-\end{center}
-\vspace{.3cm}
-+ $\overline{\textrm{\textit{voted}}}_\text{treatment group}$: proportion of registered voters who voted among those who received the message
-\vspace{.2cm}
-+ $\overline{\textrm{\textit{voted}}}_\text{control group}$: proportion of registered voters who voted among those who did not receive the message
-
-## In-Class Exercise
-1. Open RStudio (RStudio will open R)
-\vspace{.2cm}
-
-2. Open **inclass01.R** from within RStudio. Find it on Canvas > Modules.
-    + RStudio: File >> Open File 
-
-\vspace{.2cm}
-
-3. Let's Run the code step-by-step.
-
-## Does Social Pressure Affect Turnout?
-
-```{r}
-## STEP 1. Load the dataset
-voting <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/voting.csv")
+# first point
+lines(x=c(X[1],X[1]), y=c(-0.3,Y[1]), col="gray", lty=2, lwd=1)
+lines(x=c(-0.3,X[1]), y=c(Y[1],Y[1]), col="gray", lty=2, lwd=1)
+points(X[1],Y[1], col="#ef3119", lwd=1, pch=19)
+text(X[1],Y[1], "(4,2)", col="#ef3119", pos=4, offset=1, cex=1.3)
 ```
-
-```{r}
-## STEP 2. Look at the data
-head(voting, 3) # shows the first three observations
-## what does each observation represent?
-## what is the outcome variable?
-## what is the treatment variable?
-```
-
-## STEP 3. Create a binary treatment variable
-- First, we need to learn how to use \fu{==} and \fu{ifelse()}
-\vspace{.2cm}
-
-- The operator \fu{==} \ tests whether the observations of a variable are equal to a particular value
-    + values should be in quotes if text but without quotes, if numbers
-    + examples: 
-        + \fu{\textit{data}\$\textit{variable}==1} 
-        + \fu{\textit{data}\$\textit{variable}=="yes"}
-        
-## STEP 3. Create a binary treatment variable
-
-The function \fu{ifelse()}
-\vspace{.2cm}
-
-- creates the contents of a new variable based on the values of an existing one
-
-- requires three arguments, separated by commas, in the following order: \newline (1) logical test (using \fu{==}), \newline (2) return value if logical test is true, \newline (3) return value if the logical test is false
-
-\vspace{.2cm}
-
-- Example: \fu{ifelse(\textit{data}\$\textit{variable}=="yes", 1, 0)} 
-    
-## STEP 3. Create a binary treatment variable
-
-```{r}
-## STEP 3. Create a binary treatment variable
-## create variable pressure inside dataframe voting
-voting$pressure <- # stores return values in new variable
-  ifelse(voting$message=="yes", # logical test
-         1, # return value if the logical test is true
-         0) # return value if the logical test is false
-```
-
-- You should run the code all at once (not line by line)
-
-## STEP 3. Create a binary treatment variable
-- Whenever we create a new variable, we should make sure it was created correctly by looking at it:
-
-```{r, myftnsize = TRUE}
-head(voting, 4) # shows first observations
-```
-
-- Note that when *message* equals "yes", *pressure* equals 1; and when *message* equals "no", *pressure* equals 0
-
-## STEP 4. Compute the difference-in-means estimator
-\vspace{.3cm}
-\begin{mdframed}[linecolor=gray, linewidth=0.05cm]
-\vspace{.1cm}
-\begin{center}
-\color{concept}$\overline{Y}_\text{treatment group} - \overline{Y}_\text{control group}$\\[.3cm]
-\color{gray}
-$\overline{Y}_\text{treatment group}$: average outcome for the treatment group\\
-$\overline{Y}_\text{control group}$: average outcome for the control group
-\end{center}
-\end{mdframed}
-\vspace{.2cm}
-
-- In the voting experiment:
-\vspace{.2cm}
-\begin{center}
-$\overline{\textrm{\textit{voted}}}_\text{treatment group} - \overline{\textrm{\textit{voted}}}_\text{control group}$
-\end{center}
-\vspace{.3cm}
-+ $\overline{\textrm{\textit{voted}}}_\text{treatment group}$: mean of *voted* for treatment group
-+ $\overline{\textrm{\textit{voted}}}_\text{control group}$: mean of *voted* for control group
-\vspace{-1cm}
-        
-## STEP 4. Compute the difference-in-means estimator
-- Let's start by practicing computing and interpreting means
-
-```{r}
-mean(voting$voted) # calculates the mean of voted
-```
-- Interpretation?
-    + 31\% of *all* the registered voters who were part of the experiment voted
-- Why in \%?
-    + Because *voted* is binary
-
-## STEP 4. Compute the difference-in-means estimator
-- \fu{mean(voting\$voted)} computes the mean of *voted* for all the observations in the dataset
-- To compute the difference-in-means estimator, we need to calculate the mean of *voted* for subsets of observations
-- Specifically, we need to compute:
-    + the mean of *voted* for the treatment group (for which *pressure* equals 1)
-    + the mean of *voted* for the control group (for which *pressure* equals 0)
-\vspace{.2cm}
-- To do this, we need to learn how to use the \fu{[]} \ operator
-
-## STEP 4. Compute the difference-in-means estimator
-- Operator \fu{[]}:
-\vspace{.1cm}
-    + extracts a selection of observations from a variable
-    + to its left, we specify the variable we want to subset
-    + inside the square brackets, we specify the criteria of selection
-    + example: \fu{\textit{data}\$\textit{var1}[\textit{data}\$\textit{var2}==1]} \newline \color{gray}\# extracts the observations of the variable \textit{var1} for which the variable \textit{var2} equals 1
-\vspace{-1cm}
-
-## STEP 4. Compute the difference-in-means estimator
-
-```{r, collapse=TRUE}
-mean(voting$voted[voting$pressure == 1]) # treatment
-mean(voting$voted[voting$pressure == 0]) # control
-```
-- Interpretation of the first mean?
-    + 38\% of the registered voters who received the message voted (38x100=38\%)
-
-\vspace{0.2cm}
-
-- Interpretation of the second mean?
-    + 30\% of the registered voters who did *not* receive the message voted (30x100=30\%)
-
-## STEP 4. Compute the difference-in-means estimator
-
-```{r, collapse=TRUE}
-mean(voting$voted[voting$pressure==1]) - 
-  mean(voting$voted[voting$pressure==0]) 
-```
-
-What are the effect's direction, size, and unit of measurement?
-
-## STEP 5. Write conclusion statement
-- What assumptions are we making when estimating the average causal effect? 
-    + registered voters who received the message are comparable to registered voters who did not
-
-\vspace{0.2cm}
-
-- Why is this a reasonable assumption?
-    + data come from a randomized experiment
-
-
-## STEP 5. Write conclusion statement
-- What's the treatment? 
-    + receiving the message inducing social pressure
-
-\vspace{0.2cm}
-
-- What's the outcome? 
-    + probability of voting
-
-\vspace{0.2cm}
-
-- What's the average causal effect's direction, size, and unit of measurement?
-    + an increase of 8 percentage points, on average
-
-
-## STEP 5. Write conclusion statement
-\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
-\vspace{.2cm}
-\begin{center}\concept{\tip{conclusion statement}}\end{center}
-
-Assuming that \color{gray}[the treatment and control groups are comparable] \color{black} (a reasonable assumption because \color{gray}...\color{black}), \newline we estimate that \color{gray}[the treatment] [increases/decreases] \newline [the outcome] \color{black} by \color{gray} [size and unit of measurement of the effect]\color{black}, on average.
-\end{mdframed}
-\vspace{.2cm}
  
-- Assuming that \pause registered voters who received the message are comparable to the registered voters who did not \pause (a reasonable assumption because \pause the data come from a randomized experiment), \pause we estimate that \pause receiving the message inducing social pressure \pause increases \pause the probability of voting by \pause 8 \pause percentage points, \pause on average.
+\vspace{-2cm}
+
+## Scatter Plots
+
+\vspace{-.2cm}
+Imagine we have two variables:
+\begin{tabular}{ccl}
+ X & Y & \\
+ \cline{1-2}
+ 4 & 2 & >> First, let's plot this point: \concept{(x$_1$, y$_1$) = (4,2)}\\
+ 8 & 5 & >> Now, let's plot this point: \concept{(x$_2$, y$_2$) = (8,5)}\\
+ 10 & 3 & \\
+\end{tabular}
+
+\vspace{-2cm}
+
+## Scatter Plots
+
+```{r, echo=FALSE, fig.width=8, fig.height=3.5}
+Y <- c(2,5,3)
+X <- c(4,8,10)
+par(mfrow = c(1,1),
+          oma = c(0,0,0,0) + 0.1, # outer margin: bottom, left, top, right
+          mar = c(3,3,1,1) + 0.1, # inner margin, default: c(5,4,4,2) + 0.1
+          mgp = c(2,0.5,0), # margin line for axis title, default: c(3,1,0)
+    cex=1, adj=1, # 1: right-justified
+    yaxs="r", xaxs="r", las=1) # axis choice: "i" internal, "r" regular
+
+plot(X,Y, col="white", ylim=c(0,7), xlim=c(0,12), xaxt = "n", yaxt="n", yaxs="r", xaxs="r", ylab="", xlab="", axes=F, col.lab="gray17", bty="n")
+
+mtext("Y", side = 2, line = 1, outer = FALSE, cex=.8, col.lab="gray17", at=7, col="gray17")
+mtext("X", side = 1, line = 1, outer = FALSE, cex=.8, col.lab="gray17", adj=1, col="gray17")
+
+axis(side = 1,at = c(0,1,2,3,4,5,6,7,8,9,10,11),c(0,1,2,3,4,5,6,7,8,9,10,11), col="white", col.ticks="gray", col.axis="gray17", tck=-0.02)
+axis(side = 2,at = c(0,1,2,3,4,5,6),c(0,1,2,3,4,5,6),col="white", col.ticks="gray", col.axis="gray17", tck=-0.02)
+box(col="gray17")
+
+# first point
+lines(x=c(X[1],X[1]), y=c(-0.3,Y[1]), col="gray", lty=2, lwd=1)
+lines(x=c(-0.3,X[1]), y=c(Y[1],Y[1]), col="gray", lty=2, lwd=1)
+points(X[1],Y[1], col="#ef3119", lwd=1, pch=19)
+#text(X[1]+1.5,Y[1], "(4,2)", col="#ef3119")
+text(X[1],Y[1], "(4,2)", col="#ef3119", pos=4, offset=1, cex=1.3)
+
+# second point
+lines(x=c(X[2],X[2]), y=c(-0.3,Y[2]), col="gray", lty=2, lwd=1)
+lines(x=c(-0.3,X[2]), y=c(Y[2],Y[2]), col="gray", lty=2, lwd=1)
+points(X[2],Y[2], col="#ef3119", lwd=1, pch=19)
+#text(X[2]+.7,Y[2]+1, "(8,5)", col="#ef3119")
+text(X[2],Y[2], "(8,5)", col="#ef3119", pos=4, offset=1, cex=1.3)
+```
+
+\vspace{-2cm}
+
+## Scatter Plots
+
+Imagine we have two variables:
+\begin{tabular}{ccl}
+ X & Y & \\
+ \cline{1-2}
+ 4 & 2 & >> First, let's plot this point: \concept{(x$_1$, y$_1$) = (4,2)}\\
+ 8 & 5 & >> Now, let's plot this point: \concept{(x$_2$, y$_2$) = (8,5)}\\
+ 10 & 3 & >> Finally, let's plot this point: \concept{(x$_3$, y$_3$) = (10,3)}\\
+\end{tabular}
+
+\vspace{-2cm}
+
+## Scatter Plots
+
+```{r, echo=FALSE, fig.width=8, fig.height=3.5}
+Y <- c(2,5,3)
+X <- c(4,8,10)
+
+par(mfrow = c(1,1),
+          oma = c(0,0,0,0) + 0.1, # outer margin: bottom, left, top, right
+          mar = c(3,3,1,1) + 0.1, # inner margin, default: c(5,4,4,2) + 0.1
+          mgp = c(2,0.5,0), # margin line for axis title, default: c(3,1,0)
+    cex=1, adj=1, # 1: right-justified
+    yaxs="r", xaxs="r", las=1) # axis choice: "i" internal, "r" regular
+
+plot(X,Y, col="white", ylim=c(0,7), xlim=c(0,12), xaxt = "n", yaxt="n", yaxs="r", xaxs="r", ylab="", xlab="", axes=F, col.lab="gray17", bty="n")
+
+mtext("Y", side = 2, line = 1, outer = FALSE, cex=.8, col.lab="gray17", at=7, col="gray17")
+mtext("X", side = 1, line = 1, outer = FALSE, cex=.8, col.lab="gray17", adj=1, col="gray17")
+
+axis(side = 1,at = c(0,1,2,3,4,5,6,7,8,9,10,11),c(0,1,2,3,4,5,6,7,8,9,10,11), col="white", col.ticks="gray", col.axis="gray17", tck=-0.02)
+axis(side = 2,at = c(0,1,2,3,4,5,6),c(0,1,2,3,4,5,6),col="white", col.ticks="gray", col.axis="gray17", tck=-0.02)
+box(col="gray17")
+
+# first point
+lines(x=c(X[1],X[1]), y=c(-0.3,Y[1]), col="gray", lty=2, lwd=1)
+lines(x=c(-0.3,X[1]), y=c(Y[1],Y[1]), col="gray", lty=2, lwd=1)
+points(X[1],Y[1], col="#ef3119", lwd=1, pch=19)
+text(X[1],Y[1], "(4,2)", col="#ef3119", pos=4, offset=1, cex=1.3)
+
+# second point
+lines(x=c(X[2],X[2]), y=c(-0.3,Y[2]), col="gray", lty=2, lwd=1)
+lines(x=c(-0.3,X[2]), y=c(Y[2],Y[2]), col="gray", lty=2, lwd=1)
+points(X[2],Y[2], col="#ef3119", lwd=1, pch=19)
+text(X[2],Y[2], "(8,5)", col="#ef3119", pos=4, offset=1, cex=1.3)
+
+# third point
+lines(x=c(X[3],X[3]), y=c(-0.3,Y[3]), col="gray", lty=2, lwd=1)
+lines(x=c(-0.3,X[3]), y=c(Y[3],Y[3]), col="gray", lty=2, lwd=1)
+points(X[3],Y[3], col="#ef3119", lwd=1, pch=19)
+text(X[3],Y[3], "(10,3)", col="#ef3119", pos=4, offset=1, cex=1.3)
+```
+
+\vspace{-2cm}
+
+## Scatter Plots
+
+- R functions: \fu{plot()} or \fu{ggplot() + geom\_point()}
+\vspace{.2cm}
+
+- How many arguments are required?
+    + two; the two variables
+
+## Scatter Plots
+
+- Let us use the data from Project STAR:
+    ```{r, collapse=TRUE, comment='##', echo=FALSE} 
+    star <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/STAR.csv") 
+    ```
+    ```{r, collapse=TRUE, comment='##'} 
+    head(star, 3) # shows first observations
+    ```
+
+- Unit of observation?
+\vspace{-.1cm}
+    + students; each observation represents a student
+
+- Unit of measurement of *reading* and *math*?
+\vspace{-.1cm}
+    + points
+
+## Scatter Plots
+
+```{r, cache=FALSE,  fig.width=4, fig.height=4, echo=F, out.width = '50%', fig.align='center'}
+ggplot(star, aes(x = reading, y = math)) + 
+  geom_point() + theme_light()
+```
+
+- What can we learn from this scatter plot?
+
+\vspace{-2cm}
+
+## Correlation Coefficient
+
+- The \concept{correlation coefficient} is a statistic that summarizes the relationship between two variables with a number
+    + denoted as cor(X,Y)
+\vspace{.2cm}
+
+- cor(X,Y) summarizes the \concept{direction}\ and the \concept{strength}\ of the \concept{linear association}\ between X and Y
+
+- cor(X,Y) ranges from -1 to 1
+
+## Correlation Coefficient
+
+The sign reflects the \concept{direction}\ of the linear association:
+
++ cor(X,Y) > 0 (tends to see one **in**creasing when the other increases)
++ cor(X,Y) < 0 (tends to see one **de**creasing when the other increases)
+\vspace{.2cm}
+
+\pause The absolute value reflects the \concept{strength}\ of the linear association:
+
++ |cor(X,Y)| = 0 if there is no linear association
++ |cor(X,Y)| = 1 if there is a perfect linear association
++ |cor(X,Y)| increases as the linear association becomes stronger
+
+\vspace{-1cm}
+
+## Correlation Coefficient
+
+\concept{Direction}\ of the linear association between two variables:
+\vspace{.5cm}
+
+```{r, cache=FALSE, fig.width=10, fig.height=5, echo=F, out.width = '80%', fig.align='center'}
+par(mfrow = c(1,2),
+          oma = c(0,0,0,0) + 0.1, # outer margin: bottom, left, top, right
+          mar = c(3,3,1,1) + 0.1, # inner margin, default: c(5,4,4,2) + 0.1
+          mgp = c(2,0.5,0), # margin line for axis title, default: c(3,1,0)
+    cex=1, adj=1, # 1: right-justified
+    yaxs="r", xaxs="r", las=1) # axis choice: "i" internal, "r" regular
+plot(star$reading, star$math, col="#d4d4d4", pch=19, main="", axes=F, col.lab="gray17", bty="n", ylab="", xlab="")
+box(col="gray17")
+plot(star$reading, -star$math, col="#d4d4d4", pch=19, main="", axes=F, col.lab="gray17", bty="n", ylab="", xlab="")
+box(col="gray17")
+```
+
+\begin{center}
+\begin{tabular}{rcl} 
+positive linear association & vs. & negative linear association\\
+positive correlation  & vs. & negative correlation\\
+\end{tabular}
+\end{center}
+\vspace{-1cm}
+
+## Correlation Coefficient
+
+\concept{Strength}\ of the linear association between two variables:
+\vspace{.5cm}
+
+```{r, cache=FALSE, fig.width=10, fig.height=5, echo=F, out.width = '80%', fig.align='center'}
+par(mfrow = c(1,2),
+          oma = c(0,0,0,0) + 0.1, # outer margin: bottom, left, top, right
+          mar = c(3,3,1,1) + 0.1, # inner margin, default: c(5,4,4,2) + 0.1
+          mgp = c(2,0.5,0), # margin line for axis title, default: c(3,1,0)
+    cex=1, adj=1, # 1: right-justified
+    yaxs="r", xaxs="r", las=1) # axis choice: "i" internal, "r" regular
+
+set.seed(123)
+x <- rnorm(1000, mean=50, sd=3)
+y <- x + rnorm(1000, mean=50, sd=22)
+plot(x,y, col="#c7c7c7", ylab="", xlab="", cex=.6, xaxt = "n", yaxt="n", yaxs="r", xaxs="r", axes=F, col.lab="gray17", bty="n", pch=19)
+box(col="gray17")
+
+x <- rnorm(1000, mean=50, sd=10)
+y <- x + rnorm(1000, mean=50, sd=7)
+plot(x,y, col="#c7c7c7", ylab="", xlab="", cex=.6, xaxt = "n", yaxt="n", yaxs="r", xaxs="r", axes=F, col.lab="gray17", bty="n", pch=19)
+box(col="gray17")
+```
+
+\vspace{.2cm}
+\begin{center}
+\begin{tabular}{rcl} 
+\textbf{weak} linear association & vs. & \textbf{strong} linear association\\
+absolute value closer to 0 & vs. & absolute value closer to 1\\
+\end{tabular}
+\end{center}
+\vspace{-1cm}
+
+## Correlation Coefficient
+
+```{r, cache=FALSE,  fig.width=6, fig.height=6, echo=F, out.width = '50%', fig.align='center'}
+ggplot(star, aes(x = reading, y = math)) +
+  geom_point() + theme_light()
+```
+
+- Do you expect the correlation between *reading* and *math* grades to be positive or negative?
+
+\vspace{-2cm}
+
+## Correlation Coefficient
+
+```{r, cache=FALSE,  fig.width=6, fig.height=6, echo=F, out.width = '50%', fig.align='center'}
+ggplot(star, aes(x = reading, y = math)) +
+  geom_point() + theme_light()
+```
+
+- Do you expect the absolute value of the correlation between *reading* and *math* to be closer to 1 or to 0?
+
+\vspace{-2cm}
+
+## Correlation Coefficient
+- R function: \fu{cor()}
+\vspace{.2cm}
+- How many required arguments?
+    + two; the two variables
+\vspace{.2cm}
+
+- Does the order of the arguments matter? 
+    + no; cor(X,Y) = cor(Y,X)
+\vspace{.2cm}
+
+- What is the code to compute the correlation between *reading* and *math*?
+    - Answer:
+        ```{r, collapse=TRUE, comment='##'}   
+        cor(star$reading, star$math) 
+        ```
+    + Is the correlation what we expected?
+
+\vspace{-2cm}
+
+## Correlation Coefficient
+```{r, cache=FALSE,  fig.width=6, fig.height=2.9, echo=F, out.width = '80%', fig.align='center'}
+par(mfrow = c(1,2),
+    oma = c(1,0,1,0) + 0.1, # bottom, left, top, right # outer margins
+    mar = c(0,1,0,1) + 0.1,   
+    mgp = c(2,.5,0), cex=.45, adj=1, yaxs="r", xaxs="r",  yaxt="n", xaxt="n")
+
+x <- rnorm(1000, mean=50, sd=10)
+e <- rnorm(1000, mean=0, sd=7)
+e2 <- rnorm(1000, mean=100, sd=40)
+y1 <- x + e
+y2 <- 5*x + e2
+
+plot(x,y1, ylim=c(-100,200), xlim=c(0,100), ylab="", xlab="", col="#d4d4d4", pch=19, yaxt="n", xaxt="n", cex.lab=1.5, col.lab="gray17", bty="n")
+box(col="gray17")
+abline(lm(y1~x), lty="dashed", col="#ef3119", lwd=1.4)
+
+plot(x,y2, ylab="", xlab="", ylim=c(0,600), xlim=c(0,100), col="#d4d4d4", pch=19, yaxt="n", xaxt="n", cex.lab=1.5, col.lab="gray17", bty="n")
+box(col="gray17")
+abline(lm(y2~x), lty="dashed", col="#ef3119", lwd=1.4)
+```
+
+- Line of best fit is steeper in the first or second scatterplot?
+
+- Is correlation higher in the first or second scatterplot?
+
+\vspace{-2cm}
+
+## Correlation Coefficient
+```{r, cache=FALSE,  fig.width=6, fig.height=6, echo=F, out.width = '40%', fig.align='center'}
+par(mfrow = c(1,1),
+    oma = c(0,0,0,0) + 0.1, # bottom, left, top, right # outer margins
+    mar = c(3,3,1,1) + 0.1, # margin, default: c(5,4,4,2) + 0.1
+    mgp = c(1,.5,0), # margin line for axis title, default: c(3,1,0)
+    cex=0.8, adj=1, # 1: right-justified
+    yaxs="r", xaxs="r") # axis choice: "i" internal, "r" regular
+set.seed(1234)
+x <- rnorm(1000, mean=0, sd=10)
+y <- (x)^2 + rnorm(1000, mean=5, sd=7)
+plot(x,y, col="#c7c7c7", pch=19, yaxt="n", xaxt="n", cex.lab=1.5, col.lab="gray17", bty="n", xlab="", ylab="", xlim=c(-35,35))
+box(col="gray17")
+```
+
+- cor(X,Y) $\approx$ \pause 0
+
+- Does this mean that there is no relationship between the two variables? No. [Check the dino!](https://github.com/umbertomig/POLI30Dpublic/blob/main/images/dino.gif)
+
+\vspace{-1cm}
+
+
+## Correlation does not necessarily imply causation
+
+\vspace{.6cm}
+\begin{center}
+\includegraphics[height=.70\textheight]{../../images/correlation_not_causation.jpg}
+\end{center}
+
+## Correlation does not necessarily imply causation
+
+- Just because two variables have a strong correlation does not mean that changes in one variable cause changes in the other
+\vspace{.2cm}
+
+- Example: *reading* and *math* are highly correlated.
+    + Does that mean that if you study *math* you learn *reading*?!
+
+\vspace{-2cm}
+
+## Correlation does not necessarily imply causation
+
+\begin{center} \includegraphics[width=1\textwidth]{../../images/eng.png}\end{center}
+
+## Correlation does not necessarily imply causation
+
+\begin{center} \includegraphics[width=1\textwidth]{../../images/kentucky.png}\end{center}
+
+- More on this later in the semester!
 
 ## Summary
 
+\vspace{1cm}
+
 * **Today's Class:**
-  + Units of Measurement of Means and Diffs-in-Means
-  + In-Class Exercise: Does Social Pressure Increase the Probability of Turning Out To Vote?
+  + Exploring the Relationship Between Two Variables
+    + Scatterplots
+    + Correlations
+
+\vspace{1cm}
 
 * Next class:
-  + Surveys
+  + Prediction and Linear Regression
   
 # Questions?
 
