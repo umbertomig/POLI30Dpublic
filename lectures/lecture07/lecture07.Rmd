@@ -61,6 +61,7 @@ knitr::opts_chunk$set(mysmall = TRUE)
 - We learned the definitions of Theory, Scientific Theory, and Hypotheses.
 - Data, datasets, variables, and how to compute means.
 - Causal effect, treatments, outcomes, and randomization.
+- What are histograms and how to interpret them.
 
 **Great job!**
 
