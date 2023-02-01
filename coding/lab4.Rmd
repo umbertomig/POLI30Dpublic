@@ -1,0 +1,66 @@
+---
+title: "My nice title goes here"
+output: html_document
+author: "Smart Student"
+date: "`r Sys.Date()`"
+---
+
+# First level heading
+
+## Second level heading
+
+### Third level heading (and so on...)
+
+This is my nice paragraph. It is going to look great!
+
+My work is **great**. It is *nice* to learn ***R Markdown***!
+
+Now I am going to build an unordered list:
+
+- First element
+- Second element
+- Third element
+  + Third-and-a-half element
+  + Third-and-three-quarters element
+  
+And when I go shopping today, I am going to buy:
+
+1. Rice
+2. Beans
+3. Soda (two types):
+  + Diet coke
+  + Sprite
+4. Impossible burger
+
+We can write cool equations too:
+
+$$ Y \ = \ \beta_0 + \beta_1 X + \varepsilon $$
+
+And to do a nice quote, with something that was actually said by very smart people:
+
+>
+> You are a great student! 
+> (by Adam, Furkan, Umberto, and Yeilim)
+>
+
+And never forget: two plus two equals `r 2 + 2`!
+
+### R Coding
+
+Above we see an in-line code. To do lots of coding, we need a dedicated code *chunk*:
+
+```{r}
+# This is a code chunk
+
+# Loading the voting dataset
+voting <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/voting.csv")
+
+# Mean of voted variable
+mean(voting$voted)
+```
+
+The code chunk starts with \`\`\`\{r\}. Then you code for as many lines as needed. You can add comments in your code. Once you are done, use the \`\`\` to end your code and go back to text.
+
+Political inquiry skills require you to be able to know when to write, and know when to code. You are going to hone these skills as we go.
+
+As a reference, we suggest you to print the [following cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf).

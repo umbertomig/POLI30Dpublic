@@ -82,7 +82,6 @@
 % \xpatchcmd{\ttfamily}{\selectfont}{\fontencoding{T1}\selectfont}{}{}
 % \DeclareTextCommand{\nobreakspace}{T1}{\leavevmode\nobreak\ }
 % \newcommand{\reducedstrut}{\vrule width 0pt height .9\ht\strutbox depth .9\dp\strutbox\relax}
-\newcommand{\fu}[1]{\color{blue}{\textbf{\texttt{#1}}}\color{black}} 
 
 % verbatim sans
 % \usepackage{fancyvrb}
@@ -136,6 +135,7 @@
 % \renewcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
 % \renewcommand{\AttributeTok}[1]{\color{code}{#1}}
 % \renewcommand{\SpecialCharTok}[1]{\color{code}{#1}}
+\newcommand{\fu}[1]{\color{blue}{\textbf{\texttt{#1}}}\color{black}} 
 
 \newcommand{\concept}[1]{\color{concept}\textbf{#1}\color{black}}
 
@@ -144,3 +144,7 @@
 
 \usepackage{array, calc}
 \usepackage{colortbl}
+
+% Hyperlink coloring
+\definecolor{links}{HTML}{2A1B81}
+\hypersetup{colorlinks,linkcolor=,urlcolor=links}

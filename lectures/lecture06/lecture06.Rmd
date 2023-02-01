@@ -318,7 +318,7 @@ prop.table(table(voting$voted))
 
 ```{r, fig.height=2, fig.width=4, fig.align='center', collapse = T}
 ggplot(voting, aes(x = birth)) + 
-  geom_histogram(binwidth = 5) + theme_light()
+  geom_histogram(binwidth = 5, color = 'black') + theme_light()
 ```
 
 - Interpretation?
