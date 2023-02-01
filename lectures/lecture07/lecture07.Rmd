@@ -55,6 +55,10 @@ knitr::opts_chunk$set(mysmall = TRUE)
 
 - Piazza forum: [https://piazza.com/ucsd/winter2023/17221](https://piazza.com/ucsd/winter2023/17221)
 
+- In a midst of a mailbox disaster now. Will check all your emails by Thursday evening!
+
+- If you don't see me wearing a mic, tell me!
+
 ## Before we start
 
 **Recap:** We learned:
