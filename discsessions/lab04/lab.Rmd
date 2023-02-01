@@ -51,7 +51,7 @@ knitr::opts_chunk$set(mysmall = TRUE)
 
 - Github page: [**https://github.com/umbertomig/POLI30Dpublic**](https://github.com/umbertomig/POLI30Dpublic)
 
-- Piazza forum: For some reason the link in the slides does not work well. Check with TAs / Professor for alternative link.
+- Piazza forum: The link in the slides needs to be fixed. Check with instructors for an alternative link.
 
 ## Before we start
 
@@ -86,11 +86,11 @@ knitr::opts_chunk$set(mysmall = TRUE)
 
 ## R Markdown
 
-- R Markdown are a great way of combining text and code.
+- R Markdown is an excellent way of combining text and code.
 
-- They look ugly but they compile well.
+- They look ugly, but they compile well.
 
-- The problem-sets and final are all done in R Markdown.
+- The problem sets and final are all done in R Markdown.
 
 - The main advantage of R Markdown is that it makes the code reproducible:
   + I do not need to believe you to recheck your work.
@@ -99,7 +99,7 @@ knitr::opts_chunk$set(mysmall = TRUE)
 
 - Compiles into three formats: `HTML`, `PDF`, or `DOCX`. 
   + Of these three formats, you can only do `HTML` without installing extra software.
-  + But you only need `HTML`! The `HTML` has also the advantage of being easy to customize.
+  + But you only need `HTML`! The `HTML` also has the advantage of being easy to customize.
   
 - If you ever want to build a `PDF`, *Google* how to install something called `tinytex`.
   
@@ -107,7 +107,7 @@ knitr::opts_chunk$set(mysmall = TRUE)
 
 ## R Markdown
 
-- To get started with a R Markdown, go to \fu{File > New File > R Markdown...}.
+- To get started with an R Markdown, go to \fu{File > New File > R Markdown...}.
 
 - It shows the image below. For now, click \fu{OK}\ to proceed.
 
@@ -123,7 +123,7 @@ It creates a default R Markdown for you to get started, as you can see below.
 
 ## R Markdown
 
-- To get started, we are going to compile the markdown. 
+- To get started, we are going to compile the Markdown. 
 
 - Compiling transforms the `.Rmd` into a report in the format you asked it to do.
   + For this class, it is going to be `HTML`.
@@ -136,19 +136,19 @@ It creates a default R Markdown for you to get started, as you can see below.
 
 ## Packages
 
-- Your R is good, but not that powerful.
+- Your R is good but not that powerful.
 
-- The power of R is the fact that many people around the world can build R code and share.
+- The power of R is that many people worldwide can build R code and share.
 
 - People do that by building `packages`. Think of packages as the R supplements.
 
-- If you go to the gym and take whey to grow muscle, your R does the same by download and running packages.
+- If you go to the gym and take whey to grow muscle, your R does the same by downloading and running packages.
 
 - Each package was built to solve a particular problem. By having a problem, you can google a package that solves it.
 
 ## Install Packages
 
-- To install a package you need to run:
+- To install a package, you need to run the following:
 
 ```
 install.packages('name_of_the_package')
@@ -166,11 +166,11 @@ install.packages('tidyverse')
 
 ## Loading Packages
 
-- Once done installing, the package is downloaded, but not *loaded* in the memory.
+- Once done installing, the package is downloaded but not *loaded* in the memory.
 
-- R does not load packages automatically, because for each loaded package, you eat up a little of the computer's memory.
+- R does not load packages automatically because, for each loaded package, you eat up a small amount of the computer's memory.
 
-- So you need to ask R to load it. To load the tidyverse family we do:
+- So you need to ask R to load it. To load the tidyverse family, we do the following:
 
 ```
 library('tidyverse')
@@ -188,7 +188,7 @@ Two important facts about packages:
 
 Also important:
 
-**Don't be afraid of installing new packages, it is like giving vitamins and minerals to your R.**
+**Don't be afraid of installing new packages. It is like giving vitamins and minerals to your R.**
 
 # Back to R Markdown
 
@@ -198,12 +198,12 @@ Also important:
 
 - We compile by running the Knit button (\includegraphics[height=.07\textheight]{../../images/rmdknitbutton.png})
 
-- Now go ahead and click there! If you did not use the command before, it is going to install a few packages.
+- Now go ahead and click there! If you did not use the command before, it will install a few packages.
 
-- Then it is going to ask to save the file. Save as `lab04.Rmd`, in a folder that you will remember later.
+- Then, it is going to ask to save the file. Save as `lab04.Rmd`, in a folder you will remember later.
 
 - Once done, you should go to the folder and see the `lab04.Rmd` and another file, `lab04.html`. 
-  + The `HTML` is a file that you can open in your internet browser!
+  + The `HTML` is a file you can open in your internet browser!
   
 - Now let's learn each of the parts of an R Markdown file
 
@@ -221,9 +221,9 @@ Also important:
 
 ## R Markdown - YAML
 
-- `YAML`: My suggestion is keep it simple:
+- `YAML`: My suggestion is to keep it simple:
   + `output: html_document`. Don't change unless required.
-  + `title: `: Add the title to your document, unless already done.
+  + `title: `: Add the title to your document unless already done.
   + `date: `: You can write a date. Note that I do an R command that generates the date automatically.
   + `author: `: Your name here!
 
@@ -279,7 +279,7 @@ This is my nice paragraph. It is going to look great!
 
 ## R Markdown - Text Blocks
 
-- We can do ordered and unordered lists. Ordered start with numbers. Unordered start with star (`*`) or dash (`-`). Lower levels are followed by `+`.
+- We can do ordered and unordered lists. Ordered start with numbers. Unordered start with a star (`*`) or dash (`-`). Lower levels are followed by `+`.
 
 \tiny
 
@@ -309,17 +309,17 @@ And when I go shopping today, I am going to buy:
 
 $$ a^2 + b^2 = c^2 $$
 
-- And an equation in the same line would be: $a^2 + b^2 = c^2$.
+- And an equation in the same line would be $a^2 + b^2 = c^2$.
 
-- To do equations in the middle of the text you should use two \$ signs (\$\$) to start and two \$ signs (\$\$) to end. 
+- To do equations in the middle of the text, you should use two \$ signs (\$\$) to start and two \$ signs (\$\$) to end. 
 
 - To do equations in-line, you should use one \$ signs (\$) to start and one \$ sign (\$) to end.
 
 ## R Markdown: Code chunks
 
-- So far we used R Markdown as a text processor. But the power comes from the fact that we can do coding.
+- So far, we have used R Markdown as a text processor. But the power comes from the fact that we can do coding.
 
-- To do in-line coding we do:
+- To do in-line coding, we do the following:
 
 \begin{center} \includegraphics[width=.6\textwidth]{../../images/rmdinlinecode.png}\end{center}
 
@@ -335,7 +335,7 @@ $$ a^2 + b^2 = c^2 $$
 
 ## R Markdown: Code chunks
 
-- But sometimes we need big code chunks.
+- But sometimes, we need big code chunks.
 
 - Here is how we do those:
 
@@ -348,7 +348,7 @@ $$ a^2 + b^2 = c^2 $$
 ## R Markdown: Code chunks
 
 - And if you want to run your code chunks, you can use the little green play button.
-  + It is located in the right-hand side of each of your chunks.
+  + It is located on the right-hand side of each of your chunks.
 
 \begin{center} \includegraphics[width=.4\textwidth]{../../images/rmdlittleplay.png}\end{center}
 
@@ -363,7 +363,7 @@ $$ a^2 + b^2 = c^2 $$
 
 \vspace{0.5cm}
 
-2. Comment your code as if you were doing a R Script.
+2. Comment your code as if you were doing an R Script.
     + Remember, you will forget how you did, but you may need to do it again...
   
 \vspace{0.5cm}
@@ -382,11 +382,11 @@ $$ a^2 + b^2 = c^2 $$
 
 \vspace{0.5cm}
 
-5. PDFs are great, DOCX also good, but HTML is the best for begginer R coders.
+5. PDFs are great, DOCX is also good, but HTML is the best for beginner R coders.
 
 \vspace{0.5cm}
 
-6. The internet is a great source for help. 
+6. The internet is an excellent source of help. 
     + Example, the [R Markdown Cheat Sheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf).
 
 \vspace{-0.5cm}
