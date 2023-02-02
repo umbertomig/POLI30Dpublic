@@ -1,8 +1,8 @@
 # POLI 30 D - Political Inquiry
 
-## [Umberto Mignozzetti](http://umbertomig.com/)
+## [Dr. Umberto Mignozzetti](http://umbertomig.com/)
 
-Repo for the UCSD Political Inquiry course. This class is based on the book *Data Analisys for Social Sciences* by Kosuke Imai and Elena Llaudet.
+Repo for the UCSD Political Inquiry course. This class is based on the book [*Data Analysis for Social Sciences* by Kosuke Imai and Elena Llaudet](https://www.amazon.com/Data-Analysis-Social-Science-Introduction/dp/0691199434).
 
 ## Folders
 
