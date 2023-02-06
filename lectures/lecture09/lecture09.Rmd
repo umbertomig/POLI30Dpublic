@@ -84,7 +84,7 @@ knitr::opts_chunk$set(mysmall = TRUE)
 \multicolumn{1}{c}{\large\concept{\textbf{Plan for Today}}}\normalsize\\\\
 - Prediction and Linear Regression\\
 - Example with Binary Outcome Variable: \\
-\,\, Using statusquo Scores to Predict Probability\\ 
+\,\, Using status quo Scores to Predict Probability\\ 
 \,\,\, of Supporting a Dictator\\[.3cm]
 \,\,\,\, 1. Load and explore data\\
 \,\,\,\, 2. Identify X and Y\\
@@ -110,7 +110,7 @@ knitr::opts_chunk$set(mysmall = TRUE)
 
 \vspace{-0.1cm}
 
-- This survey was conducted in the eve of a referendum that could have ousted Pinochet.
+- This survey was conducted on the eve of a referendum that could have ousted Pinochet.
 
 \vspace{-0.1cm}
 
@@ -118,11 +118,11 @@ knitr::opts_chunk$set(mysmall = TRUE)
 |---|---|
 | `statusquo` | Scale with status-quo evaluation. Roughly from -5 to 5. |
 | `vote` | Declared vote in the upcoming referendum. |
-| `voteYES` | 1 means vote for Pinochet and 0 means vote against it. |
+| `voteYES` | 1 means vote for Pinochet, and 0 means vote against it. |
 
 \vspace{-0.5cm}
 
-- We will study whether a person satisfied with the status quo would tend favor Pinochet in the plebiscite.
+- We will study whether a person satisfied with the status quo would tend to favor Pinochet in the plebiscite.
 
 \normalsize
 
@@ -136,7 +136,7 @@ head(survchile)
 ```
 \vspace{-.1cm}
 
-- What's the unit of observation?
+- What is the unit of observation?
 
 - For each variable: type and unit of measurement?
 
@@ -211,7 +211,7 @@ ggplot(data = survchile, aes(x = statusquo, y = voteYES)) +
   theme_minimal()
 ```
 
-- It is hard to see the y-axis variation. We add a little `jitter` on y then.
+- It is hard to see the y-axis variation. We add a little `jitter` on y, then.
 
 \vspace{-1cm}
 
@@ -267,7 +267,7 @@ lm(voteYES ~ statusquo, data = survchile)
 
 ## Step 4: Fit a linear model using the least squares method
 
-- R function to add fitted line to scatter plot: \fu{geom\_smooth()} 
+- R function to add a fitted line to scatter plot: \fu{geom\_smooth()} 
 
 ```{r, fig.width=6, fig.height=2.2, mytiny = TRUE}
 ggplot(data = survchile, aes(x = statusquo, y = voteYES)) + 
@@ -284,7 +284,7 @@ ggplot(data = survchile, aes(x = statusquo, y = voteYES)) +
 \small
 
 - **Substantive interpretation of $\widehat{\beta}_0$**?
-  + Start with mathematical definition: 
+  + Start with the mathematical definition: 
     + $\widehat{\beta}_0$ is the $\widehat{Y}$ when *X*=0
   + Substitute X, Y, and $\widehat{\beta}_0$: 
     + $\widehat{\beta}_0$ = `r round(mod$coef[1], digits=2)` is the $\widehat{\textrm{\textit{voteYES}}}$ when *statusquo*=0
@@ -304,7 +304,7 @@ ggplot(data = survchile, aes(x = statusquo, y = voteYES)) +
 \small
 
 - **Substantive interpretation of $\widehat{\beta}_1$**?
-  + Start with mathematical definition: 
+  + Start with the mathematical definition: 
     + $\widehat{\beta}_1$ is the $\triangle \widehat{Y}$ associated with $\triangle X$=1
   + Substitute X, Y, and $\widehat{\beta}_1$: 
     + $\widehat{\beta}_1$ =`r round(mod$coef[2], digits=2)` is the $\triangle \widehat{\textrm{\textit{voteYES}}}$ associated with $\triangle$*statusquo*=1
@@ -363,7 +363,7 @@ $$\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$$
 \noindent To predict $\widehat{Y}$ based on $X$: \color{titleline} $\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$
 \end{mdframed}
 
-- \underline{Example 1}: Imagine a person is unsatisfied with things as they are, and evaluates the status quo as -2. What would we predict her chance of favor Pinochet in the plebiscite?
+- \underline{Example 1}: Imagine a person is unsatisfied with things and evaluates the status quo as -2. What would we predict her chance of favoring Pinochet in the plebiscite?
 
 \vspace{-.9cm}
 \begin{eqnarray*}
@@ -380,7 +380,7 @@ $$\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$$
 
 ## Step 6: Make predictions
 
-- \underline{Example 2}: Imagine a person is happy with things as they are, and evaluates the status quo as 2. What would we predict her chance of favor Pinochet in the plebiscite?
+- \underline{Example 2}: Imagine a person is happy with things and evaluates the status quo as 2. What would we predict her chance of favoring Pinochet in the plebiscite?
 
 \vspace{-.9cm}
 \begin{eqnarray*}
@@ -390,7 +390,7 @@ $$\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$$
 \end{eqnarray*}
 \vspace{-1.5cm}
 
-- Answer: If the person scores 2.0 points in the statusquo scale, we would predict that she would vote for Pinochet `r (round(mod$coef[1], digits=2) + round(mod$coef[2], digits=2)*2)*100`\% of the time, on average
+- Answer: If the person scores 2.0 points on the status quo scale, we would predict that she would vote for Pinochet `r (round(mod$coef[1], digits=2) + round(mod$coef[2], digits=2)*2)*100`\% of the time, on average
 
 \vspace{-1cm}
 
@@ -400,7 +400,7 @@ $$\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$$
 \noindent To predict $\triangle \widehat{Y}$ associated with $\triangle X$: \color{titleline} $\triangle \widehat{Y} = \widehat{\beta}_1 \, \triangle \text{X}$
 \end{mdframed}
 
-- \underline{Example 3}: If we raise a person's status quo evaluation by three points, by how much would we predict that her support for Pinochet would change?
+- \underline{Example 3}: If we raise a person's status quo evaluation by three points, how much would we predict that her support for Pinochet would change?
 
 \vspace{-.9cm}
 \begin{eqnarray*}
@@ -418,7 +418,7 @@ $$\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$$
 
 ## Step 7: Measure how well the model fits the data with $\textrm{R}^2$
 
-- How good is the model at making predicitons? How well does the model fit the data?
+- How good is the model at making predictions? How well does the model fit the data?
 
 - One way of answering is by calculating \concept{$R^2$}
 
@@ -457,7 +457,7 @@ $$\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$$
 
 \vspace{-0.1cm}
 
-- The prediction errors (vertical distance between the dots and the line) are very large.
+- The prediction errors (vertical distance between the dots and the line) are large.
 
 \vspace{-1cm}
 
@@ -473,7 +473,7 @@ ggplot(data = survchile, aes(x = statusquo, y = voteYES)) +
   theme_minimal()
 ```
 
-- Let's compute $R^2$
+- Let us compute $R^2$
 ```{r, collapse=TRUE, comment='##'}
 cor(survchile$statusquo, survchile$voteYES)^2
 ```
@@ -482,7 +482,7 @@ cor(survchile$statusquo, survchile$voteYES)^2
 
 ## Step 7: Measure how well the model fits the data with $\textrm{R}^2$
 
-- Let's compute $R^2$:
+- Let us compute $R^2$:
 
 ```{r, collapse=TRUE, comment='##'}
 cor(survchile$statusquo, survchile$voteYES)^2
@@ -498,7 +498,7 @@ cor(survchile$statusquo, survchile$voteYES)^2
 
 ## Step 7: Measure how well the model fits the data with $\textrm{R}^2$
 
-Let's return to the predictive model from last lecture:
+Let us return to the predictive model from the last lecture:
 
 ```{r, fig.width=6, fig.height=3, echo = FALSE}
 educexp <- read.csv('https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/educexp.csv')
@@ -546,7 +546,7 @@ We look for $X$ variables that are highly correlated with $Y$ because the higher
 \vspace{0.2cm}
 
 - **Next class**:
-  + Causality with Observatinal Data
+  + Causality with Observational Data
   
 \vspace{-1cm}
 
