@@ -1,0 +1,556 @@
+---
+title: |
+    | **POLI 30 D: Political Inquiry**
+    | \vspace{-.8cm}
+author: |
+    | \large\textbf{Professor Umberto Mignozzetti\\(Based on DSS Materials)}\vspace{.3cm}
+date: |
+    | \large\textbf{Lecture 09 | Prediction II}
+fontsize: 12pt
+urlcolor: blue
+output:
+  beamer_presentation:
+    highlight: tango
+    includes:
+      in_header: 'https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/latex/style.tex'
+    incremental: true # if true: pauses are inserted after each item in a list
+    keep_tex: false # if true: .tex files are kept (helpful when fixing errors)
+    slide_level: 2
+classoption: "handout" # overrides incremental, removes all pauses
+---
+
+```{r, include=FALSE}
+library(tidyverse)
+library(gridExtra)
+knitr::opts_chunk$set(echo = TRUE)
+knitr::knit_hooks$set(mysmall = function(before, options, envir) { 
+  if (before) { 
+    return("\\small") 
+  } else { 
+    return("\\normalsize") 
+  } 
+}) 
+knitr::knit_hooks$set(myfntsize = function(before, options, envir) { 
+  if (before) { 
+    return("\\footnotesize") 
+  } else { 
+    return("\\normalsize") 
+  } 
+}) 
+knitr::knit_hooks$set(mytiny = function(before, options, envir) { 
+  if (before) { 
+    return("\\tiny") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::opts_chunk$set(mysmall = TRUE)
+```
+
+## Before we start
+
+**Announcements:**
+
+- Quizzes and Participation: On Canvas.
+
+- GitHub page: [https://github.com/umbertomig/POLI30Dpublic](https://github.com/umbertomig/POLI30Dpublic)
+
+- Piazza forum: Not sure what the link is. Ask your TA!
+
+- Note to self: Turn on the mic!
+
+## Before we start
+
+**Recap:** We learned:
+
+- The definitions of theory, scientific theory, and hypotheses.
+- Data, datasets, variables, and how to compute means.
+- Causal effect, treatments, outcomes, and randomization.
+- Sampling, descriptive statistics, and descriptive plots for one variable.
+- Correlation between two continuous variables.
+- Prediction of a non-binary variable.
+
+**Great job!**
+
+- Do you have any questions about these contents?
+
+***
+\begin{center}
+\begin{minipage}{0.85\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{\textbf{Plan for Today}}}\normalsize\\\\
+- Prediction and Linear Regression\\
+- Example with Binary Outcome Variable: \\
+\,\, Using statusquo Scores to Predict Probability\\ 
+\,\,\, of Supporting a Dictator\\[.3cm]
+\,\,\,\, 1. Load and explore data\\
+\,\,\,\, 2. Identify X and Y\\
+\,\,\,\, 3. What is the relationship between X and Y?\\
+\,\,\,\,\,\,\,\,\,\,\,\,         - Create scatter plot \\
+\,\,\,\,\,\,\,\,\,\,\,\,         - Calculate correlation\\
+\,\,\,\, 4. Fit a linear model using the least squares method\\
+\,\,\,\, 5. Interpret coefficients\\
+\,\,\,\, 6. Make predictions\\
+\,\,\,\, 7. Measure how well the model fits the data
+\end{tabular}
+\end{center}
+\vspace{.2cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+
+## Predicting Support for a Dictator
+
+\footnotesize
+
+- In 1988, FLACSO ran a survey to estimate the support for [Augusto Pinochet](https://en.wikipedia.org/wiki/Augusto_Pinochet) in Chile.
+
+\vspace{-0.1cm}
+
+- This survey was conducted in the eve of a referendum that could have ousted Pinochet.
+
+\vspace{-0.1cm}
+
+| **variable** | **meaning** |
+|---|---|
+| `statusquo` | Scale with status-quo evaluation. Roughly from -5 to 5. |
+| `vote` | Declared vote in the upcoming referendum. |
+| `voteYES` | 1 means vote for Pinochet and 0 means vote against it. |
+
+\vspace{-0.5cm}
+
+- We will study whether a person satisfied with the status quo would tend favor Pinochet in the plebiscite.
+
+\normalsize
+
+\vspace{-1cm}
+
+## Step 1: Load and explore data
+
+```{r, collapse=TRUE, comment='##'}
+survchile <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/survchile.csv")
+head(survchile)
+```
+\vspace{-.1cm}
+
+- What's the unit of observation?
+
+- For each variable: type and unit of measurement?
+
+- Substantively interpret the first observation.
+
+\vspace{-1cm}
+
+## Step 2: Identify the Dependent and Independent Variables
+
+- The \concept{predictor (X)}\ is the variable we want to use to predict the outcome (Y).
+
+- The \concept{target (Y)}\ is the variable that we want to predict.
+
+- What are they?
+
+```{r, fig.width=6, fig.height=2, echo=FALSE}
+p1 <- ggplot(data = survchile, aes(x = statusquo)) + 
+  geom_histogram(bins = 7, color = 'black', fill = 'lightblue', alpha = 0.4) + labs(title = 'Status Quo Scale', y = '') + 
+  theme_minimal()
+p2 <- ggplot(data = survchile, aes(x = voteYES)) + 
+  geom_histogram(bins = 7, color = 'black', fill = 'lightblue', alpha = 0.4) + labs(title = 'Intention to vote YES\nin the plebiscite', y = '') + 
+  theme_minimal()
+grid.arrange(p1, p2, nrow = 1)
+```
+
+## Step 2: Identify the Dependent and Independent Variables
+
+- What type of variable is *voteYES*?
+  + Binary
+
+- How would you compute the proportion of intended `Yes` votes?
+  + By computing the mean of *voteYES*
+  
+  + Since *voteYES* is a binary variable, its mean should be interpreted as the proportion of the observations that have the characteristic identified by the variable
+
+## Step 2: Identify the Dependent and Independent Variables
+
+- Code to compute the mean of *voteYES*
+  + Answer:
+```{r, collapse=TRUE, comment='##'}
+mean(survchile$voteYES)
+```
+- Interpretation?
+  + Close to `r round(mean(survchile$voteYES), 4)*100`% of people responded that they intended to support Pinochet in the upcoming plebiscite.
+  + RECALL: You need to multiply the output by 100
+
+## Step 2: Identify the Dependent and Independent Variables
+
+- Since Y is binary:
+\vspace{.1cm}
+  + unit of measurement of $\overline{Y}$?
+    + \% (after x 100)
+  + unit of measurement of $\widehat{\beta}_0$?
+    + \% (after x 100)
+  + unit of measurement of $\widehat{Y}$?
+    + \% (after x 100)
+  + unit of measurement of $\triangle\overline{Y}$?
+    + p.p. (after x 100)
+  + unit of measurement of $\widehat{\beta}_1$?
+    + p.p. (after x 100)
+  + unit of measurement of $\triangle\widehat{Y}$?
+    + p.p. (after x 100)
+    
+## Step 3: What is the relationship between X and Y?
+
+- Create \concept{scatter plot}\ to visualize the relationship between *statusquo* and *voteYES*.
+
+```{r, fig.width=6, fig.height=2.5, echo=FALSE}
+ggplot(data = survchile, aes(x = statusquo, y = voteYES)) + 
+  geom_point(fill = 'lightblue', alpha = 0.4) + 
+  labs(title = '', y = 'Intention to vote YES in the plebiscite', x = 'Status-Quo Scale') + 
+  theme_minimal()
+```
+
+- It is hard to see the y-axis variation. We add a little `jitter` on y then.
+
+\vspace{-1cm}
+
+## Step 3: What is the relationship between X and Y?
+
+```{r, fig.width=6, fig.height=3, echo=FALSE}
+ggplot(data = survchile, aes(x = statusquo, y = voteYES)) + 
+  geom_jitter(fill = 'lightblue', alpha = 0.5, height = 0.4, width = 0) + 
+  labs(title = '', y = 'Intention to vote YES\nin the plebiscite', x = 'Status-Quo Scale') + 
+  theme_minimal()
+```
+
+\vspace{-0.5cm}
+
+- What does each dot represent?
+
+- Does the relationship look positive or negative?
+
+- Does the relationship look weekly or strongly linear?
+
+\vspace{-1cm}
+
+## Step 3: What is the relationship between X and Y?
+
+- Calculate \concept{correlation}\ to measure direction and strength of linear association between *statusquo* and *voteYES* \pause
+
+```{r, collapse=TRUE, comment='##'}
+cor(survchile$statusquo, survchile$voteYES)
+```
+- We find a strong positive correlation
+
+- Are we surprised by this?
+
+## Step 4: Fit a linear model using the least squares method
+
+- R function to fit a linear model: \fu{lm()}
+
+```{r, echo=FALSE}
+mod <- lm(voteYES ~ statusquo, data = survchile)
+```
+
+```{r, collapse=TRUE, comment='##'}
+lm(voteYES ~ statusquo, data = survchile)
+```
+
+- $\widehat{\beta}_0$ = `r round(mod$coef[1], digits=2)` and $\widehat{\beta}_1$ = `r round(mod$coef[2], digits=2)`
+
+- The fitted line is $\widehat{Y}$ = `r round(mod$coef[1], digits=2)` + `r round(mod$coef[2], digits=2)` $X$
+
+- More specifically, it is $\widehat{\textrm{voteYES}}$ = `r round(mod$coef[1], digits=2)` + `r round(mod$coef[2], digits=2)` \textit{statusquo}
+
+\vspace{-1cm}
+
+## Step 4: Fit a linear model using the least squares method
+
+- R function to add fitted line to scatter plot: \fu{geom\_smooth()} 
+
+```{r, fig.width=6, fig.height=2.2, mytiny = TRUE}
+ggplot(data = survchile, aes(x = statusquo, y = voteYES)) + 
+  geom_jitter(fill = 'lightblue', alpha = 0.5, height = 0.4, width = 0) + 
+  labs(title = '', y = 'Intention to vote YES in the plebiscite', x = 'Status-Quo Scale') + 
+  geom_smooth(formula = 'y ~ x', method = 'lm', se = F, color = 'blue', lwd = 1) +
+  theme_minimal()
+```
+
+\vspace{-1cm}
+
+## Step 5: Interpretation of Coefficients
+
+\small
+
+- **Substantive interpretation of $\widehat{\beta}_0$**?
+  + Start with mathematical definition: 
+    + $\widehat{\beta}_0$ is the $\widehat{Y}$ when *X*=0
+  + Substitute X, Y, and $\widehat{\beta}_0$: 
+    + $\widehat{\beta}_0$ = `r round(mod$coef[1], digits=2)` is the $\widehat{\textrm{\textit{voteYES}}}$ when *statusquo*=0
+  + Put it in words (using units of measurement): 
+    + When a person is neither happy nor sad with things as they are, we predict that her probability of voting YES in the plebiscite is `r round(mod$coef[1], digits=2)*100`\%, on average
+
+- **Unit of measurement of $\widehat{\beta}_0$**? 
+    + Same as $\overline{Y}$
+    + Since *Y* is binary, $\overline{Y}$ is measured in \%, and so is $\widehat{\beta}_0$ (after x 100)
+
+\normalsize
+
+\vspace{-1cm}
+
+## Step 5: Interpretation of Coefficients
+
+\small
+
+- **Substantive interpretation of $\widehat{\beta}_1$**?
+  + Start with mathematical definition: 
+    + $\widehat{\beta}_1$ is the $\triangle \widehat{Y}$ associated with $\triangle X$=1
+  + Substitute X, Y, and $\widehat{\beta}_1$: 
+    + $\widehat{\beta}_1$ =`r round(mod$coef[2], digits=2)` is the $\triangle \widehat{\textrm{\textit{voteYES}}}$ associated with $\triangle$*statusquo*=1
+  + Put it in words (using units of measurement): 
+    + Increasing satisfaction with the status quo by 1 point is associated with a predicted increase in the chance of voting YES of `r round(mod$coef[2], digits=2)*100` p.p., on average
+
+- **Unit of measurement of $\widehat{\beta}_1$**?
+    + Same as $\triangle \overline{Y}$
+    + Since *Y* is binary, $\triangle \overline{Y}$ is measured in p.p., and so is $\widehat{\beta}_1$ (after x 100)
+
+\normalsize
+
+\vspace{-1cm}
+
+## Step 5: Interpretation of Coefficient
+
+\begin{mdframed}[linecolor=titleline, linewidth=0.05cm, innerleftmargin=.5cm,innerrightmargin=.5cm]
+\vspace{.3cm} 
+\begin{center}\color{concept}\tip{The fitted line is}\color{text}\end{center}
+$$\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$$
+
+\begin{tabular}{l}
+- $\widehat{\beta}_0$ (beta-zero-hat) is the estimated intercept coefficient\\
+\,\,\,\,\,\,\,\,\,\,\,the $\widehat{Y}$ when $X{=}\textrm{0}$\\
+\,\,\,\,\,\,\,\,\,\,\,(in same unit of measurement as $\overline Y$)\\\\
+
+- $\widehat{\beta}_1$ (beta-one-hat) is the estimated slope coefficient\\
+\,\,\,\,\,\,\,\,\,\,\,the $\triangle \widehat{Y}$ associated with $\triangle X{=}\textrm{1}$\\
+\,\,\,\,\,\,\,\,\,\,\,(in the same unit of measurement as $\triangle\overline Y$)
+\end{tabular}
+\vspace{.2cm}
+\end{mdframed}
+
+\vspace{-1cm}
+
+## Step 6: Make predictions
+
+\begin{mdframed}[linecolor=titleline, linewidth=0.05cm, innerleftmargin=.5cm,innerrightmargin=.5cm]
+\vspace{.3cm} 
+\begin{center}\color{concept}\tip{Using the Fitted Line}
+
+\vspace{-.3cm}
+\tip{to Make Predictions}\color{text}\end{center}
+\begin{tabular}{ll}
+\\
+- To predict $\widehat{Y}$ based on X: & \,\,\,\,\,\,\,\,$\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$\\\\
+- To predict $\triangle\widehat{Y}$ based on $\triangle$X:&\,\,\,\,\,\,\,\,$\triangle\widehat{Y} = \widehat{\beta}_1 \triangle X$\\\\
+\end{tabular}
+\vspace{.2cm}
+\end{mdframed}
+  
+## Step 6: Make predictions
+
+\begin{mdframed}[linecolor=titleline, linewidth=0.05cm] 
+\vspace{-.1cm}
+\noindent To predict $\widehat{Y}$ based on $X$: \color{titleline} $\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$
+\end{mdframed}
+
+- \underline{Example 1}: Imagine a person is unsatisfied with things as they are, and evaluates the status quo as -2. What would we predict her chance of favor Pinochet in the plebiscite?
+
+\vspace{-.9cm}
+\begin{eqnarray*}
+\widehat{\textrm{voteYES}} &=& \textrm{`r round(mod$coef[1], digits=2)`} + \textrm{`r round(mod$coef[2], digits=2)`} \,\,\textrm{\,\,statusquo}\\
+\widehat{\textrm{voteYES}} &=& \textrm{`r round(mod$coef[1], digits=2)`} + \textrm{`r round(mod$coef[2], digits=2)`} \times \textrm{-2.0} \color{gray} \textrm{\,\, (if statusquo = -2.0)}\\
+\widehat{\textrm{voteYES}} &=& \textrm{`r round(mod$coef[1], digits=2) + round(mod$coef[2], digits=2)*(-2)`} \\
+\end{eqnarray*}
+\vspace{-1.5cm}
+
+- Answer: If her status quo evaluation is -2.0 points, we would predict that her probability of supporting Pinochet is of `r (round(mod$coef[1], digits=2) + round(mod$coef[2], digits=2)*(-2))*(100)`\%, on average
+- Note: since Y is binary, $\widehat{Y}$ is measured in \% (after x 100)
+
+\vspace{-2cm} 
+
+## Step 6: Make predictions
+
+- \underline{Example 2}: Imagine a person is happy with things as they are, and evaluates the status quo as 2. What would we predict her chance of favor Pinochet in the plebiscite?
+
+\vspace{-.9cm}
+\begin{eqnarray*}
+\widehat{\textrm{voteYES}} &=& \textrm{`r round(mod$coef[1], digits=2)`} + \textrm{`r round(mod$coef[2], digits=2)`} \,\,\textrm{\,\,statusquo}\\
+\widehat{\textrm{voteYES}} &=& \textrm{`r round(mod$coef[1], digits=2)`} + \textrm{`r round(mod$coef[2], digits=2)`} \times \textrm{2.0} \color{gray} \textrm{\,\, (if statusquo = 2.0)}\\
+\widehat{\textrm{voteYES}} &=& \textrm{`r round(mod$coef[1], digits=2) + round(mod$coef[2], digits=2)*2.0`} \\ 
+\end{eqnarray*}
+\vspace{-1.5cm}
+
+- Answer: If the person scores 2.0 points in the statusquo scale, we would predict that she would vote for Pinochet `r (round(mod$coef[1], digits=2) + round(mod$coef[2], digits=2)*2)*100`\% of the time, on average
+
+\vspace{-1cm}
+
+## Step 6: Make predictions
+
+\begin{mdframed}[linecolor=titleline, linewidth=0.05cm]
+\noindent To predict $\triangle \widehat{Y}$ associated with $\triangle X$: \color{titleline} $\triangle \widehat{Y} = \widehat{\beta}_1 \, \triangle \text{X}$
+\end{mdframed}
+
+- \underline{Example 3}: If we raise a person's status quo evaluation by three points, by how much would we predict that her support for Pinochet would change?
+
+\vspace{-.9cm}
+\begin{eqnarray*}
+\triangle\widehat{\textrm{voteYES}} &=& \textrm{`r round(mod$coef[2], digits=2)`} \,\,\triangle\textrm{statusquo}\\
+\triangle \widehat{\textrm{voteYES}} &=& \textrm{`r round(mod$coef[2], digits=2)`} \times \textrm{3.0} \color{gray} \textrm{\,\, (if $\triangle$statusquo = 3.0)} \color{black} \\ 
+\triangle \widehat{\textrm{voteYES}} &=& \textrm{`r round(mod$coef[2], digits=2)*3`} \\
+\end{eqnarray*}
+\vspace{-1.6cm}
+
+- Answer: An increase of status quo scores of 3 points is associated with a predicted increase in the probability of voting yes in the plebiscite of `r round(mod$coef[2], digits=2)*3*100` p.p., on average.
+
+- Note: Since Y is binary, $\triangle\widehat{Y}$ is in p.p. (after x 100)
+
+\vspace{-2cm}
+
+## Step 7: Measure how well the model fits the data with $\textrm{R}^2$
+
+- How good is the model at making predicitons? How well does the model fit the data?
+
+- One way of answering is by calculating \concept{$R^2$}
+
+\vspace{.5cm}
+\begin{mdframed}[backgroundcolor=white,linecolor=concept, linewidth=0.05cm]
+\concept{$R^2$}\ measures the proportion of the variation in the outcome variable explained by the model
+    \begin{itemize}
+    \item It ranges from 0 to 1
+    \item The higher the $R^2$, the better the model fits the data
+    \item In the simple linear model: $R^2 = \textrm{\textit{cor}}(X,Y)^2$
+    \item The higher the correlation between X and Y (in absolute terms), the better the model fits the data
+    \end{itemize}
+\end{mdframed}
+
+## Step 7: Measure how well the model fits the data with $\textrm{R}^2$
+
+\small
+
+- When cor(X,Y) = 1 or cor(X,Y) = -1, the relationship between X and Y is perfectly linear.
+
+\vspace{-0.1cm}
+
+- $R^2$ = cor(X,Y)$^2$ = 1, the model explains 100\% of the variation of Y.
+
+\vspace{-0.1cm}
+
+- All prediction errors (vertical distance between the dots and the line) = 0.
+
+\vspace{-0.1cm}
+
+- When cor(X,Y) = 0, the relationship between X and Y is non-linear.
+
+\vspace{-0.1cm}
+
+- $R^2$=cor(X,Y)$^2$ = 0, the model explains 0\% of the variation of Y.
+
+\vspace{-0.1cm}
+
+- The prediction errors (vertical distance between the dots and the line) are very large.
+
+\vspace{-1cm}
+
+\normalsize
+
+## Step 7: Measure how well the model fits the data with $\textrm{R}^2$
+
+```{r, fig.width=6, fig.height=2, echo = FALSE}
+ggplot(data = survchile, aes(x = statusquo, y = voteYES)) + 
+  geom_jitter(fill = 'lightblue', alpha = 0.5, height = 0.4, width = 0) + 
+  labs(title = '', y = 'Intention to vote YES\nin the plebiscite', x = 'Status-Quo Scale') + 
+  geom_smooth(formula = 'y ~ x', method = 'lm', se = F, color = 'blue', lwd = 1) +
+  theme_minimal()
+```
+
+- Let's compute $R^2$
+```{r, collapse=TRUE, comment='##'}
+cor(survchile$statusquo, survchile$voteYES)^2
+```
+    
+\vspace{-2cm}
+
+## Step 7: Measure how well the model fits the data with $\textrm{R}^2$
+
+- Let's compute $R^2$:
+
+```{r, collapse=TRUE, comment='##'}
+cor(survchile$statusquo, survchile$voteYES)^2
+```
+
+- Interpretation?
+
+  + It means that the linear model explains `r round(cor(survchile$statusquo, survchile$voteYES)^2, 2)*100`\% of the variation of the outcome variable (*voteYES*)
+  
+  + **Note:** It does NOT mean that the model is right `r round(cor(survchile$statusquo, survchile$voteYES)^2, 2)*100`\% of the time. 
+
+\vspace{-2cm}
+
+## Step 7: Measure how well the model fits the data with $\textrm{R}^2$
+
+Let's return to the predictive model from last lecture:
+
+```{r, fig.width=6, fig.height=3, echo = FALSE}
+educexp <- read.csv('https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/educexp.csv')
+ggplot(data = educexp, aes(x = income, y = education)) + geom_text(aes(label=states), size=2) + 
+  labs(title = '', y = 'Education Expenditure', x = 'Income') +
+  geom_smooth(formula = 'y ~ x', method = 'lm', se = F, color = 'blue', lwd = 1) + theme_minimal()
+```
+
+\vspace{-1cm}
+
+## Step 7: Measure how well the model fits the data with $\textrm{R}^2$
+
+```{r, collapse=TRUE, comment='##'}
+cor(educexp$income, educexp$education)^2
+```
+
+- Interpretation?
+  + It means that the linear model explains `r round(cor(educexp$income, educexp$education)^2, 2)*100`\% of the variation of the outcome variable (*education*)
+  + It does NOT mean that the model is right `r round(cor(educexp$income, educexp$education)^2, 2)*100`\% of the time
+
+- **Warnings:**
+  1. Only compare $R^2$ between models with the same outcome variable ($Y$)
+  2. Some variables are intrinsically harder to predict than others
+
+\vspace{-1cm}
+
+***
+\vspace{.8cm}
+\begin{mdframed}[linecolor=titleline, linewidth=0.05cm] 
+\vspace{.3cm} \color{black}
+\tip{Predicting Outcomes Using Linear Models}: 
+We look for $X$ variables that are highly correlated with $Y$ because the higher the correlation between $X$ and $Y$ (in absolute terms), the higher the $R^2$ and the better the fitted linear model will usually be at predicting $Y$ using $X$.
+\vspace{.2cm}
+\end{mdframed}
+
+
+## Summary
+
+- **Today's Class:**
+  + Practice summarizing the relationship between X and Y with a line: \fu{lm()}.
+  + Practice interpreting the two estimated coefficients ($\widehat{\beta}_0$ and $\widehat{\beta}_1$) when outcome variable is binary.
+  + Practice making predictions with the fitted line: predict $\widehat{Y}$ based on $X$ and predict $\triangle\widehat{Y}$ based on $\triangle X$.
+  + Learned how to measure how well the model fits the data with $\textrm{R}^2$.
+
+\vspace{0.2cm}
+
+- **Next class**:
+  + Causality with Observatinal Data
+  
+\vspace{-1cm}
+
+
+# Questions?
+
+# See you in the next class!
