@@ -1,0 +1,133 @@
+---
+title: "POLI 30 D"
+author: "Your Name Here"
+output: html_document
+---
+
+```{r, echo = FALSE, results='hide', include=FALSE}
+## Load the tidyverse
+library(tidyverse)
+
+## Load the dataset and save it with the name `india`.
+india <- read.csv('https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/india.csv')
+```
+
+# Problem Set 02 - Do Women Promote Different Policies than Men? (continuation)
+
+## Due: Feb 20
+
+(Based on DSS Materials and on [Chattopadhyay and Esther Duflo. 2004. ``Women as Policy Makers: Evidence from a Randomized Policy Experiment in India."](https://economics.mit.edu/files/792) *Econometrica*, 72 (5): 1409–43.)
+
+We will estimate the average causal effect of having a female politician on two policy outcomes. For this purpose, we will analyze data from an experiment conducted in India, where villages were randomly assigned to have a female council head. The dataset we will use is in a file called "india.csv". The Table below shows the names and descriptions of the variables in this dataset, where the unit of observation is villages.
+
+| **Variable** | **Description**                                                                                  |
+|--------------|--------------------------------------------------------------------------------------------------|
+| village      | village identifier ("Gram Panchayat number _ village number")                                    |
+| female       | whether the village was assigned a female politician: 1=yes, 0=no                                    |
+| water        | number of new (or repaired) drinking water facilities in the village <br>since random assignment |
+| irrigation   | number of new (or repaired) irrigation facilities in the village<br>since random assignment      |
+
+In this problem set, we will practice loading, making sense of data, and understanding the basics of causal inference. We will also learn how to use R Markdown.
+
+---
+
+### 1. Considering that the dataset we are analyzing comes from a randomized experiment, what can we compute to estimate the average causal effect of having a female politician on the number of new (or repaired) drinking water facilities? Please provide the name of the estimator. (1 point)
+
+**Answer**: Answers here.
+
+---
+
+### 2. In this dataset, what is the average number of new (or repaired) drinking water facilities in villages with a female politician? Please answer with a full sentence. (1 point)
+
+```{r}
+## Coding answers here
+```
+
+**Answer**: Answers here.
+
+(Hint: we use `[]` to subset a variable; inside the square brackets, we specify the selection criterion. For example, we can use the relational operator `==` to set a logical test; only the observations for which the logical test is true will be extracted.) 
+
+
+---
+
+### 3. What is the average number of new (or repaired) drinking water facilities in villages with a male politician? Please answer with a full sentence. (1 point)
+
+```{r}
+## Coding answers here
+```
+
+**Answer**: Answers here.
+
+---
+
+### 4. What is the estimated average causal effect of having a female politician on the number of new (or repaired) drinking water facilities? (2 points)
+
+
+```{r}
+## Coding answers here
+```
+
+**Answer**: Put your answers here.
+
+---
+
+### 5. Create a visualization of the distribution of the variable *water*. 
+  a. Does this variable look bell-shaped distributed? (0.5 points)
+  b. Approximately how many villages in this experiment had about 250 new (or repaired) drinking water facilities since the randomization of politicians? (0.5 points)
+
+```{r}        
+## Coding answers here
+```
+
+**Answers**: Answers here.
+
+(Hint: the histogram of a variable is the visual representation of its distribution. The function in R to create a histogram is \fu{ggplot(data = dataset, aes(x = x\_variable\_name)) + geom_histogram()}. The only required arguments are the `variable` and the `dataset`.)
+
+
+---
+
+### 6. Create a visualization of the relationship between *water* and *irrigation*. 
+  a. Does the linear relationship between these two variables look positive or negative? A positive/negative answer will suffice. (0.5 points)
+  b. Does the relationship between these two variables look strongly linear? A yes/no answer will suffice. (0.5 points) 
+
+```{r}
+## Coding answers here
+```
+
+**Answers**: Answers here.
+
+(Hint: a scatter plot is the graphical representation of the relationship between two variables. The function in R to create a scatter plot with the fitting line is:
+
+```
+ggplot(data = dataset, aes(x = var_x, y = var_y)) + 
+  geom_point() + 
+  geom_smooth(formula = 'y ~ x', method = 'lm', se = F)
+```
+
+It requires three arguments: (1) the name you saved the dataset; (2) the code identifying the variable to be plotted along the x-axis, and (3) the code identifying the variable to be plotted along the y-axis.)
+
+---
+
+### 7. Compute the correlation between *water* and *irrigation*. 
+  a. Are you surprised by the sign of the correlation? Provide your reason. (0.5 points)
+  b. And are you surprised by the absolute value of the correlation? Provide your reason. (0.5 points)
+
+```{r}
+## Coding answers here
+```
+
+**Answers**: Answers here.
+
+(Hint: the function in R to compute a correlation coefficient is \fu{cor()}. It requires two arguments (separated by a comma) and in no particular order: the code identifying each of the two variables.) 
+
+---
+
+### 8. If we wanted to use the sample of villages in this dataset to infer the characteristics of all villages in India, we would have to make sure that the sample is _____________ of the population of all villages. (Please provide the missing word). (1 point)
+
+**Answer**: Answers here.
+
+---
+
+### 9. What would have been the best way of selecting the villages for the sample to ensure that the statement above was true? (1 point)
+
+**Answer**: Answers here.

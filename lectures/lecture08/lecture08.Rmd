@@ -59,6 +59,8 @@ knitr::opts_chunk$set(mysmall = TRUE)
 
 - My mailbox disaster is not over, but things are in better shape now! Please let me know if I missed your email.
 
+- \alert{PS 1 due today}!
+
 - Note to self: Turn on the mic!
 
 ## Before we start

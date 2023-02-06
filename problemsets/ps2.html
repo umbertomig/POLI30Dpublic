@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Your name here" />
+<meta name="author" content="Your Name Here" />
 
 
 <title>POLI 30 D</title>
@@ -356,13 +356,16 @@ display: none;
 
 
 <h1 class="title toc-ignore">POLI 30 D</h1>
-<h4 class="author">Your name here</h4>
+<h4 class="author">Your Name Here</h4>
 
 </div>
 
 
-<div id="problem-set-01---do-women-promote-different-policies-than-men" class="section level1">
-<h1>Problem Set 01 - Do Women Promote Different Policies than Men?</h1>
+<div id="problem-set-02---do-women-promote-different-policies-than-men-continuation" class="section level1">
+<h1>Problem Set 02 - Do Women Promote Different Policies than Men?
+(continuation)</h1>
+<div id="due-feb-20" class="section level2">
+<h2>Due: Feb 20</h2>
 <p>(Based on DSS Materials and on <a href="https://economics.mit.edu/files/792">Chattopadhyay and Esther
 Duflo. 2004. ``Women as Policy Makers: Evidence from a Randomized Policy
 Experiment in India.”</a> <em>Econometrica</em>, 72 (5): 1409–43.)</p>
@@ -391,7 +394,8 @@ observation is villages.</p>
 </tr>
 <tr class="even">
 <td>female</td>
-<td>whether village was assigned a female politician: 1=yes, 0=no</td>
+<td>whether the village was assigned a female politician: 1=yes,
+0=no</td>
 </tr>
 <tr class="odd">
 <td>water</td>
@@ -409,100 +413,114 @@ village<br>since random assignment</td>
 and understanding the basics of causal inference. We will also learn how
 to use R Markdown.</p>
 <hr />
-<ol style="list-style-type: decimal">
-<li>Use the function <code>read.csv()</code> to read the CSV file
-“india.csv”. You can find it on the GitHub page: <a href="https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/india.csv">https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/india.csv</a>.
-Use the assignment operator <code>&lt;-</code> to store the data in an
-object called <em>india</em>. Provide the R code you used. (1
-point)</li>
-</ol>
-<pre class="r"><code># Your coding answers here.</code></pre>
+<div id="considering-that-the-dataset-we-are-analyzing-comes-from-a-randomized-experiment-what-can-we-compute-to-estimate-the-average-causal-effect-of-having-a-female-politician-on-the-number-of-new-or-repaired-drinking-water-facilities-please-provide-the-name-of-the-estimator.-1-point" class="section level3">
+<h3>1. Considering that the dataset we are analyzing comes from a
+randomized experiment, what can we compute to estimate the average
+causal effect of having a female politician on the number of new (or
+repaired) drinking water facilities? Please provide the name of the
+estimator. (1 point)</h3>
+<p><strong>Answer</strong>: Answers here.</p>
 <hr />
-<ol start="2" style="list-style-type: decimal">
-<li>Use the function <code>head()</code> to view the first few
-observations of the dataset. Provide the R code you used. (1 point)</li>
-</ol>
-<pre class="r"><code># Your coding answers here.</code></pre>
+</div>
+<div id="in-this-dataset-what-is-the-average-number-of-new-or-repaired-drinking-water-facilities-in-villages-with-a-female-politician-please-answer-with-a-full-sentence.-1-point" class="section level3">
+<h3>2. In this dataset, what is the average number of new (or repaired)
+drinking water facilities in villages with a female politician? Please
+answer with a full sentence. (1 point)</h3>
+<pre class="r"><code>## Coding answers here</code></pre>
+<p><strong>Answer</strong>: Answers here.</p>
+<p>(Hint: we use <code>[]</code> to subset a variable; inside the square
+brackets, we specify the selection criterion. For example, we can use
+the relational operator <code>==</code> to set a logical test; only the
+observations for which the logical test is true will be extracted.)</p>
 <hr />
-<ol start="3" style="list-style-type: decimal">
-<li>What does each observation in this dataset represent? Please
-substantively interpret the first observation in the dataset. (1
-point)</li>
-</ol>
-<p><strong>Answer:</strong> Change this line to type your answer
-here.</p>
+</div>
+<div id="what-is-the-average-number-of-new-or-repaired-drinking-water-facilities-in-villages-with-a-male-politician-please-answer-with-a-full-sentence.-1-point" class="section level3">
+<h3>3. What is the average number of new (or repaired) drinking water
+facilities in villages with a male politician? Please answer with a full
+sentence. (1 point)</h3>
+<pre class="r"><code>## Coding answers here</code></pre>
+<p><strong>Answer</strong>: Answers here.</p>
 <hr />
-<ol start="4" style="list-style-type: decimal">
-<li>For each variable in the dataset, please identify the type of
-variable (character vs. numeric binary vs. numeric non-binary) (1
-point)</li>
-</ol>
-<p><strong>Answer:</strong> Change this line to type your answer
-here.</p>
+</div>
+<div id="what-is-the-estimated-average-causal-effect-of-having-a-female-politician-on-the-number-of-new-or-repaired-drinking-water-facilities-2-points" class="section level3">
+<h3>4. What is the estimated average causal effect of having a female
+politician on the number of new (or repaired) drinking water facilities?
+(2 points)</h3>
+<pre class="r"><code>## Coding answers here</code></pre>
+<p><strong>Answer</strong>: Put your answers here.</p>
 <hr />
-<ol start="5" style="list-style-type: decimal">
-<li>How many observations are in the dataset? In other words, how many
-villages were part of this experiment? (Hint: the function
-<code>dim()</code> might be helpful here.) (1 point)</li>
-</ol>
-<pre class="r"><code># Your coding answers here.</code></pre>
-<hr />
-<ol start="6" style="list-style-type: decimal">
-<li>Use the function <code>mean()</code> to calculate the average of the
-variable <em>female</em>. Please provide a full substantive
-interpretation of what this average means. (1 point)</li>
-</ol>
-<pre class="r"><code># Your coding answers here.</code></pre>
-<p><strong>Answer:</strong> Change this line to type your answer
-here.</p>
-<hr />
-<ol start="7" style="list-style-type: decimal">
-<li>Use the function <code>mean()</code> to calculate the average of the
-variable <em>water</em>. Please provide a full substantive
-interpretation of what this average means. Make sure to provide the unit
-of measurement. (1 point)</li>
-</ol>
-<pre class="r"><code># Your coding answers here.</code></pre>
-<p><strong>Answer:</strong> Change this line to type your answer
-here.</p>
-<hr />
-<ol start="8" style="list-style-type: decimal">
-<li>If we wanted to estimate the average causal effect of having a
-female politician on the number of new (and repaired) drinking water
-facilities: (1 point)
+</div>
+<div id="create-a-visualization-of-the-distribution-of-the-variable-water." class="section level3">
+<h3>5. Create a visualization of the distribution of the variable
+<em>water</em>.</h3>
 <ol style="list-style-type: lower-alpha">
-<li>What would be the treatment variable? Please provide the name of the
-variable</li>
-<li>What would be the outcome variable? Please provide the name of the
-variable</li>
-</ol></li>
+<li>Does this variable look bell-shaped distributed? (0.5 points)</li>
+<li>Approximately how many villages in this experiment had about 250 new
+(or repaired) drinking water facilities since the randomization of
+politicians? (0.5 points)</li>
 </ol>
-<p><strong>Answer:</strong> Change this line to type your answer
-here.</p>
+<pre class="r"><code>## Coding answers here</code></pre>
+<p><strong>Answers</strong>: Answers here.</p>
+<p>(Hint: the histogram of a variable is the visual representation of
+its distribution. The function in R to create a histogram is . The only
+required arguments are the <code>variable</code> and the
+<code>dataset</code>.)</p>
 <hr />
-<ol start="9" style="list-style-type: decimal">
-<li>If we wanted to estimate the average causal effect of having a
-female politician on the number of new (and repaired) irrigation
-facilities: (1 point)
+</div>
+<div id="create-a-visualization-of-the-relationship-between-water-and-irrigation." class="section level3">
+<h3>6. Create a visualization of the relationship between <em>water</em>
+and <em>irrigation</em>.</h3>
 <ol style="list-style-type: lower-alpha">
-<li>What would be the treatment variable? Please provide the name of the
-variable</li>
-<li>What would be the outcome variable? Please provide the name of the
-variable</li>
-</ol></li>
+<li>Does the linear relationship between these two variables look
+positive or negative? A positive/negative answer will suffice. (0.5
+points)</li>
+<li>Does the relationship between these two variables look strongly
+linear? A yes/no answer will suffice. (0.5 points)</li>
 </ol>
-<p><strong>Answer:</strong> Change this line to type your answer
-here.</p>
+<pre class="r"><code>## Coding answers here</code></pre>
+<p><strong>Answers</strong>: Answers here.</p>
+<p>(Hint: a scatter plot is the graphical representation of the
+relationship between two variables. The function in R to create a
+scatter plot with the fitting line is:</p>
+<pre><code>ggplot(data = dataset, aes(x = var_x, y = var_y)) + 
+  geom_point() + 
+  geom_smooth(formula = &#39;y ~ x&#39;, method = &#39;lm&#39;, se = F)</code></pre>
+<p>It requires three arguments: (1) the name you saved the dataset; (2)
+the code identifying the variable to be plotted along the x-axis, and
+(3) the code identifying the variable to be plotted along the
+y-axis.)</p>
 <hr />
-<ol start="10" style="list-style-type: decimal">
-<li>In both analyses above: (1 point)
+</div>
+<div id="compute-the-correlation-between-water-and-irrigation." class="section level3">
+<h3>7. Compute the correlation between <em>water</em> and
+<em>irrigation</em>.</h3>
 <ol style="list-style-type: lower-alpha">
-<li>What would be the treatment group?</li>
-<li>What would be the control group?</li>
-</ol></li>
+<li>Are you surprised by the sign of the correlation? Provide your
+reason. (0.5 points)</li>
+<li>And are you surprised by the absolute value of the correlation?
+Provide your reason. (0.5 points)</li>
 </ol>
-<p><strong>Answer:</strong> Change this line to type your answer
-here.</p>
+<pre class="r"><code>## Coding answers here</code></pre>
+<p><strong>Answers</strong>: Answers here.</p>
+<p>(Hint: the function in R to compute a correlation coefficient is . It
+requires two arguments (separated by a comma) and in no particular
+order: the code identifying each of the two variables.)</p>
+<hr />
+</div>
+<div id="if-we-wanted-to-use-the-sample-of-villages-in-this-dataset-to-infer-the-characteristics-of-all-villages-in-india-we-would-have-to-make-sure-that-the-sample-is-_____________-of-the-population-of-all-villages.-please-provide-the-missing-word.-1-point" class="section level3">
+<h3>8. If we wanted to use the sample of villages in this dataset to
+infer the characteristics of all villages in India, we would have to
+make sure that the sample is _____________ of the population of all
+villages. (Please provide the missing word). (1 point)</h3>
+<p><strong>Answer</strong>: Answers here.</p>
+<hr />
+</div>
+<div id="what-would-have-been-the-best-way-of-selecting-the-villages-for-the-sample-to-ensure-that-the-statement-above-was-true-1-point" class="section level3">
+<h3>9. What would have been the best way of selecting the villages for
+the sample to ensure that the statement above was true? (1 point)</h3>
+<p><strong>Answer</strong>: Answers here.</p>
+</div>
+</div>
 </div>
 
 

@@ -416,7 +416,7 @@ $$\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$$
 
 \vspace{-2cm}
 
-## Step 7: Measure how well the model fits the data with $\textrm{R}^2$
+## Step 7: Measure how well the model fits the data
 
 - How good is the model at making predictions? How well does the model fit the data?
 
@@ -433,7 +433,9 @@ $$\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$$
     \end{itemize}
 \end{mdframed}
 
-## Step 7: Measure how well the model fits the data with $\textrm{R}^2$
+\vspace{-1cm}
+
+## Step 7: Measure how well the model fits the data
 
 \small
 
@@ -463,7 +465,7 @@ $$\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$$
 
 \normalsize
 
-## Step 7: Measure how well the model fits the data with $\textrm{R}^2$
+## Step 7: Measure how well the model fits the data
 
 ```{r, fig.width=6, fig.height=2, echo = FALSE}
 ggplot(data = survchile, aes(x = statusquo, y = voteYES)) + 
@@ -480,7 +482,7 @@ cor(survchile$statusquo, survchile$voteYES)^2
     
 \vspace{-2cm}
 
-## Step 7: Measure how well the model fits the data with $\textrm{R}^2$
+## Step 7: Measure how well the model fits the data
 
 - Let us compute $R^2$:
 
@@ -496,7 +498,7 @@ cor(survchile$statusquo, survchile$voteYES)^2
 
 \vspace{-2cm}
 
-## Step 7: Measure how well the model fits the data with $\textrm{R}^2$
+## Step 7: Measure how well the model fits the data
 
 Let us return to the predictive model from the last lecture:
 
@@ -509,7 +511,7 @@ ggplot(data = educexp, aes(x = income, y = education)) + geom_text(aes(label=sta
 
 \vspace{-1cm}
 
-## Step 7: Measure how well the model fits the data with $\textrm{R}^2$
+## Step 7: Measure how well the model fits the data
 
 ```{r, collapse=TRUE, comment='##'}
 cor(educexp$income, educexp$education)^2
