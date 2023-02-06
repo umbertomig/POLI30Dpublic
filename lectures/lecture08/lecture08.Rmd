@@ -53,11 +53,11 @@ knitr::opts_chunk$set(mysmall = TRUE)
 
 - Quizzes and Participation: On Canvas.
 
-- Github page: [https://github.com/umbertomig/POLI30Dpublic](https://github.com/umbertomig/POLI30Dpublic)
+- GitHub page: [https://github.com/umbertomig/POLI30Dpublic](https://github.com/umbertomig/POLI30Dpublic)
 
 - Piazza forum: Not sure what the link is. Ask your TA!
 
-- My mailbox disaster is not over, but things are in much better shape now! Please let me know if I missed your email.
+- My mailbox disaster is not over, but things are in better shape now! Please let me know if I missed your email.
 
 - Note to self: Turn on the mic!
 
@@ -138,10 +138,10 @@ knitr::opts_chunk$set(mysmall = TRUE)
     \vspace{-.05cm}
     + Best way of satisfying assumption: random treatment assignment
 
-2. \pause \concept{When infering population characteristics}
+2. \pause \concept{When inferring population characteristics}
     + Aim: To infer the characteristics of $X$ in the population
     \vspace{-.05cm}
-    + Assumption: sample is representative of population
+    + Assumption: sample is representative of the population
     \vspace{-.05cm}
     + Best way of satisfying assumption: Random sampling
 \vspace{-1cm}
@@ -157,9 +157,9 @@ knitr::opts_chunk$set(mysmall = TRUE)
     + Best way to achieve our aim: To make $\textrm{R}^2$ as high as possible.
 \vspace{-1cm}
 
-## Using Income to Predict Education Expenditures is US States
+## Using Income to Predict Education Expenditures in US States
 
-- Today we will analyze data on 1970 U.S. State Public-School Expenditures.
+- Today, we will analyze data on 1970 U.S. State Public-School Expenditures.
 
 - Our goal is to model the relationship between per-capita income and per-capita education expenditures.
 
@@ -239,7 +239,7 @@ p
 
 - Let us now check the \concept{correlation}\ coefficient.
 
-- It measures the direction and strength of linear association between *income* and *education*.
+- It measures the direction and strength of the linear association between *income* and *education*.
 
 \vspace{0.2cm}
 
@@ -302,13 +302,13 @@ grid.arrange(p1, p2, nrow = 1)
 \vspace{-.2cm}
 
 - The goal is the choose the line that best fits the data.
-    + Which one you think does that?
+    + Which one do you think does that?
 
 \vspace{-2cm}
     
 ## Step 4: Fit a linear model using the least squares method
 
-- To choose the line that best fits the data, we use \concept{the least squares method}.
+- To choose the line best fits the data, we use \concept{the least squares method}.
 
 - In \color{red}red\color{black}, you can see the *error* we make by approximating the *education* using the \color{blue}blue\color{black}\ trendline.
 
@@ -334,11 +334,12 @@ p2 <- ggplot(data = educexp, aes(x = income, y = education)) +
   theme(axis.text.x = element_text(angle = 30)) + 
   geom_smooth(formula = 'y ~ x', method = 'lm', se = F, color = 'blue', lwd = 1)
 grid.arrange(p1, p2, nrow = 1)
+rm(pred1dist, pred2dist)
 ```
 
 \vspace{-0.5cm}
 
-- Which plot you think is doing better?
+- Which plot do you think is doing better?
 
 \vspace{-1cm}
 
@@ -357,7 +358,7 @@ $$ e_i \ = \ Y_i - \beta_0 - \beta_1 X_i $$
 
 \vspace{-0.8cm}
 
-$$ \min_{(\beta_0, \beta_1)} \sum_{i=1}^n e_i^2 \quad \text{which is the same as} \quad  \min_{(\beta_0, \beta_1)} \sum_{i=1}^n (Y_i - \beta_0 - \beta_1 X_i)^2$$
+$$ \min_{(\beta_0, \beta_1)} \sum_{i=1}^n e_i^2 \quad \text{which is the same as} \quad  \min_{(\beta_0, \beta_1)} \sum_{i=1}^n (Y_i - \beta_0 - \beta_1 X_i)^2 $$
 \vspace{-0.5cm}
 
 - The meaning of *least square method* should now be clear to you.
@@ -396,298 +397,221 @@ mod <- lm(education ~ income, data = educexp)
 ```
 
 - $\widehat{\beta}_0$ = `r round(mod$coef[1], digits=2)` and $\widehat{\beta}_1$ = `r round(mod$coef[2], digits=2)`
+
 - The fitted line is $\widehat{Y}$ = `r round(mod$coef[1], digits=2)` + `r round(mod$coef[2], digits=2)` $X$ 
+
 - More specifically: $\widehat{\textrm{education}}$ = `r round(mod$coef[1], digits=2)` + `r round(mod$coef[2], digits=2)` $\textrm{income}$
 
 \vspace{-2cm}
 
-***
-- We can now add the fitted line to the scatter plot above
-- First, we store the fitted line in an object called *fit*
-    ```{r, collapse=TRUE, comment='##',   mysize=TRUE,  size='\\small',   fig.width=8, fig.height=5}
-    fit <- lm(grades$final ~ grades$midterm) # stores fitted line
-    ```
-- Then, we can use the function \fu{abline()}
-    + required argument: name of object with fitted line \pause
-    ```{r, collapse=TRUE, comment='##',   eval=F}
-    abline(fit) # adds line to scatter plot
-    ```
+## Step 4: Fit a linear model using the least squares method
 
-***
-```{r, collapse=TRUE, comment='##', echo=FALSE, fig.width=8, fig.height=8, out.width = '75%', fig.align='center'}
-par(mfrow = c(1,1),
-          oma = c(1,0,1,0) + 0.1,
-          mar = c(5,3,1,3) + 0.1,
-          mgp = c(2,.5,0), cex=1.5, adj=1)    
-plot(x=grades$midterm, y=grades$final, col="gray", pch=19, yaxt="n", xaxt="n", cex.lab=1, col.lab="gray17", bty="n", xlim=c(0,100), ylim=c(0,100))
-axis(1, col="gray17", col.ticks="gray", col.axis="gray17", tck=-0.02)
-axis(2, col="gray17", col.ticks="gray", col.axis="gray17", tck=-0.02)
-box(col="gray17")
-fit <- lm(grades$final ~ grades$midterm) # stores fitted line
-abline(fit, col="red")
+- And to add a fitting line to a scatter plot, you can use \fu{abline()}\ or \fu{geom\_smooth()}. 
+  + You are going to learn this in Labs 06 and 07.
+
+```{r, fig.width=6, fig.height=2.2, mytiny = TRUE}
+ggplot(data = educexp, aes(x = income, y = education)) + geom_text(aes(label=states), size=2) + 
+  labs(title = '', y = 'Education Expenditure', x = 'Income') +
+  geom_smooth(formula = 'y ~ x', method = 'lm', se = F, color = 'blue', lwd = 1) + theme_minimal()
 ```
 
-***
-5. Interpretation of Coefficients: 
+\vspace{-2cm}
 
-- \concept{The intercept ($\widehat{\alpha}$) is the $\widehat{Y}$ when $X$=0}
+## Step 5: Interpretation of Coefficients
+
+- \concept{The intercept ($\widehat{\beta}_0$) is the $\widehat{Y}$ when $X$=0}.
+
+```{r, fig.width=6, fig.height=2.5, echo=FALSE}
+fit <- mod
+ggplot(data = educexp, aes(x = income, y = education)) + 
+  geom_text(aes(label=states), size=2) + xlim(0, max(educexp$income)) + ylim(0, max(educexp$education)) +
+  labs(title = '', y = 'Education Expenditure', x = 'Income') +
+  geom_smooth(formula = 'y ~ x', method = 'lm', se = F, color = 'blue', lwd = 1, fullrange = T) +
+  theme_minimal() + 
+  geom_segment(aes(x = 0, y = 0, xend = 0, yend = mod$coef[1]), color = 'red')
+```
+
 \vspace{-.1cm}
-
-- Find 0 on the X-axis, go up to the line, find the value of $\widehat{Y}$ associated with X=0 
-    ```{r, collapse=TRUE, comment='##', echo=FALSE, fig.width=8, fig.height=8, out.width = '58%', fig.align='center'}
-par(mfrow = c(1,1),
-          oma = c(1,0,1,0) + 0.1,
-          mar = c(5,3,1,3) + 0.1,
-          mgp = c(2,.5,0), cex=1.5, adj=1)    
-plot(x=grades$midterm, y=grades$final, col="gray", pch=19, yaxt="n", xaxt="n", cex.lab=1, col.lab="gray17", bty="n", xlim=c(-40,100), ylim=c(-40,100))
-axis(1, col="gray17", col.ticks="gray", col.axis="gray17", tck=-0.02)
-axis(2, col="gray17", col.ticks="gray", col.axis="gray17", tck=-0.02)
-box(col="gray17")
-abline(fit, col="red") # add regression line
-text(x=2, y=-10, labels=expression(paste("(0, ", widehat(alpha),") = (0, -6.01)")), col="red", cex=1.5, pos=4)
-lines(x=c(0,0), y=c(-50,-6), col="red", lty="dashed", lwd=3)
-lines(x=c(0,-50), y=c(-6,-6), col="red", lty="dashed", lwd=3)
-points(x=0, y=fit$coeff[1], col="red", pch=19)
-    ```
    \vspace{-.2cm}
-    + here: $\widehat{\alpha}$ = `r round(fit$coeff[1], digits=2)`
+    + here: $\widehat{\beta}_0$ = `r round(mod$coeff[1], digits=2)`
     \vspace{-.1cm}
 
 
-## Mathematical definition of $\widehat{\alpha}$
+## Mathematical definition of $\widehat{\beta}_0$
 
 \begin{align*}
-\widehat{Y} &= \widehat{\alpha} + \widehat{\beta}\,\, X  & \color{gray}(\textrm{by definition})\\
-\widehat{Y} &= \widehat{\alpha} + \widehat{\beta}\times 0 &\color{gray}(\textrm{if } X=0)\\
-\widehat{Y} &= \widehat{\alpha} + 0 &\color{gray}(\textrm{if } X=0)\\
-\widehat{Y} &= \widehat{\alpha} &\color{gray}(\textrm{if } X=0)
+\widehat{Y} &= \widehat{\beta}_0 + \widehat{\beta}_1\,\, X  & \color{gray}(\textrm{by definition})\\
+\widehat{Y} &= \widehat{\beta}_0 + \widehat{\beta}_1\times 0 &\color{gray}(\textrm{if } X=0)\\
+\widehat{Y} &= \widehat{\beta}_0 + 0 &\color{gray}(\textrm{if } X=0)\\
+\widehat{Y} &= \widehat{\beta}_0 &\color{gray}(\textrm{if } X=0)
 \end{align*}
 
 \pause
-> \vspace{.2cm} \begin{center} $\widehat{\alpha}$ is the value of $\widehat{Y}$ when $X$=0 \end{center}
+> \vspace{.2cm} \begin{center} $\widehat{\beta}_0$ is the value of $\widehat{Y}$ when $X$=0 \end{center}
 
 
-***
-- **substantive interpretation of $\widehat{\alpha}$**?
-    + start with mathematical definition: 
-        + $\widehat{\alpha}$ is the $\widehat{Y}$ when *X*=0
-    + substitute X, Y, and $\widehat{\alpha}$: 
-        + $\widehat{\alpha}$ = `r round(fit$coef[1], digits=2)`  is the $\widehat{\textrm{\textit{final}}}$ when *midterm*=0
-    + put it in words (using units of measurement): 
-        + when a student scores 0 points in the midterm, we predict that in the final exam they will score -6.01 points, on average
-    + sometimes it is nonsensical (due to extrapolation)
+## Substantive interpretation of $\widehat{\beta}_0$
 
-- **unit of measurement of $\widehat{\alpha}$**? 
-    + same as $\overline{Y}$
-    + in this case: *Y* is non-binary and measured in points so $\overline{Y}$ is measured in points and so is $\widehat{\alpha}$
+- Substitute X, Y, and $\widehat{\beta}_0$: 
+  + $\widehat{\beta}_0$ = `r round(mod$coef[1], digits=2)` is the $\widehat{\textrm{\textit{education}}}$ when $\text{income} = 0$
+  + When a State has 0 per-capita income, we predict that the per-capita expenditure in education will be `r round(mod$coef[1], digits=2)` dollars, on average
+    + Sometimes, it is nonsensical (due to extrapolation)
 
-***
-5. Interpretation of Coefficients: 
+\vspace{0.2cm}
 
-- \concept{The slope ($\widehat{\beta}$) is the $\triangle \widehat{Y}$ associated with $\triangle X$=1}
-\vspace{-.1cm}
+- **Unit of measurement of $\widehat{\beta}_0$**? 
+  + Same as $\overline{Y}$
+  + In this case: *Y* is non-binary and measured in points so $\overline{Y}$ is measured in points and so is $\widehat{\beta}_0$
+
+## Step 5: Interpretation of Coefficients
+
+
 
 - Pick two points on the line, measure $\triangle \widehat{Y}$ and $\triangle X$ associated with the two points, calculate $\triangle \widehat{Y}$/$\triangle X$
-    ```{r, collapse=TRUE, comment='##', echo=FALSE, fig.width=8, fig.height=8, out.width = '58%', fig.align='center'}
-par(mfrow = c(1,1),
-          oma = c(1,0,1,0) + 0.1,
-          mar = c(5,3,1,3) + 0.1,
-          mgp = c(2,.5,0), cex=1.5, adj=1)    
-plot(x=grades$midterm, y=grades$final, col="gray", pch=19, yaxt="n", xaxt="n", cex.lab=1, col.lab="gray17", bty="n", xlim=c(-40,100), ylim=c(-40,100))
-axis(1, col="gray17", col.ticks="gray", col.axis="gray17", tck=-0.02)
-axis(2, col="gray17", col.ticks="gray", col.axis="gray17", tck=-0.02)
-box(col="gray17")
-abline(fit, col="red") # add regression line
+  + Here: $\widehat{\beta}_1$ = $\textrm{0.06}$
 
-lines(x=c(0,0), y=c(-50,-6), col="red", lty="dashed", lwd=3)
-lines(x=c(0,-50), y=c(-6,-6), col="red", lty="dashed", lwd=3)
-points(x=0, y=fit$coeff[1], col="red", pch=19)
-text(x=2, y=-10, labels=expression(paste("(0, -6.01)")), col="red", cex=1.5, pos=4)
+\vspace{-1cm}
 
-lines(x=c(80,80), y=c(-50,-6+0.97*80), col="red", lty="dashed", lwd=3)
-lines(x=c(80,-50), y=c(-6+0.97*80,-6+0.97*80), col="red", lty="dashed", lwd=3)
-points(x=80, y=-6+0.97*80, col="red", pch=19)
-text(x=80, y=78.6, labels=expression(paste("(80, 71.6)")), col="red", cex=1.5, pos=2)
+## Step 5: Interpretation of Coefficients
 
-arrows(-35, 0,-35, 68, code=2, lwd=3, length=.1, col="#ef3119")
-text(x=-35, y=30, labels=expression(paste("rise")), col="red", cex=1.5, pos=4)
-arrows(5, -35, 75, -35, code=2, lwd=3, length=.1, col="#ef3119")
-text(x=28.5, y=-30, labels=expression(paste("run")), col="red", cex=1.5, pos=4)
-    ```
-    \vspace{-.2cm}
-    + here: $\widehat{\beta}$ = $\frac{\textrm{rise}}{\textrm{run}} = \frac{\textrm{71.6-(-6.01)}}{\textrm{80-0}}=\frac{\textrm{77.61}}{\textrm{80}}=\textrm{0.97}$
-    \vspace{-.1cm}
+- \concept{The slope ($\widehat{\beta}_1$) is the $\triangle \widehat{Y}$ associated with $\triangle X$=1}
 
-***
-\vspace{1cm}
-\begin{center}\includegraphics[height=.55\textheight]{../../images/change.png}\end{center}
+\begin{center}\includegraphics[height=.4\textheight]{../../images/change.png}\end{center}
+
+\vspace{-.5cm}
 
 \begin{eqnarray*}
 \triangle \widehat{Y} &=& \widehat{Y}_{\textrm{final}} {-} \widehat{Y}_{\textrm{initial}}\\
 \triangle X &=& X_{\textrm{final}} {-} X_{\textrm{initial}}\\
 \end{eqnarray*}
 
+\vspace{-2cm}
 
-## Mathematical definition of $\widehat{\beta}$
+## Mathematical definition of $\widehat{\beta}_1$
+
+\small
 
 \vspace{.2cm}
 \begin{align*}
 \triangle \widehat{Y} &= \widehat{Y}_{\textrm{final}} {-} \widehat{Y}_{\textrm{initial}} & \color{gray}(\textrm{by definition}) \\
-\triangle \widehat{Y} &= (\widehat{\alpha} + \widehat{\beta} X_{\textrm{final}}) - (\widehat{\alpha} + \widehat{\beta} X_{\textrm{initial}}) & \color{gray}(\textrm{since } \widehat{Y}_{\textrm{final}}= \widehat{\alpha} + \widehat{\beta} X_{\textrm{final}} \,\,\,\,\\
-&& \color{gray}\textrm{and } \widehat{Y}_{\textrm{initial}}= \widehat{\alpha} + \widehat{\beta} X_{\textrm{initial}}) \\
-\triangle \widehat{Y} &= \widehat{\alpha} - \widehat{\alpha} + \widehat{\beta} \,(X_{\textrm{final}}{-} X_{\textrm{initial}}) & \color{gray}(\textrm{rearranging terms}) \\
-\triangle \widehat{Y} &= \widehat{\beta} \,(X_{\textrm{final}}{-} X_{\textrm{initial}}) & \color{gray}(\textrm{since }\widehat{\alpha} - \widehat{\alpha} = 0)\\
-\triangle \widehat{Y} &= \widehat{\beta} \,(\triangle X) & \color{gray}(\textrm{since } \triangle X = X_{\textrm{final}} - X_{\textrm{initial}}) \\
-\triangle \widehat{Y} &= \widehat{\beta} \times 1 &\color{gray}(\textrm{if } \triangle X=1)\\
-\triangle \widehat{Y} &= \widehat{\beta} &\color{gray}(\textrm{if } \triangle X=1)
+\triangle \widehat{Y} &= (\widehat{\beta}_0 + \widehat{\beta}_1 X_{\textrm{final}}) - (\widehat{\beta}_0 + \widehat{\beta}_1 X_{\textrm{initial}}) & \color{gray}(\textrm{since } \widehat{Y}_{\textrm{final}}= \widehat{\beta}_0 + \widehat{\beta}_1 X_{\textrm{final}} \,\,\,\,\\
+&& \color{gray}\textrm{and } \widehat{Y}_{\textrm{initial}}= \widehat{\beta}_0 + \widehat{\beta}_1 X_{\textrm{initial}}) \\
+\triangle \widehat{Y} &= \widehat{\beta}_0 - \widehat{\beta}_0 + \widehat{\beta}_1 \,(X_{\textrm{final}}{-} X_{\textrm{initial}}) & \color{gray}(\textrm{rearranging terms}) \\
+\triangle \widehat{Y} &= \widehat{\beta}_1 \,(X_{\textrm{final}}{-} X_{\textrm{initial}}) & \color{gray}(\textrm{since }\widehat{\beta}_0 - \widehat{\beta}_0 = 0)\\
+\triangle \widehat{Y} &= \widehat{\beta}_1 \,(\triangle X) & \color{gray}(\textrm{since } \triangle X = X_{\textrm{final}} - X_{\textrm{initial}}) \\
+\triangle \widehat{Y} &= \widehat{\beta}_1 \times 1 &\color{gray}(\textrm{if } \triangle X=1)\\
+\triangle \widehat{Y} &= \widehat{\beta}_1 &\color{gray}(\textrm{if } \triangle X=1)
 \end{align*}
 
+\normalsize
+
 \vspace{-.1cm}\pause
-> \vspace{.2cm} $\widehat{\beta}$ is the value of $\triangle \widehat{Y}$ associated with $\triangle X$ = 1
+> \vspace{.2cm} $\widehat{\beta}_1$ is the value of $\triangle \widehat{Y}$ associated with $\triangle X$ = 1
 
-***
-- **substantive interpretation of $\widehat{\beta}$**?
-    + start with mathematical definition: 
-        + $\widehat{\beta}$ is the $\triangle \widehat{Y}$ associated with $\triangle X$=1
-    + substitute X, Y, and $\widehat{\beta}$: 
-        + $\widehat{\beta}$ = `r round(fit$coef[2], digits=2)` is the $\triangle \widehat{\textrm{\textit{final}}}$ associated with $\triangle$*midterm*=1
-    + put it in words (using units of measurement): 
-        + an increase in midterm scores of 1 point is associated with a predicted increase in final exam scores of 0.97 points, on average
-    + has the same sign as the cor(X,Y) (always the case!)
+## Substantive interpretation of $\widehat{\beta}_1$
 
-- **unit of measurement of $\widehat{\beta}$**?
-    + same as $\triangle \overline{Y}$
-    + in this case: *Y* is non-binary and measured in points so $\triangle \overline{Y}$ is measured in points and so is $\widehat{\beta}$
+- Start with the mathematical definition: 
+  + $\widehat{\beta}_1$ is the $\triangle \widehat{Y}$ associated with $\triangle X$=1
+
+- Substitute $X$, $Y$, and $\widehat{\beta}_1$: 
+  + $\widehat{\beta}_1$ = `r round(mod$coef[2], digits=2)` is the $\triangle \widehat{\textrm{\textit{education}}}$ associated with $\triangle$*income*=1
+    + An increase in income of 1 dollar is associated with a predicted increase in education expenditures of 6 cents, on average
+
+- **Unit of measurement of $\widehat{\beta}_1$**?
+  + Same as $\triangle \overline{Y}$
+    + In this case: *Y* is non-binary and measured in points so $\triangle \overline{Y}$ is measured in points and so is $\widehat{\beta}_1$
 
 ***
 \begin{mdframed}[linecolor=titleline, linewidth=0.05cm, innerleftmargin=.5cm,innerrightmargin=.5cm]
 \vspace{.3cm} 
 \begin{center}\color{concept}\tip{The fitted line is}:\color{text}\end{center}
-$$\widehat{Y} = \widehat{\alpha} + \widehat{\beta} X$$
+$$\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$$
 
 \begin{tabular}{l}
-- $\widehat{\alpha}$ (alpha-hat) is the estimated intercept coefficient\\
+- $\widehat{\beta}_0$ (beta-zero-hat) is the estimated intercept coefficient\\
 \,\,\,\,\,\,\,\,\,\,\,the $\widehat{Y}$ when $X{=}\textrm{0}$\\
 \,\,\,\,\,\,\,\,\,\,\,(in same unit of measurement as $\overline Y$)\\\\
 
-- $\widehat{\beta}$ (beta-hat) is the estimated slope coefficient\\
+- $\widehat{\beta}_1$ (beta-one-hat) is the estimated slope coefficient\\
 \,\,\,\,\,\,\,\,\,\,\,the $\triangle \widehat{Y}$ associated with $\triangle X{=}\textrm{1}$\\
 \,\,\,\,\,\,\,\,\,\,\,(in the same unit of measurement as $\triangle\overline Y$)
 \end{tabular}
 \vspace{.2cm}
 \end{mdframed}
 
-***
-6. Make predictions
+## Step 6: Make Predictions
 
 - Now that we have found the line that best summarizes the relationship between X and Y, we can use it to make predictions
 \vspace{.2cm}
 
 - There are two types of predictions that we might be interested in:
 \vspace{.3cm}
-    1. predict $\widehat{Y}$ based on $X$: \concept{$\widehat{Y} = \widehat{\alpha} + \widehat{\beta} X$}
-    2. predict $\triangle \widehat{Y}$ associated with $\triangle X$: \concept{$\triangle \widehat{Y} = \widehat{\beta} \triangle X$}
-    
-***
+
+1. predict $\widehat{Y}$ based on $X$: \concept{$\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$}
+
+\vspace{0.3cm}
+
+2. predict $\triangle \widehat{Y}$ associated with $\triangle X$: \concept{$\triangle \widehat{Y} = \widehat{\beta}_1 \triangle X$}
+
+\vspace{-1cm}
+
+## Step 6: Make Predictions
+
 \begin{mdframed}[linecolor=titleline, linewidth=0.05cm] 
-\noindent To predict $\widehat{Y}$ based on $X$: \color{titleline} $\widehat{Y} = \widehat{\alpha} + \widehat{\beta} X$
+\noindent To predict $\widehat{Y}$ based on $X$: \color{titleline} $\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$
 \end{mdframed}
 
-- \underline{Example 1}: Imagine you earn 80 points in the midterm, what would we predict your final exam score will be? 
+- \underline{Example 1}: Suppose we are back in the 70s. Imagine you lived in a State where the per-capita income is \$ 3,500. What would the education expenditure be? 
 
-\vspace{-.9cm}\pause
+\vspace{-.9cm}
 \begin{eqnarray*}
-\widehat{\textrm{final}} &=& \pause \textrm{`r round(fit$coef[1], digits=2)`} + \pause \textrm{`r round(fit$coef[2], digits=2)`} \pause \,\,\textrm{\,\,midterm} \pause \\
-\widehat{\textrm{final}} &=& \textrm{`r round(fit$coef[1], digits=2)`} + \textrm{`r round(fit$coef[2], digits=2)`} \times \pause \textrm{80} \color{gray} \textrm{\,\, (if midterm = 80)} \pause\\ 
-\widehat{\textrm{final}} &=& \pause \textrm{`r round(fit$coef[1], digits=2) + round(fit$coef[2], digits=2)*80`} \\
+\widehat{\textrm{education}} &=& \textrm{`r round(mod$coef[1], digits=2)`} + \textrm{`r round(mod$coef[2], digits=2)`} \,\,\textrm{\,\,income} \\
+\widehat{\textrm{education}} &=& \textrm{`r round(mod$coef[1], digits=2)`} + \textrm{`r round(mod$coef[2], digits=2)`} \times \textrm{3,500} \color{gray} \textrm{\,\, (if income = 3,500)} \\ 
+\widehat{\textrm{education}} &=& \textrm{`r round(mod$coef[1], digits=2) + round(mod$coef[2], digits=2)*3500`} \\
 \end{eqnarray*}
 \vspace{-1.5cm}\pause
 
-- Answer: If you earn 80 points in the midterm, we would predict that you will earn \pause 71.59 \pause points in the final exam, on average
-- Note: $\widehat{Y}$ is in the same unit of measurement as $\overline{Y}$
-    + in this case: Y is non-binary and measured in points so $\overline{Y}$ and $\widehat{Y}$ are also measured in points
+- Answer: If the income per-capita was \$ 3,500, the the education expenditure would be \$ `r round(mod$coef[1], digits=2) + round(mod$coef[2], digits=2)*3500`, on average.
+
 \vspace{-1cm}    
 
-***
-- \underline{Example 2}: Imagine you earn 90 points in the midterm, what would we predict your final exam score will be?
+## Step 6: Make Predictions
 
-\vspace{-.9cm}\pause
-\begin{eqnarray*}
-\widehat{\textrm{final}} &=& \pause  \textrm{`r round(fit$coef[1], digits=2)`} + \pause \textrm{`r round(fit$coef[2], digits=2)`} \pause \,\,\textrm{\,\,midterm} \pause\\
-\widehat{\textrm{final}} &=& \textrm{`r round(fit$coef[1], digits=2)`} + \textrm{`r round(fit$coef[2], digits=2)`} \times \pause \textrm{90} \color{gray} \textrm{\,\, (if midterm = 90)} \pause\\ 
-\widehat{\textrm{final}} &=& \pause \textrm{`r round(fit$coef[1], digits=2) + round(fit$coef[2], digits=2)*90`} \\
-\end{eqnarray*}
-\vspace{-1.5cm}\pause
-
-- Answer: If you earn 90 points in the midterm, we would predict that you will earn \pause 81.29 \pause points in the final exam, on average
-
-***
 \begin{mdframed}[linecolor=titleline, linewidth=0.05cm]
-\noindent To predict $\triangle \widehat{Y}$ associated with $\triangle X$: \color{titleline} $\triangle \widehat{Y} = \widehat{\beta} \, \triangle \text{X}$
+\noindent To predict $\triangle \widehat{Y}$ associated with $\triangle X$: \color{titleline} $\triangle \widehat{Y} = \widehat{\beta}_1 \, \triangle \text{X}$
 \end{mdframed}
-- \underline{Example 3}: If you increase your midterm scores by 10 points, by how much would we predict that your final exam scores would change?
+- \underline{Example 2}: Suppose the per-capita income rises by \$100. By how much would we predict that the education expenditure would change?
 
-\vspace{-.9cm}\pause
+\vspace{-.9cm}
 \begin{eqnarray*}
-\triangle\widehat{\textrm{final}} &=& \pause \textrm{`r round(fit$coef[2], digits=2)`} \pause \,\,\triangle\textrm{midterm} \pause \\
-\triangle \widehat{\textrm{final}} &=& \pause \textrm{`r round(fit$coef[2], digits=2)`} \pause \times \textrm{10} \color{gray} \textrm{\,\, (if $\triangle$midterm = 10)} \color{black} \pause \\
-\triangle \widehat{\textrm{final}} &=& \pause \textrm{`r round(fit$coef[2], digits=2)*10`} \\
+\triangle\widehat{\textrm{education}} &=& \textrm{`r round(fit$coef[2], digits=2)`} \,\,\triangle\textrm{income} \\
+\triangle \widehat{\textrm{education}} &=& \textrm{`r round(fit$coef[2], digits=2)`} \times \textrm{100} \color{gray} \textrm{\,\, (if $\triangle$income = 100)} \color{black} \\
+\triangle \widehat{\textrm{education}} &=& \textrm{`r round(fit$coef[2], digits=2)*100`} \\
 \end{eqnarray*}
-\vspace{-1.6cm}\pause
+\vspace{-1.6cm}
 
-- Answer: An increase of midterm scores of 10 points is associated with a predicted \pause increase of final exam scores of \pause 9.7 \pause points, on average
-- Note: $\triangle\widehat{Y}$ is in the same unit of measurement as $\triangle\overline{Y}$
-    + in this case: Y is non-binary and measured in points so $\triangle\overline{Y}$ and $\triangle\widehat{Y}$ are also measured in points
+- Answer: An increase of \$100 in per-capita income is associated with a predicted increase of \$6.00 in the average education expenditure
+
 \vspace{-1cm}    
-
-***
-7. Measure how well the model fits the data with $\textrm{R}^2$
-
-- We will see how to do this next lecture
-
-***
-\color{black}
-\begin{center}
-\begin{tabular}{l}
-\concept{\textbf{Today's Class}}\\
-- How to summarize the relationship between \\
-\,\,\,\,X and Y with a line: \fu{lm()} and \fu{abline()}\\[.3cm]
-- How to interpret the two estimated coefficients: \\
-\,\,\,\,($\widehat{\alpha}$ and $\widehat{\beta}$) when outcome variable is non-binary \\[.3cm]
-- How to make predictions with the fitted line:\\ 
-\,\,\,\,predict $\widehat{Y}$ based on $X$ and predict $\triangle\widehat{Y}$ based on $\triangle X$\\\\
-\concept{\textbf{Next Class}}\color{black}\\
-- Another example of how to use the linear\\
-\,\,\,\,model to make predictions, but with binary outcome\\[.3cm]
-- How to measure how well the model fits\\
-\,\,\,\,the data with $\textrm{R}^2$\\
-\end{tabular}
-\end{center}
-\vspace{-1cm}
-
-## For Next Class
-Here is the friendly reminder of what is due for next class:
-
-> - Go see the peer tutors (plan ahead)
-> - Review what you have learned thus far (lectures 2-10)
-> - Do new set of readings: section 4.6-4.9 (including both, following along the exercises with your own computer, skip 4.8)
-> - Bring your course packets to class
-\vspace{-1cm}
 
 ## Summary
 
-\vspace{1cm}
+- **Today's Class:**
+  + How to summarize the relationship between X and Y with a line: \fu{lm()}\ and \fu{geom\_smooth()}.
+  + How to interpret the two estimated coefficients: ($\widehat{\beta}_0$ and $\widehat{\beta}_1$) when outcome variable is non-binary.
+  + How to make predictions with the fitted line: 
+    + Predict $\widehat{Y}$ based on $X$ and predict.
+    + Predict $\triangle\widehat{Y}$ based on $\triangle X$
 
-* **Today's Class:**
-  + Exploring the Relationship Between Two Variables
-    + Scatterplots
-    + Correlations
+\vspace{0.2cm}
 
-\vspace{1cm}
-
-* Next class:
-  + Prediction and Linear Regression
+- **Next class**:
+  + Another example of how to use the linear model to make predictions, but with binary outcomes.
+  + How to measure how well the model fits the data with $\textrm{R}^2$.
   
+\vspace{-1cm}
+
+
 # Questions?
 
 # See you in the next class!
