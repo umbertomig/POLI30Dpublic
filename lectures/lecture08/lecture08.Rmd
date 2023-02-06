@@ -175,7 +175,6 @@ knitr::opts_chunk$set(mysmall = TRUE)
 
 ## Step 1: Load and Explore Data
 ```{r, collapse=TRUE, comment='##'}
-grades <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/grades.csv")
 educexp <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/educexp.csv")
 head(educexp, 3)
 ```
