@@ -1,0 +1,475 @@
+---
+title: |
+    | **POLI 30 D: Political Inquiry**
+    | \vspace{-.8cm}
+author: |
+    | \large\textbf{Professor Umberto Mignozzetti\\(Based on DSS Materials)}\vspace{.3cm}
+date: |
+    | \large\textbf{Lecture 11 | Causal Inference with Observational Data II}
+fontsize: 12pt
+urlcolor: blue
+output:
+  beamer_presentation:
+    highlight: tango
+    includes:
+      in_header: 'https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/latex/style.tex'
+    incremental: true # if true: pauses are inserted after each item in a list
+    keep_tex: false # if true: .tex files are kept (helpful when fixing errors)
+    slide_level: 2
+classoption: "handout" # overrides incremental, removes all pauses
+---
+
+```{r, include=FALSE}
+library(tidyverse)
+library(gridExtra)
+knitr::opts_chunk$set(echo = TRUE)
+knitr::knit_hooks$set(mysmall = function(before, options, envir) { 
+  if (before) { 
+    return("\\small") 
+  } else { 
+    return("\\normalsize") 
+  } 
+}) 
+knitr::knit_hooks$set(myfntsize = function(before, options, envir) { 
+  if (before) { 
+    return("\\footnotesize") 
+  } else { 
+    return("\\normalsize") 
+  } 
+}) 
+knitr::knit_hooks$set(mytiny = function(before, options, envir) { 
+  if (before) { 
+    return("\\tiny") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::opts_chunk$set(mysmall = TRUE)
+```
+
+## Before we start
+
+**Announcements:**
+
+- Quizzes and Participation: On Canvas.
+
+- GitHub page: [https://github.com/umbertomig/POLI30Dpublic](https://github.com/umbertomig/POLI30Dpublic)
+
+- Piazza forum: Not sure what the link is. Ask your TA!
+
+- Note to self: Turn on the mic!
+
+## Before we start
+
+**Recap:** We learned:
+
+- The definitions of theory, scientific theory, and hypotheses.
+- Data, datasets, variables, and how to compute means.
+- Causal effect, treatments, outcomes, and randomization.
+- Sampling, descriptive statistics, and descriptive plots for one variable.
+- Correlation between two continuous variables.
+- Prediction of a binary and a non-binary variable.
+- ATE using differences-in-means and simple linear regression.
+
+**Great job!**
+
+- Do you have any questions about these contents?
+
+***
+\begin{center}
+\begin{minipage}{0.80\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{\textbf{Plan for Today}}}\normalsize\\[.3cm]
+- How Can We Estimate Causal Effects with\\
+\,\,\,\,\,Observational Data?\\\\
+- Multiple Linear Regression Models \\
+\,\,\,\,\, - Interpretation of Coefficients\\
+\,\,\,\,\, - Interpretation of $\widehat{\beta_1}$ When X$_1$ Is the Treatment\\
+\,\,\,\,\,\,\,\,\,\, Variable and the Other X Variables Are All\\
+\,\,\,\,\,\,\,\,\,\, the Potential Confounding Variables\\\\
+- What is the Effect of the Death of the Leader \\
+\,\,\,\,\,on the Level of Democracy?\\
+\end{tabular}
+\end{center}
+\vspace{.1cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+
+##  How Can We Estimate Causal Effects\newline with Observational Data?
+
+- Most of the time, we have no control over the assignment.
+  + Then, how to eliminate potential confounders and make treatment and control groups comparable?
+
+\vspace{.1cm}
+
+- First, we must identify all potentially confounding variables
+  + variables that affect both (i) the likelihood of receiving the treatment and (ii) the outcome
+
+\vspace{.2cm}
+\begin{center}
+\begin{tikzpicture}
+\node (x) at (1,1) {$X$};
+\node (z) at (2,2) {$Z$};
+\node (y) at (3,1) {$Y$};
+\draw[->, line width=.02cm] (z) -- (y);
+\draw[->, line width=.02cm] (x) -- (y);
+\draw[->, line width=.02cm] (z) -- (x);
+\end{tikzpicture}
+\end{center}
+\vspace{.1cm}
+
+- Then, we need to *control* for them by fitting a **multiple linear regression model**
+
+\vspace{-1cm}
+
+## Multiple Linear Regression Models
+
+Linear models with more than one $X$ variable
+
+\vspace{-.3cm}
+
+$$\widehat{Y}_i = \widehat{\beta}_0 + \widehat{\beta}_1 X_{i1}+... + \widehat{\beta}_p X_{ip} $$
+\vspace{-.8cm}
+
+\noindent where:
+\begin{itemize}
+\item $\widehat{Y_i}$ is the predicted value of $Y$ for observation $i$
+\vspace{-.1cm}
+\item $\widehat{\beta}_0$ is the estimated intercept coefficient  
+\vspace{-.1cm}
+\item each $\widehat{\beta}_j$ (pronounced `beta hat sub j`) is the estimated coefficient for variable $X_j$ ($j \in \{1, ..., p\}$)
+\vspace{-.1cm}
+\item each $X_{ij}$ is the observed value of the variable $X_j$ for observation $i$ ($j \in \{1, ..., p\}$ and $i \in \{1, ..., n\}$)
+\vspace{-.1cm}
+\item $p$ is the total number of $X$ variables in the model.
+\end{itemize}
+\vspace{-1cm}
+
+## Multiple Linear Regression Models
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{@{\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,}c@{\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,}c@{\,\,\,\,\,\,\,\,\,\,\,\,\,\,}}
+\arrayrulecolor{gray}\midrule
+ simple regression & multiple regression\\\addlinespace[2.5pt]
+$\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$ & $\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_{1} X_{1}+ ... + \widehat{\beta}_p X_{p}$
+\\\addlinespace[3pt]
+\arrayrulecolor{gray}\midrule \addlinespace[3pt]
+$\widehat{\beta}_0$: $\widehat{Y}$ when $X{=}{0}$ &$\widehat{\beta}_0$: $\widehat{Y}$ when all $X_j{=}{0}$ \\
+& ($j{=}{1},...,p$) \\\addlinespace[4pt]
+$\widehat{\beta}_1$: $\triangle\widehat{Y}$ associated & each $\widehat{\beta}_j$: $\triangle\widehat{Y}$ associated \\
+with $\triangle X{=}{1}$ & with $\triangle X_j{=}{1}$, \\ 
+& while holding all other \\
+& $X$ variables constant \\
+& or \textit{ceteris paribus}\\\addlinespace[2pt]
+\arrayrulecolor{gray}\midrule
+\end{tabular}
+\end{center}
+\vspace{-.2cm}
+\end{table}
+
+## Interpretation of Coefficients in Multiple Linear Regression Models
+
+- $\widehat{\beta}_0$ is the $\widehat{Y}$ when \textit{all} $X_j{=}{0}$
+
+\vspace{.2cm}
+
+- Because there are multiple $X$ variables, there are multiple $\widehat{\beta}_j$ coefficients (one for each $X$ variable)
+
+\vspace{.2cm}
+
+- Each $\widehat{\beta}_j$ is the $\triangle \widehat{Y}$ associated with $\triangle X_j=1$, \textbf{while holding all other $X$ variables constant}
+
+\vspace{-1cm}
+
+## Interpretation of Coefficients in Multiple Linear Regression Models
+
+- Adding all confounders as controls in the model makes treatment and control groups comparable **after controls**:
+  + Something fancily called `conditional exogeneity`.
+
+- As a result, if $\widehat{\beta}_1$ is the treatment of interest, we can interpret it using the \concept{causal language}.
+
++ $\widehat{\beta}_1$ is the $\triangle \widehat{Y}$ \textit{caused by} the presence of the treatment ($\triangle X_1$=1), while holding confounders constant.
+
+- $\widehat{\beta}_1$ should be a valid estimate of the average treatment effect if **all** confounding variables are controlled.
+
+- Is this even possible?
+
+\vspace{-1cm}
+
+## Does the Death of the Leader Affect the Level of Democracy?
+
+\vspace{.6cm}\begin{center}\includegraphics[height=.5\textheight]{../../images/leaders}\end{center}
+
+\footnotesize
+
+(Based on \href{https://economics.mit.edu/files/3055}{Jones and Olken. 2009. *Hit or Miss? The Effect of Assassinations on Institutions and War.* \textbf{American Economic Journal: Macroeconomics}, 1 (2): 55-87.})
+
+## Does the Death of the Leader Affect the Level of Democracy?
+
+- After an assassination attempt, the death of a leader is close to random:
+  + Leaders whose assassination attempts succeeded should be, on average, *comparable* to leaders whose attempts failed.
+  + Do you believe that?
+
+- If this is true, we can estimate the average causal effect of the leader's death.
+
+- Fitting a simple linear model where the death of a leader is the "treatment" variable.
+
+\vspace{-1cm}
+
+## The *leaders* dataset
+
+- Dataset on assassinations and assassination attempts against political leaders from 1875 to 2004.
+
+\footnotesize
+| **variable** | **meaning** |
+|---|---|
+| year | year of the assassination attempt |
+| country | country where the assassination attempt took place |
+| leadername | name of the leader |
+| died | whether the leader died as a result of the assassination attempt |
+| politybefore | [Polity scores](https://en.wikipedia.org/wiki/Polity_data_series) of the country before the assassination attempt |
+| polityafter | [Polity scores](https://en.wikipedia.org/wiki/Polity_data_series) of the country after the assassination attempt |
+
+\small
+
+\vspace{-1cm}
+
+## Does the Death of the Leader Affect the Level of Democracy?
+
+1. Open RStudio
+\vspace{.2cm}
+
+2. Open **inclass07.R** from within RStudio. The file is on Canvas and the [Class GitHub](https://github.com/umbertomig/POLI30Dpublic).
+\vspace{.2cm}
+
+3. Load the dataset and check the first observations.
+
+\vspace{-1cm}
+
+## What is the Effect of the Death of the Leader on the Level of Democracy?
+
+\footnotesize
+```{r, collapse=TRUE, comment='##', mytiny = TRUE}
+leaders <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/leaders.csv")
+head(leaders)
+```
+
+\normalsize
+
+- What is the Treatment variable (X)?
+
+- What is the Outcome variable (Y)?
+
+\vspace{-1cm}
+
+## Does the Death of the Leader Affect the Level of Democracy?
+
+- To fit the simple linear model, where $\widehat{\beta}_1$ is equivalent to the difference-in-means estimator, we run:
+
+```{r, collapse=TRUE, comment='##', myfntsize = TRUE, fig.width=8, fig.height=5}
+lm(polityafter ~ died, data = leaders)  
+```
+
+- Fitted model: $\widehat{\textrm{\textit{polityafter}}}$ = -1.90 \pause + 1.13 *died*
+
+\vspace{-1cm}
+
+## Does the Death of the Leader Affect the Level of Democracy?
+
+**Interpretation of $\widehat{\beta}_1$:**
+
++ $\widehat{\beta}_1$ is the $\triangle \widehat{Y}$ associated with $\triangle X$ = 1
+
++ Here: $\widehat{\beta}_1$ = 1.13 is the $\triangle \widehat{\textrm{\textit{polityafter}}}$ associated with $\triangle$*died* = 1
+
++ In words: the death of the leader is associated with a predicted increase in polity scores of 1.13 points, on average
+
+## Does the Death of the Leader Affect the Level of Democracy?
+
+**Unit of measurement of $\widehat{\beta}_1$**:
+
++ Same as $\triangle \overline{Y}$
+
++ In here, *Y* is non-binary and measured in points.
+
++ Then, as $\triangle \overline{Y}$ is measured in points, so is $\widehat{\beta}_1$
+
+\vspace{-1cm}
+    
+## Does the Death of the Leader Affect the Level of Democracy?
+
+**Interpretation of $\widehat{\beta}_1$ (continuation):**
+
+- *died* in the attack is the "treatment" variable.
+
+- The Polity IV score is the "outcome" of interest.
+  + Thus, $\widehat{\beta}_1$ is equivalent to the difference-in-means estimator
+  
+- We may interpret $\widehat{\beta}_1$ using \concept{causal language}:
+
+\vspace{0.2cm}
+
+\begin{mdframed}[linecolor=titleline, linewidth=0.05cm] 
+\vspace{.1cm}
+\noindent The death of the leader is associated with a predicted \concept{increase}\ in polity scores after the assassination by 1.13 points, on average.
+\vspace{.1cm} 
+\end{mdframed}
+
+\vspace{-1cm}
+
+## Does the Death of the Leader Affect the Level of Democracy?
+
+**Interpretation of $\widehat{\beta}_1$ (continuation):**
+
+- Assumption for Causal Claim be valid:
+
+  + Assassination attempts where the leader died are comparable to those where the leader did not die
+
+- Again, is this plausible? 
+  + Can you think of a confounder?
+
+\vspace{-1cm}
+
+## Does the Death of the Leader Affect the Level of Democracy?
+
+- We can look at *pre-treatment characteristics*: how democratic was the country *before* the assassination attempt?
+
+- Calculate the average *politybefore* for the two groups:
+
+```{r, collapse=TRUE, comment='##', mysmall = TRUE}
+mean(leaders$politybefore[leaders$died==1]) # treatment
+mean(leaders$politybefore[leaders$died==0]) # control
+```
+
+- What do you see in here?
+
+\vspace{-1cm}
+
+## Does the Death of the Leader Affect the Level of Democracy?
+
+- Attempts where the leader died were more democratic to begin with.
+
+- Thus, *politybefore* might be a **confounding variable**:
+
+\vspace{0.2cm}
+
+\begin{center}
+\begin{tikzpicture}
+\node (x) at (0,1) {\textit{died}};
+\node (z) at (2,2) {\textit{politybefore}};
+\node (y) at (4,1) {\textit{polityafter}};
+\draw[->, line width=.02cm] (z) -- (y);
+\draw[->, line width=.02cm] (x) -- (y);
+\draw[->, line width=.02cm] (z) -- (x);
+\end{tikzpicture}
+\end{center}
+
+\vspace{-1cm}
+
+## Does the Death of the Leader Affect the Level of Democracy?
+
+**Estimate average causal effect while controlling for confounders**:
+
+- To control for confounders, we need to fit the following multiple regression linear model:
+
+\begin{center}$\widehat{\textrm{\textit{polityafter}}}$ = $\widehat{\beta}_0$ + $\widehat{\beta}_1$ \textit{died} + $\widehat{\beta}_2$ \textit{politybefore}\end{center}
+\vspace{.2cm}
+
+- To fit the model, we use the function \fu{lm()}\ with a formula of the type \fu{Y $\sim$ X$_1$ + X$_2$}
+
+## Does the Death of the Leader Affect the Level of Democracy?
+
+```{r, collapse=TRUE, comment='##', mysmall = TRUE}
+lm(polityafter ~ died + politybefore, data=leaders)  
+```
+
+- Fitted model:
+
+\vspace{.2cm}
+\begin{center}
+$\widehat{\textrm{\textit{polityafter}}}$ = -0.43 + 0.26 \textit{died} + 0.84 \textit{politybefore}
+\end{center}
+
+## Does the Death of the Leader Affect the Level of Democracy?
+
+**Interpretation of $\widehat{\beta}_1$:**
+
+- $\widehat{\beta}_1$ is the $\triangle \widehat{Y}$ associated with $\triangle X_1$=1, while holding all other variables constant.
+
+  + Here: $\widehat{\beta}_1$ = 0.26 is the $\triangle \widehat{\textrm{polityafter}}$ associated with $\triangle$*died*=1, while holding *politybefore* constant.
+
+\vspace{0.2cm}
+
+\begin{mdframed}[linecolor=titleline, linewidth=0.05cm] 
+\vspace{.1cm}
+\noindent The death of the leader is associated with a predicted increase in polity scores after the assassination attempt of 0.26 points, on average, while holding polity scores before constant.
+\vspace{.1cm} 
+\end{mdframed}
+
+\vspace{-1cm}
+
+## Does the Death of the Leader Affect the Level of Democracy?
+
+**Interpretation of $\widehat{\beta}_1$:**
+
+- Unit of measurement of $\widehat{\beta}_1$
+
+  + Same as $\triangle \overline{Y}$
+  
+  + Here, *Y* is non-binary and measured in points so $\triangle \overline{Y}$ is measured in points, and so is $\widehat{\beta}_1$
+
+\vspace{-1cm}
+
+## Does the Death of the Leader Affect the Level of Democracy?
+
+**Interpretation of $\widehat{\beta}_1$ (continuation)**
+
+\vspace{.1cm}
+
+- Since here $X_1$ is the treatment variable, $Y$ is the outcome variable of interest, and $X_2$ is the confounder we are worried about, we can interpret $\widehat{\beta}_1$ using \concept{causal language}
+
+- **Causal language:** We estimate that the death of the leader \concept{\textit{increases}}\ polity scores after the assassination attempt by 0.26 points, on average, when holding polity scores before the assassination attempt constant.
+
+\vspace{-1cm}
+
+## Does the Death of the Leader Affect the Level of Democracy?
+
+- This should be a valid estimate of the average treatment effect if *politybefore* is the only confounder
+
+- Note that once we control for *politybefore*, the effect size decreases substantially (it goes from 1.13 to 0.26)
+
+- Based on this analysis, the death of the leader increases the level of democracy of a country but by a smaller amount (more on this later)
+
+\vspace{-1cm}
+
+***
+\linespread{1.5}\selectfont
+\begin{mdframed}[linecolor=titleline, linewidth=0.05cm] 
+\vspace{.2cm}
+\noindent \tip{Average Causal Effects with Observational Data and Multiple Linear Regression}.\\Suppose in the multiple linear regression model where $X_1$ is the treatment variable, we control for \textit{all} potential confounders by including them in the model as additional $X$ variables. In that case, we can interpret $\widehat{\beta}_1$ as a valid estimate of the average causal effect of $X_1$ on $Y$.
+\vspace{.2cm} 
+\end{mdframed}
+
+## Summary
+
+- **Today's Class:**
+  + With Observational Data, Use Multiple Linear Regression Models to:
+    1. Control for Confounders
+    2. Estimate Average Treatment Effects
+
+\vspace{0.2cm}
+
+- **Next class**:
+  + More Causality with Observational Data:
+    + Internal versus External Validity.
+  
+\vspace{-1cm}
+
+# Questions?
+
+# See you in the next class!
