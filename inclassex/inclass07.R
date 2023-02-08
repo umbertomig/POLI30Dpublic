@@ -8,6 +8,9 @@ leaders <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/
 ## Checking the first few observations
 head(leaders)
 
+## Quick summary of the dataset
+summary(leaders)
+
 ## Linear regression of polity after the assassination attempt
 #   explained by the attempt's success:
 lm(polityafter ~ died, data = leaders)  
