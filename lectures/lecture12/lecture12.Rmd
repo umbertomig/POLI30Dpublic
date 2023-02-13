@@ -1,0 +1,363 @@
+---
+title: |
+    | **POLI 30 D: Political Inquiry**
+    | \vspace{-.8cm}
+author: |
+    | \large\textbf{Professor Umberto Mignozzetti\\(Based on DSS Materials)}\vspace{.3cm}
+date: |
+    | \large\textbf{Lecture 12 | Causal Inference with Observational Data III}
+fontsize: 12pt
+urlcolor: blue
+output:
+  beamer_presentation:
+    highlight: tango
+    includes:
+      in_header: 'https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/latex/style.tex'
+    incremental: true # if true: pauses are inserted after each item in a list
+    keep_tex: false # if true: .tex files are kept (helpful when fixing errors)
+    slide_level: 2
+classoption: "handout" # overrides incremental, removes all pauses
+---
+
+```{r, include=FALSE}
+library(tidyverse)
+library(gridExtra)
+knitr::opts_chunk$set(echo = TRUE)
+knitr::knit_hooks$set(mysmall = function(before, options, envir) { 
+  if (before) { 
+    return("\\small") 
+  } else { 
+    return("\\normalsize") 
+  } 
+}) 
+knitr::knit_hooks$set(myfntsize = function(before, options, envir) { 
+  if (before) { 
+    return("\\footnotesize") 
+  } else { 
+    return("\\normalsize") 
+  } 
+}) 
+knitr::knit_hooks$set(mytiny = function(before, options, envir) { 
+  if (before) { 
+    return("\\tiny") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::opts_chunk$set(mysmall = TRUE)
+```
+
+## Before we start
+
+**Announcements:**
+
+- Quizzes and Participation: On Canvas.
+
+- GitHub page: [https://github.com/umbertomig/POLI30Dpublic](https://github.com/umbertomig/POLI30Dpublic)
+
+- Piazza forum: Not sure what the link is. Ask your TA!
+
+- Note to self: Turn on the mic!
+
+## Before we start
+
+\footnotesize
+
+**Recap:** We learned:
+
+- The definitions of theory, scientific theory, and hypotheses.
+- Data, datasets, variables, and how to compute means.
+- Causal effect, treatments, outcomes, and randomization.
+- Sampling, descriptive statistics, and correlation.
+- Prediction of a binary and a non-binary variable.
+- ATE using differences-in-means, simple linear regression, and multiple linear regression.
+
+**Great job!**
+
+- Do you have any questions about these contents?
+
+\normalsize
+
+***
+\begin{center}
+\begin{minipage}{0.85\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{\textbf{Plan for Today}}}\normalsize\\\\
+- Causal Studies\\
+- Internal Validity vs. External Validity \\
+- Randomized Experiments vs. Observational Studies\\
+- The Role of Randomization\\
+\end{tabular}
+\end{center}
+\vspace{.1cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+
+## Causal Studies
+
+- So far, we have learned how to estimate the average change in the outcome caused by the treatment:
+
+\vspace{.2cm}
+
+  + **Experimental data:** difference-in-means estimator directly or by fitting a simple linear regression
+
+  + **Observational data:** controlling for all confounding variables using a multiple linear regression
+
+- There are more issues we must consider when conducting or evaluating a scientific causal study:
+
+  + **Internal** and **external validity** of the study
+
+\vspace{-1cm}
+
+## Internal Validity
+
+- Refers to the extent to which the causal assumptions are satisfied
+
+- It asks, **is the estimated causal effect valid for the sample of observations in the study?** 
+
+- The answer depends on whether treatment and control groups are comparable, that is, on whether we have:
+
+\vspace{.2cm}
+a. Eliminated all confounding variables (randomized experiment) OR
+
+b. Controlled for all potentially confounding variables (observational data).
+
+\vspace{-1cm}
+
+## External Validity
+
+- Refers to the **extent to which the conclusions can be generalized**.
+
+- It asks, **is the estimated causal effect valid beyond this particular study?**
+
+- The answer depends on the following:
+
+a. Whether the sample of observations in the study is representative of the population to which we want to generalize the results AND 
+
+b. Whether the treatment used in the study is representative of the treatment for which we want to generalize the results
+
+\vspace{-1cm}
+
+## External Validity
+
+- \concept{Randomized experiments}\ tend to have **strong internal validity** but relatively **weak external validity**:
+\vspace{.2cm}
+  + Random treatment assignment eliminates confounding variables, BUT
+  
+  + Sample may not represent the population, or treatment may be unrealistic.
+
+\vspace{-1cm}
+
+## External Validity
+
+- \concept{Observational studies}\ tend to have **stronger external validity** but relatively **weak internal validity**:
+\vspace{.2cm}
+
+  + Sample is usually representative of the population, and treatment is usually realistic, BUT
+    
+  + Possibility of confounding cannot be ruled out.
+
+\vspace{-1cm}
+
+## External Validity
+
+- This dynamic explains why scholars and policymakers use both types of studies to estimate causal effects: 
+
+  + Complementary strengths
+
+- Nonetheless:
+
+  + Some studies based on experimental data have strong external validity, and
+
+  + Some studies based on observational data have strong internal validity.
+  
+- **We should consider the study details when evaluating them**.
+
+\vspace{-1cm}
+
+
+## Randomization Gives Us Super Powers
+
+\vspace{.3cm}
+\begin{center}
+\includegraphics[height=.70\textheight]{../../images/super_powers.jpg}
+\end{center}
+\vspace{-1cm}
+
+## The Role of Randomization    
+
+1. When selecting observations from the population into the sample, \concept{random sampling}
+
+\vspace{.2cm}
+
+  + Ensures sample is **representative** of target population
+  + Ensures strong **external validity** (assuming the treatment is realistic)
+    
+\vspace{.2cm}\begin{center}  
+\includegraphics[height=.25\textheight]{../../images/pop_sample.jpeg}
+\end{center} \vspace{-1cm}
+
+
+## The Role of Randomization
+
+2. When deciding who receives the treatment and who does not, \concept{random treatment assignment}
+    \vspace{.2cm}
+  + Eliminates **confounders**, making treatment and control groups **comparable**
+  + Ensures strong **internal validity**
+
+\vspace{.2cm}\begin{center}  
+\includegraphics[height=.25\textheight]{../../images/treatment_outcome.jpeg}
+\end{center} \vspace{-.6cm}
+    
+## The Role of Randomization
+
+\vspace{.3cm}
+\begin{center}
+\includegraphics[height=.70\textheight]{../../images/super_powers_validities.jpeg}
+\end{center}
+
+## The Role of Randomization
+
+\includegraphics[width=1\textwidth]{../../images/Random.png}
+
+\vspace{1cm}
+
+- Let us evaluate the causal studies we have seen thus far!
+
+## Does Social Pressure Affect Turnout?
+
+\vspace{.4cm}\begin{center}\includegraphics[height=.6\textheight]{../../images/vote.jpg}\end{center}\vspace{-.3cm}
+
+\footnotesize
+(Based on \href{http://www.donaldgreen.com/wp-content/uploads/2015/09/Gerber_Green_Larimer-APSR-2008.pdf}{Gerber, Green, and Larimer. 2008. ``Social Pressure and Voter Turnout: Evidence from a Large-Scale Field Experiment." \textit{American Political Science Review}, 102 (1): 33-48.})
+
+## Does Social Pressure Affect Turnout?
+
+- Experiment conducted in Michigan, where postcards with get-out-to-vote messages were randomly sent to registered voters
+
+\vspace{.1cm}
+
+- \alert{Internal validity}: Strong
+  + Why?
+    + Random treatment assignment should have eliminated all confounding variables. 
+    + Registered voters who received the postcard should be comparable to registered voters who did not.
+
+\vspace{-1cm}
+    
+## Does Social Pressure Affect Turnout?
+
+- \alert{External validity}: Depends on population and treatment, we want to generalize the results to:
+
+\vspace{.1cm}
+  + Could we generalize the results to receiving the same treatment in Michigan? 
+    + Yes, if the sample of registered voters used is representative of all registered voters in Michigan. 
+
+\vspace{.1cm}
+
+  + Could we generalize the results to receiving the same postcard type in Massachusetts? 
+    + Depends on how different registered voters in Massachusetts are from those in Michigan.
+
+\vspace{-1cm}
+
+## Do Women Promote Different Policies than Men?
+
+\vspace{.4cm}\begin{center}\includegraphics[height=.4\textheight]{../../images/drinking.jpg}\,\,\, \includegraphics[height=.4\textheight]{../../images/irrigation.jpg}\end{center}
+
+\footnotesize
+(Based on \href{https://economics.mit.edu/files/792}{Chattopadhyay and Duflo. 2004. ``Women as Policy Makers: Evidence from a Randomized Policy Experiment in India." \textit{Econometrica}, 72 (5): 1409–43.})
+
+\vspace{-1cm}
+
+## Do Women Promote Different Policies than Men?
+
+- Experiment conducted in India, where female politicians were randomly assigned to rural villages
+
+\vspace{.2cm}
+
+- \alert{Internal validity}: Strong
+  + Why? 
+    + Random treatment assignment should have eliminated all confounding variables. 
+    + Villages assigned to have a female politician should be comparable to villages that were not.
+
+\vspace{-1cm}
+
+## Do Women Promote Different Policies than Men?
+
+- \alert{External validity}: Depending on population and treatment, we want to generalize the results to.
+
+\vspace{.1cm}
+
+  + Could we generalize the results to having a female politician in the whole of India?
+    + Not really, probably only in rural areas.
+
+\vspace{.1cm}
+
+  + Could we generalize the results to having a female politician in U.S. towns? 
+    + Absolutely not. Rural villages in India are not representative of U.S. towns.
+
+\vspace{.1cm}
+
+- But, it is still relevant to see that women and men promote different policies in this context.
+
+\vspace{-1cm}
+
+## Does the Death of the Leader Increase the Level of Democracy?
+
+\vspace{.6cm}\begin{center}\includegraphics[height=.5\textheight]{../../images/leaders}\end{center}
+
+\footnotesize
+(Based on \href{https://economics.mit.edu/files/3055}{Jones and Olken. 2009. "Hit or Miss? The Effect of Assassinations on Institutions and War." \textit{AEJ: Macroeconomics}, 1 (2): 55-87.})
+
+\vspace{-1cm}
+
+## Does the Death of the Leader Increase the Level of Democracy?
+
+- Observational data from assassination attempts of leaders around the world.
+
+\vspace{.1cm}
+
+- \alert{Internal validity of study without controls}: Weak
+  + Why?
+    + NOT a randomized experiment: Potential confounding variables (e.g., *politybefore*). 
+    + Countries where the leader died, were more democratic, to begin with, than countries where the leader did not die.
+
+\vspace{.1cm}
+
+- \alert{Internal validity of study with controls}: Improved
+  + Why? Controlling for *politybefore* should help make countries more comparable.
+
+\vspace{-1cm}
+
+## Does the Death of the Leader Increase the Level of Democracy?
+
+- \alert{External validity}: Depends on the population and treatment we want to generalize the results to.
+
+\vspace{.1cm}
+
+  + Could we generalize the results to leaders' deaths in all countries? *Probably not.* 
+
+\vspace{.1cm}
+
+  + We may be able to generalize to countries with assassination attempts (which tend to be less democratic, to begin with).
+
+\vspace{-1cm}
+
+## Summary
+
+- **Today's Class:**
+  + Internal vs. External Validity.
+
+\vspace{0.2cm}
+
+- **Next class**:
+  + Probability theory.
+  
+\vspace{-1cm}
+
+# Questions?
+
+# See you in the next class!

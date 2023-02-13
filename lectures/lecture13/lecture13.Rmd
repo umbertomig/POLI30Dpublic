@@ -1,0 +1,660 @@
+---
+title: |
+    | **POLI 30 D: Political Inquiry**
+    | \vspace{-.8cm}
+author: |
+    | \large\textbf{Professor Umberto Mignozzetti\\(Based on DSS Materials)}\vspace{.3cm}
+date: |
+    | \large\textbf{Lecture 13 | Probability}
+fontsize: 12pt
+urlcolor: blue
+output:
+  beamer_presentation:
+    highlight: tango
+    includes:
+      in_header: 'https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/latex/style.tex'
+    incremental: true # if true: pauses are inserted after each item in a list
+    keep_tex: false # if true: .tex files are kept (helpful when fixing errors)
+    slide_level: 2
+classoption: "handout" # overrides incremental, removes all pauses
+---
+
+```{r, include=FALSE}
+library(tidyverse)
+library(gridExtra)
+knitr::opts_chunk$set(echo = TRUE)
+knitr::knit_hooks$set(mysmall = function(before, options, envir) { 
+  if (before) { 
+    return("\\small") 
+  } else { 
+    return("\\normalsize") 
+  } 
+}) 
+knitr::knit_hooks$set(myfntsize = function(before, options, envir) { 
+  if (before) { 
+    return("\\footnotesize") 
+  } else { 
+    return("\\normalsize") 
+  } 
+}) 
+knitr::knit_hooks$set(mytiny = function(before, options, envir) { 
+  if (before) { 
+    return("\\tiny") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::opts_chunk$set(mysmall = TRUE)
+```
+
+## Before we start
+
+**Announcements:**
+
+- Quizzes and Participation: On Canvas.
+
+- GitHub page: [https://github.com/umbertomig/POLI30Dpublic](https://github.com/umbertomig/POLI30Dpublic)
+
+- Piazza forum: Not sure what the link is. Ask your TA!
+
+- Note to self: Turn on the mic!
+
+## Before we start
+
+\footnotesize
+
+**Recap:** We learned:
+
+- The definitions of theory, scientific theory, and hypotheses.
+- Data, datasets, variables, and how to compute means.
+- Causal effect, treatments, outcomes, and randomization.
+- Sampling, descriptive statistics, and correlation.
+- Prediction of a binary and a non-binary variable.
+- Strengths and weaknesses of observational and experimental studies.
+
+**Great job!**
+
+- Do you have any questions about these contents?
+
+\normalsize
+
+***
+\begin{center}
+\begin{minipage}{0.8\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{\textbf{Plan for Today}}}\normalsize\\[.3cm]
+- Probability\\
+- Events and Random Variables\\
+- Probability Distributions\\
+\,\,\,\, - Bernoulli Distribution\\
+\,\,\,\, - Normal Distribution\\
+\,\,\,\, - The Standard Normal Distribution\\
+- Population Parameters vs. Sample Statistics\\
+- Law of Large Numbers and Central Limit Theorem\\
+\end{tabular}
+\end{center}
+\vspace{.1cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+
+## Probability
+
+- There are two ways of interpreting probability:
+
+\vspace{.1cm}
+
+- \concept{Frequentist}: The probability of an event is the proportion of its occurrence among infinitely many identical trials
+  + Example: the probability of heads when flipping a coin
+
+\vspace{.1cm}
+
+- \concept{Bayesian}: Probabilities represent one's subjective beliefs about the relative likelihood of events
+  + Example: the probability of rain in the afternoon
+
+## Events and Random Variables
+
+- \concept{Events}: Sets of outcomes that occur with a particular probability
+
+- Most things in our lives can be considered \concept{events}
+  + Example: Being 6 feet or taller
+
+- \concept{Random Variables}: Assigns a numeric value to each mutually exclusive event produced by a trial
+  + As soon as we assign a number to an event, we create a random variable.
+
+\vspace{-1cm}
+
+## Events and Random Variables
+
+- Random variable *tall*:
+
+$$ \textrm{tall}_i = \begin{cases} \textrm{1} \text{ if individual i is 6 feet or taller}\\[3pt] \textrm{0} \text{ if individual i is not}\end{cases} $$
+
+\vspace{-1cm}
+
+## Probability Distribution
+
+- Each random variable has a \concept{Probability Distribution}:
+
+\vspace{.1cm}
+
+  + Likelihood of each value the variable can take.
+
+\vspace{.1cm}
+
+  + Probability distribution of *tall*:
+
+\vspace{.1cm}
+
+  + $\mathbb{P}(\text{tall})$ = probability of being tall
+  + $\mathbb{P}(\text{not tall})$ = probability of not being tall
+
+\vspace{-1cm}
+
+## Probability
+
+- Probabilities are always between zero and one: 
+  + $\mathbb{P}(\text{tall}) \in [0, 1]$
+  + $\mathbb{P}(\text{not tall}) \in [0, 1]$
+
+\vspace{.1cm}
+
+- Do you agree that a person can either be tall or not? If yes:
+  + $\mathbb{P}(\text{tall}) + \mathbb{P}(\text{not tall}) = 1$
+
+\vspace{.1cm}
+
+- Do you agree that a person can either be tall or not? If yes:
+  + $\mathbb{P}(\text{neither tall nor not tall}) = \mathbb{P}(\emptyset) = 0$
+
+\vspace{-1cm}
+
+## Probability Distributions
+
+- We distinguished between binary and non-binary (random) variables
+\vspace{.1cm}
+  + Binary variables are?
+  + Non-binary variables are?
+
+\vspace{.1cm}
+
+- We will focus on two different types of probability distributions
+
+\vspace{.1cm}
+
+  + *Bernoulli distribution:* probability distribution of a binary variable.
+  + *Normal distribution:* probability distribution we commonly use as a good approximation for many non-binary variables.
+
+\vspace{-1cm}
+
+## Bernoulli Distribution
+
+- Probability distribution of a binary variable.
+- It is characterized by one parameter: $p$.
+  + If $\mathbb{P}(\text{X} = 1) = p$, then $\mathbb{P}(\text{X} = 0) = 1-p$.
+  + If $\mathbb{P}(\text{X} = 1) = 0.8$, then what is $\mathbb{P}(\text{X} = 0)$?
+
+\vspace{.1cm}
+- The *mean* of a Bernoulli distribution is $p$
+
+- The *variance* of a Bernoulli distribution is $p(1-p)$
+
+\vspace{-1cm}
+
+## Example: Passing the class
+
+- Random Variable: *pass* = $\{0,1,1,1,1,1,1,1,1,1\}$
+
+\vspace{-.8cm}
+$$\textrm{\,\,\,\,\,\,\,\,\,\,where: \textit{pass}}_i = \begin{cases} 1 \text{ if student \textit{i} passed the class} \\[3pt] 0 \text{ if student \textit{i} didn't pass the class}\end{cases}$$
+
+- Probability distribution: Bernoulli, where $p=$?
+  + $\mathbb{P}(\text{pass}) = p$ 
+  + $\mathbb{P}(\text{not pass}) = 1-p$
+
+\vspace{-1cm}
+
+## Example: Passing the class
+
+$$ pass = \{0,1,1,1,1,1,1,1,1,1\} $$
+
+- What is the probability that a student passes the class? What is $p$? 
+
+\vspace{-0.5cm}
+
+\begin{align*}
+\mathbb{P}(\text{pass}) &= 
+\frac{\textrm{number of students who passed}}{\textrm{total number of students}}\\[.3cm]
+& = \frac{\textrm{frequency of 1s}}{\textrm{total number of observations}} = \textrm{\, ?}\\
+\end{align*}
+
+\vspace{-0.5cm}
+
+- $\mathbb{P}(\textit{pass}) = p = 0.9$. 
+  + Interpretation: The probability of passing the class is 90\%.
+
+\vspace{-1cm}
+
+## Example: Passing the class
+
+$$ pass = \{0,1,1,1,1,1,1,1,1,1\} $$
+
+- What is the probability that a student will fail? What is $1-p$? 
+
+\vspace{-0.5cm}
+
+\begin{align*}
+\mathbb{P}(\textit{not pass}) & = 
+\frac{\textrm{number of students who did not pass}}{\textrm{total number of students}}\\[.3cm]
+& = \frac{\textrm{frequency of 0s}}{\textrm{total number of observations}} = \textrm{\, ?}\\ \end{align*}
+
+\vspace{-0.5cm}
+
+- $\mathbb{P}(\textit{not pass})$ = 1-p = 1-0.90 = 0.1. 
+  + Interpretation: The probability of failing the class is 10\%.
+
+\vspace{-1cm}
+
+## Normal Distribution
+
+- Probability distribution is commonly used as a good approximation for many non-binary variables.
+
+- It is characterized by two parameters: $\mu$ (mu, the mean) and $\sigma^{2}$ (sigma-squared, the variance).
+
+```{r, fig.width=6, fig.height=3, echo=F, cache=FALSE}
+x1 <- rnorm(1e6, mean=0, sd=1)
+par(mfrow = c(1,1),
+oma = c(1,0,1,0) + 0.1, # outer margin: bottom, left, top, right
+mar = c(3,3,1,1) + 0.1, # inner margin, default: c(5,4,4,2) + 0.1
+mgp = c(2,0.5,0), # margin line for axis title, default: c(3,1,0)
+cex=.8, adj=1, # 1: right-justified
+yaxs="r", xaxs="r") # axis choice: "i" internal, "r" regular
+
+hist(x1, freq=FALSE, col="white", border="white", xlim=c(-5, 5), 
+     main="", xlab="", ylab="density", ylim=c(0,0.4), 
+     font.main=1, axes = F, col.lab="gray17")
+lines(density(x1), col="#ef3119")
+
+axis(1, at=c(-6,6), labels=F, col="gray17", 
+     col.ticks="gray", col.axis="gray17", tck=0)
+axis(2, at=c(0, 0.1, 0.2, 0.3, 0.4), labels=T, 
+     col="gray17", col.ticks="gray", col.axis="gray17", tck=-0.02)
+mtext("X", side=1, line=0.5, outer=FALSE, adj=1, cex=0.8,
+      col="gray17")
+abline(v=0, lty="dashed", col="gray30")
+
+text(x=2.5,y=.32, 
+     labels=expression(paste("N(",mu,", ",sigma^2,")")), 
+     cex = 1.3, col="#ef3119")
+mtext(expression(paste(mu)), side=1, line = 0.5, 
+      outer=FALSE, at=0, cex=1, col="#ef3119")
+arrows(0.1+0.15, .17, .9+0.15, .17, code = 3, 
+       lwd=1, length=.05, col="gray30")
+text(x=0.5+0.15,y=.2, 
+     labels=expression(paste(sigma)), cex = 1.3, col="#ef3119", adj=0.5)
+```
+
+\vspace{-2cm}
+
+## Normal Distribution
+
+- *Normal random variables* are variables *normally* distributed
+
+\vspace{-0.5cm}
+
+$$X \sim \pN(\mu, \sigma^2)$$
+
+\vspace{-0.5cm}
+
+- Examples of Normal distributions:
+
+\textrm{\,\,}\vspace{-.5cm}
+```{r, fig.width=6, fig.height=2, echo=F}
+x1 <- rnorm(1e6)
+x2 <- rnorm(1e6, mean=2, sd=1)
+x3 <- rnorm(1e6, mean=0, sd=2)
+par(mfrow = c(1,1),
+oma = c(1,0,1,0) + 0.1, # outer margin: bottom, left, top, right
+mar = c(3,3,1,1) + 0.1, # inner margin, default: c(5,4,4,2) + 0.1
+mgp = c(2,0.5,0), # margin line for axis title, default: c(3,1,0)
+cex=.8, adj=1, # 1: right-justified
+yaxs="r", xaxs="r") # axis choice: "i" internal, "r" regular
+hist(x1, freq=FALSE, col="white", border="white", 
+     xlim=c(-5, 5), main="", xlab="", 
+     ylab="density", ylim=c(0,0.4), 
+     font.main=1, axes = F, col.lab="gray17")
+axis(1, at=c(-4,-2, 0, 2, 4), labels=T, col="gray17", col.ticks="gray", col.axis="gray17", tck=-0.02)
+axis(2, at=c(0, 0.1, 0.2, 0.3, 0.4), labels=T, col="gray17", col.ticks="gray", col.axis="gray17", tck=-0.02)
+mtext("X", side=1, line=0.5, outer=FALSE, 
+      adj=1, cex=0.8, col="gray17")
+lines(density(x1), col="gray17")
+lines(density(x2), col="#ef3119")
+lines(density(x3), col="gray")
+text(x=-1.5,y=.35, labels="N(0, 1)", cex = 1.3, col="gray17")
+text(x=4.5,y=.35, labels="N(2, 1)", cex = 1.3, col="#ef3119")
+text(x=-3,y=.15, labels="N(0, 4)", cex = 1.3, col="gray")
+```
+
+- What is the mean and variance of $\pN(0,1)$?
+
+\vspace{-1cm}
+
+## Normal Distribution
+
+- The probability density function of the normal distribution represents the likelihood of each possible value of a normal r. v. can take.
+
+- We can use it to compute the probability that X takes a value within a given range:
+
+\vspace{-0.5cm}
+
+$$ \mathbb{P}(\textrm{x}_{1} \leq X \leq \textrm{x}_{2}) = \textrm{area under the curve between } \textrm{x}_{1} \textrm{ and } \textrm{x}_{2} $$ 
+
+\vspace{-0.5cm}
+
+```{r, fig.width=6, fig.height=2, echo=F, cache=FALSE}
+par(mfrow = c(1,1),
+          oma = c(1,0,1,0) + 0.1,
+          mar = c(3,3,1,1) + 0.1,
+          mgp = c(2,.5,0), cex=.8, adj=1)
+
+x <- seq(-3.5,3.5,length=1e3)
+y <- dnorm(x,mean=0,sd=1)
+plot(x, y, type="l", col="white", xlim=c(-4, 4), 
+     main="", xlab="", ylim=c(0,0.4), 
+     font.main=1, bty="n", axes = F, ylab="", 
+     lty="dashed", col.lab="gray17")
+
+axis(1, at=c(-5, 0, 2, 5), labels=c("", expression(paste(x[1])), expression(paste(x[2])), ""), lwd.tick=0, 
+     col="gray17", col.lab="gray17", col.axis="gray17")
+polygon(c(x[x>=0], 0), c(y[x>=0], y[x==max(x)]), col="gray", border="white")
+polygon(c(x[x>=2], 2), c(y[x>=2], y[x==max(x)]), col="white", border="white")
+lines(x,y, col="gray17", lwd=1, lty=2) 
+```
+
+\vspace{-2cm}
+
+## Normal Distribution
+
+```{r, fig.width=6, fig.height=2, echo=F, cache=FALSE}
+par(mfrow = c(1,1),
+          oma = c(1,0,1,0) + 0.1,
+          mar = c(3,3,1,1) + 0.1,
+          mgp = c(2,.5,0), cex=.8, adj=1)
+
+x <- seq(-3.5,3.5,length=1e3)
+y <- dnorm(x,mean=0,sd=1)
+plot(x, y, type="l", col="white", xlim=c(-4, 4), 
+     main="", xlab="", ylim=c(0,0.4), font.main=1, 
+     bty="n", axes = F, ylab="", lty="dashed")
+
+axis(1, at=c(-5,-1,0, 1, 2, 5), labels=c("",-1, 0, 1, 2, ""), lwd.tick=0, col.axis="gray17", col="gray17")
+polygon(c(x[x>=1], 1), c(y[x>=1], y[x==max(x)]), col="gray", border="white")
+polygon(c(x[x>=2], 2), c(y[x>=2], y[x==max(x)]), col="white", border="white")
+polygon(c(x[x<=0], 0), c(y[x<=0], y[x==min(x)]), col="#f25c49", border="white")
+polygon(c(x[x<=-1], -1), c(y[x<=-1], y[x==min(x)]), col="white", border="white")
+lines(x,y, col="gray17", lwd=1, lty=2) 
+```
+
+$$\mathbb{P}(-1 \leq X \leq 0) \ < \textrm{or} > \ \mathbb{P}(1 \leq X \leq 2) \textrm{?}$$
+
+\vspace{-1cm}
+
+## The Standard Normal Distribution
+
+- Normal distribution with mean 0 and variance 1 (and standard deviation = 1)
+- In mathematical notation, we refer to the standard normal random variable as $Z$ and write it as 
+
+\vspace{-.2cm}
+$$Z \sim \pN(0, 1)$$
+
+- Note that this $Z$ has nothing to do with confounding variables
+- $Z$ has two useful properties...
+
+\vspace{-1cm}
+
+## Normal Distribution
+
+First, since $Z$ is symmetric and centered at 0: \pause
+
+\vspace{.2cm}
+$$\textrm{\textit{P}}(Z\leq{-}\textrm{z}) \,\, = \,\, \textrm{\textit{P}}(Z \geq \textrm{z}) \textrm{\,\,\,\,\,\,\, \color{gray}(where z $\geq$ 0)}$$ 
+\vspace{.2cm}\pause
+
+```{r, fig.width=6, fig.height=2, echo=F, cache=FALSE}
+par(mfrow = c(1,1),
+          oma = c(1,0,1,0) + 0.1,
+          mar = c(3,3,1,1) + 0.1,
+          mgp = c(2,.5,0), cex=0.8, adj=1)
+
+x <- seq(-3.5,3.5,length=1e3)
+y <- dnorm(x,mean=0,sd=1)
+plot(x, y, type="l", col="white", xlim=c(-3, 3), 
+     main="", xlab="", ylim=c(0,0.4), font.main=1, 
+     bty="n", axes = F, ylab="")
+
+abline(v=0, lty="dashed", col="gray")
+
+axis(1, at=c(-5,-1,0, 1, 5), 
+     labels=c("", "-z", 0, "z",""), lwd.tick=0, 
+     col="gray17", col.axis="gray17")
+mtext(expression(paste(infinity)), side=1, 
+      line=.6, outer=FALSE, at=3.2, cex=1.1, col="gray17")
+mtext(expression(paste("-",infinity)), side=1, 
+      line=.6, outer=FALSE, at=-3.1, cex=1.1, col="gray17")
+
+polygon(c(x[x>=1], 1), c(y[x>=1], y[x==max(x)]), 
+        col="gray", border="white")
+polygon(c(x[x<=-1], -1), c(y[x<=-1], y[x==min(x)]), 
+        col="gray", border="white")
+lines(x,y, col="gray17", lwd=1, lty=2)
+```
+
+\vspace{-1cm}
+
+## Normal Distribution
+
+Second, about 95\% of the observations of $Z$ are between -1.96 and 1.96:
+
+\vspace{-.2cm}
+$$\textrm{\textit{P}}(\textrm{-1.96} \leq Z \leq\textrm{1.96}) \,\, \approx \,\, \textrm{0.95}\,\,\,$$
+\vspace{.2cm}
+
+```{r, fig.width=6, fig.height=2, echo=F, cache=FALSE}
+par(mfrow = c(1,1),
+          oma = c(1,0,1,0) + 0.1,
+          mar = c(3,3,1,1) + 0.1,
+          mgp = c(2,.5,0), cex=0.8, adj=1)
+          
+x <- seq(-3.5,3.5,length=1e3)
+y <- dnorm(x,mean=0,sd=1)
+plot(x, y, type="l", col="white", xlim=c(-3, 3), 
+     main="", xlab="", ylim=c(0,0.4), 
+     font.main=1, bty="n", axes = F, ylab="")
+axis(1, at=c(-3.1,-2,2,3.1), 
+     labels=c("","-1.96","1.96",""), 
+     lwd.tick=0, col.axis="gray17", col="gray17")
+polygon(c(x[x>=-2], -2), c(y[x>=-2], y[x==max(x)]), 
+        col="gray", border="white")
+polygon(c(x[x>=2], 2), c(y[x>=2], y[x==max(x)]), 
+        col="white", border="white")
+lines(x,y, col="gray17", lwd=1, lty=2) 
+text(x=0,y=0.19, labels=expression("95%"),
+     cex = 1.3, col="white", lwd=2, adj=0.5)
+``` 
+
+\vspace{-1cm}
+
+## How to Transform A Normal Random Variable Into the Standard Normal Random Variable
+
+\begin{center}
+\begin{minipage}{0.7\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.1cm}
+\begin{center}
+\begin{align*} 
+\textrm{if } X \sim \pN(\mu, \sigma^{2})\textrm{, \,\,\,\,\,\,\,} \frac{X-\mu}{\sigma} \sim \pN\textrm{(0, 1)}
+\end{align*}
+\end{center}
+\vspace{.1cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+\vspace{.5cm}
+
+- Example: If $X \sim \pN(4, 25)$, \textrm{\,\,\,} $\frac{X - \textrm{\,\,?}}{\textrm{\,\,?}} \sim \pN$(0,1)
+
+\vspace{-1cm}
+
+## Population Parameters vs. Sample Statistics
+
+- When we analyze data, we are usually interested in the value of a \concept{parameter}\ at the population level.
+  + Proportion of candidate A supporters among all voters in a country.
+  
+\vspace{.1cm}
+
+- We typically only have access to \concept{statistics}\ from a small sample:
+  + Proportion of supporters among the voters who responded to a survey.
+
+\vspace{.1cm}
+
+- The sample statistics differ from the population parameters because the sample contains noise.
+  + This noise comes from \concept{sampling variability}.
+
+\vspace{-1cm}
+
+## Sampling variability
+
+- The value of a statistic varies from one sample to another.
+  + Each sample contains different observations drawn from the target population.
+
+\vspace{.1cm}
+
+- This is true even when the samples are drawn using the same method, such as random sampling.
+
+\vspace{.1cm}
+
+- Smaller sample size generally leads to greater sampling variability.
+
+\vspace{-1cm}
+
+## What proportion of US voters supports candidate A?
+
+\begin{center}\includegraphics[width=0.9\textwidth]{../../images/repeated_sampling4.jpg}\end{center}
+
+- If we repeatedly draw a random sample from the population, we will get different proportions of support ($\overline{X}$).
+
+\vspace{-1cm}
+
+## Sampling variability
+
+- How can we figure out what we want to know: the proportion of support among the whole population?
+
+\vspace{.1cm}
+
+- The two large sample theorems help us understand the relationship between population parameters and sample statistics.
+
+\vspace{.1cm}
+
+- As we will see next class, we can use them to draw conclusions about population parameters using data from a sample.
+
+\vspace{-1cm}
+
+## Sampling variability
+
+- \concept{Population Parameters}:
+
+\vspace{.1cm}
+
+  + \concept{Expectation or Population Mean, $\pE(X)$}: The average value of the random variable X at the population level
+
+  +  \concept{Population variance, $\pV(X)$}: The variance of the random variable X at the population level
+
+\vspace{-1cm}
+
+## Sampling variability
+
+- \concept{Sample Statistics}:
+  + \concept{Sample mean, $\overline{X}$}
+  + \concept{Sample variance, $var(X)$}
+
+\vspace{.1cm}
+
+- $\overline{X}$ and $var(X)$: Sample statistics:
+  + Vary from sample to sample
+
+\vspace{.1cm}
+
+- $E(X)$ and $V(X)$ are population characteristics:
+  + Same (unknown) value.
+
+\vspace{-1cm}
+
+## Sampling variability
+
+\begin{center}\includegraphics[width=0.9\textwidth]{../../images/pop_sample26} \end{center}
+
+\vspace{-1cm}
+
+## The Law of Large Numbers
+
+> \vspace{.1cm} As the sample size increases, $\overline{X} \rightarrow_{p} \mathbb{E}(X)$
+
+$$\textrm{As } n \textrm{ increases, }\,\,\,\, \overline{X} = \frac{\sum^{n}_{i{=}\textrm{1}} X_i}{n} \ \  \text{ converges to } \ \  \mathbb{E}(X)$$
+\vspace{.0cm}
+
+- Check R Script `LLNsims.R` for a simulation to see how it works.
+
+\vspace{-1cm}
+
+## The Central Limit Theorem
+
+> \vspace{.1cm}As the sample size increases, the distribution of the sample means can be approximated by a normal distribution
+
+$$\textrm{as } n \textrm{ increases, }\,\,\,\, \frac{\overline{X}-\pE(X)}{\sqrt{\pV(X)/n}} \,\,\, \stackrel{\textrm{approx.}}{\sim} \,\,\, N \textrm{(0, 1)}$$
+\vspace{.0cm}
+
+- Check R Script `CLTsims.R` for a simulation to see how it works.
+
+\vspace{-1cm}
+
+## The Central Limit Theorem
+
+\begin{center}\includegraphics[height=0.8\textheight]{../../images/pop_sample4.jpg} \end{center}
+
+\vspace{-1cm}
+
+## The Central Limit Theorem
+
+- Let multiple 1,000 observations samples from a random variable, with mean of the means at 10 and variance 0.002.
+
+- What is our guess for the population parameters?
+
+- Mean: 
+  + 10. $\overline{X} \approx \pE(X)$
+
+- Variance:
+  + 2 $var(\overline{X}) \approx \dfrac{\pV(X)}{n}$
+
+\vspace{-1cm}
+
+## Summary
+
+- **Today's Class:**
+  + Probability theory
+    + Probability, Events, Random Variables.
+    + Distributions
+    + Central Limit Theorem and Law of Large Numbers.
+
+\vspace{0.2cm}
+
+- **Next class**:
+  + Hypothesis Testing
+  
+\vspace{-1cm}
+
+# Questions?
+
+# See you in the next class!
