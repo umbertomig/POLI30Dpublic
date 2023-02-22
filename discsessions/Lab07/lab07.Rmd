@@ -1,0 +1,673 @@
+---
+title: |
+    | **POLI 30 D: Political Inquiry**
+    | \vspace{-.8cm}
+author: |
+    | \large\textbf{TA Sessions}\vspace{.3cm}
+date: |
+    | \large\textbf{Lab 07 | R Plots and R Data Analysis III}
+fontsize: 12pt
+urlcolor: blue
+output:
+  beamer_presentation:
+    highlight: tango
+    includes:
+      in_header: '../../latex/style.tex'
+    incremental: true # if true: pauses are inserted after each item in a list
+    keep_tex: false # if true: .tex files are kept (helpful when fixing errors)
+    slide_level: 2
+classoption: "handout" # overrides incremental, removes all pauses
+---
+
+```{r, echo=FALSE, results='hide', include=FALSE} 
+knitr::opts_chunk$set(echo = TRUE)
+knitr::knit_hooks$set(mysmall = function(before, options, envir) { 
+  if (before) { 
+    return("\\small") 
+  } else { 
+    return("\\normalsize") 
+  } 
+}) 
+knitr::knit_hooks$set(myfntsize = function(before, options, envir) { 
+  if (before) { 
+    return("\\footnotesize") 
+  } else { 
+    return("\\normalsize") 
+  } 
+}) 
+knitr::knit_hooks$set(mytiny = function(before, options, envir) { 
+  if (before) { 
+    return("\\tiny") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::opts_chunk$set(myfntsize = TRUE)
+library(tidyverse)
+```
+
+## Before we start
+
+**Announcements:**
+
+- GitHub page: [**https://github.com/umbertomig/POLI30Dpublic**](https://github.com/umbertomig/POLI30Dpublic)
+
+- Piazza forum: The link in the slides needs to be fixed. Check with instructors for an alternative link.
+
+## Before we start
+
+**Recap:** In the Lab sessions, you learned:
+
+- How to install R and R Studio on your computer.
+- How to do basic and advanced operations with vectors and data frames.
+- How to install packages and work with R Markdown.
+- How to create plots and data viz.
+- How to do data analysis.
+
+**Great job!**
+
+- Do you have any questions about these contents?
+
+***
+\begin{center}
+\begin{minipage}{0.6\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.5cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{\textbf{Plan for Lab 07}}}\normalsize\\\\
+- Selecting variables\\
+- Filtering cases in the dataset\\
+- Grouping and summarizing data\\
+- Visualizing correlations\\\\
+\end{tabular}
+\end{center}
+\vspace{.5cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+
+# Getting started
+
+## Getting started
+
+- To get started, we need to load the datasets we will need in the lab.
+
+- We also need to load the `tidyverse` package, which has all the R functions we use.
+
+```{r}
+library(tidyverse)
+```
+
+## Getting started - Education expenditure data
+
+```{r}
+educexp <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/educexp.csv")
+head(educexp)
+```
+
+## Getting started - Chile survey data
+
+```{r}
+chilesurv <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/survchile.csv")
+head(chilesurv)
+```
+
+## Getting started - Voting
+
+```{r}
+voting <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/voting.csv")
+head(voting)
+```
+
+# The `tidyverse` package
+
+## The `tidyverse` package
+
+- The `tidyverse` package is an eco-system for data analytics.
+
+- It has packages for processing, plot, and wrangle data.
+
+- We have seen the package for plotting: [`ggplot2`](https://posit.co/wp-content/uploads/2022/10/data-visualization-1.pdf).
+
+- But there are other important packages in the `tidyverse` constellation.
+
+- And in the links we provide URLs for cheat sheets.
+
+\vspace{-1cm}
+
+## The `tidyverse` package
+
+Other imporatant packages:
+
+- [`forcats`](https://posit.co/wp-content/uploads/2022/10/factors-1.pdf): Package to deal with categorical variables.
+
+- [`stringr`](https://posit.co/wp-content/uploads/2022/10/strings-1.pdf): Package to deal with strings and texts in R.
+
+- [`purrr`](https://posit.co/wp-content/uploads/2022/10/purrr.pdf): Package to work with functions and lists.
+
+- [`tidyr`](https://posit.co/wp-content/uploads/2022/10/tidyr.pdf): Package to clean up and reshape datasets.
+
+- [`dplyr`](https://posit.co/wp-content/uploads/2022/10/data-transformation-1.pdf): Package to manipulate (wrangling) datasets.
+
+We are going to do some `dplyr` today!
+
+\vspace{-1cm}
+
+## `dplyr`
+
+- `dplyr` is the package on `tidyverse` for data wrangling.
+
+- Data wrangling is a fancy way to say that you manipulate your dataset until it is in shape for analysis.
+
+- Most of the time, we collect data from the internet, documents, or even old archives.
+
+- We then need to do some *wrangling* to ensure it is ready to extract the statistics of interest.
+
+\vspace{-1cm}
+
+## `dplyr`
+
+`dplyr` is based on a bunch of verbs that do what we intuitively think each of them should do:
+
+- Variable/column:
+    + `select`: Select variables
+    + `rename`: Rename variables
+    + `mutate`: Mutate variables
+- Observation/row:
+    + `filter`: Filter dataset
+    + `arrange`: Arrange observations
+- Get summaries:
+    + `summarize`: Summarize the dataset
+    + `group_by`: Group summary by a variable
+
+\vspace{-1cm}
+
+# Selecting Variables (column operations)
+
+## Selecting Variables (column)
+
+Suppose we want to select only the numeric variables in the `educexp` dataset. We do the following:
+
+```{r, collapse=TRUE}
+educ2 <- select(educexp, education, income, young, urban)
+head(educ2, 2)
+```
+
+- The syntax is: 
+
+\vspace{0.2cm}
+\footnotesize
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{verbatim}
+newdat <- select(olddat, v1, ..., vn)
+\end{verbatim}
+\end{mdframed}
+\vspace{.2cm}
+\normalsize
+
+\vspace{-1cm}
+
+## Selecting Variables (column)
+
+Or a more compact notation for this uses *pipes*:
+
+```{r, collapse=TRUE}
+educ3 <- educexp %>%
+  select(education, income, young, urban)
+head(educ3, 2)
+```
+
+- Note that the *pipe* operator (`%>%`) works like a composite function: takes what is in the left and passes through to the right.
+
+- The first thing that the select is looking for is the dataset. The *pipe* passes the dataset, so you do not need to mention it.
+
+\vspace{-1cm}
+
+## Selecting Variables (column)
+
+And the methods we can apply in the `select` are the following:
+
+| Method             | Effect                                          |
+|--------------------|-------------------------------------------------|
+| v1, v2, v3 (etc)   | Select given variables                          |
+| starts_with('xyz') | Select starting with `xyz`                      |
+| ends_with('xyz')   | Select ending with `xyz`                        |
+| contains('xyz')    | Select variables that have `xyz` in their names |
+| vk:vn              | All variables between `vk` and `vn`             |
+| -(vk:vn)           | All but the variables between `vk` and `vn`                            |
+
+We can even rename variables using `select`.
+
+## Selecting Variables (column)
+
+Example 1 (same selection as before):
+
+```{r, collapse=TRUE}
+educ4 <- educexp %>% select(-states)
+head(educ4, 3)
+```
+
+Example 2 (in the Chile dataset now):
+
+```{r, collapse=TRUE}
+chile2 <- chilesurv %>% select(starts_with('vote'))
+head(chile2, 3)
+```
+
+## Rename
+
+We can change the names of the variables using `rename`. The basic syntax is:
+
+\vspace{0.2cm}
+\footnotesize
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{verbatim}
+newdat <- olddat %>%
+  rename(newname1 = oldname1,
+         newname2 = oldname2,
+         etc)
+\end{verbatim}
+\end{mdframed}
+\vspace{.2cm}
+\normalsize
+
+Example:
+
+```{r, myfntsize = T, collapse=TRUE}
+chile3 <- chilesurv %>% rename(votebinary = voteYES)
+head(chile3, 2)
+```
+
+\vspace{-1cm}
+
+## Pipeing like a boss
+
+You can *pipe* as many commands as you want. Example:
+
+```{r, myfntsize = T, collapse=TRUE}
+chile4 <- chilesurv %>%
+  select(starts_with('vote')) %>%
+  rename(votebinary = voteYES)
+head(chile4, 2)
+```
+
+- Note the *chain* pipe!
+
+\vspace{-1cm}
+
+# Filtering Rows
+
+## Filtering Rows
+
+- Filtering the data means subset the dataset based on a logical condition.
+  + Example: In the voting pressure experiment, we may want to study the effect of messaging young people.
+  + Reason: Younger people may not be as sensitive to peer pressure.
+
+```{r, myfntsize = TRUE, collapse=TRUE}
+voting2 <- voting %>% filter(birth >= 1975)
+head(voting2, 4)
+```
+
+\vspace{-1cm}
+
+## Filtering Rows
+
+- Syntax:
+
+\vspace{0.2cm}
+\footnotesize
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{semiverbatim}
+newdat <- filter(olddat, condition1, condition2, etc)
+
+or
+
+newdat <- olddat \%>\% filter(condition1, condition2, etc)
+\end{semiverbatim}
+\end{mdframed}
+\vspace{.2cm}
+\normalsize
+
+- Note that you may or may not use the pipe operator. But we can all agree that it makes the code much cleaner.
+
+## Filtering rows
+
+* The filter operators are the following:
+
+| **Operator** | **Meaning**                                |
+|----------|----------------------------------------|
+| `<` or `<=` | Smaller than or smaller than or equal |
+| `>` or `>=` | Greater than or greater than or equal |
+| `==`       | Equal                                  |
+| `!=`       | Different                              |
+| `!`        | Negation (turns a TRUE into a FALSE)                              |
+| `|`        | Or                                     |
+| `&`        | And                                    |
+
+\vspace{-1cm}
+
+## Arrange
+
+- We can sort the dataset by variable content according to the needs of our analysis.
+
+\vspace{0.2cm}
+\footnotesize
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{semiverbatim}
+newdat <- olddat \%>\% arrange(var1, desc(var2), etc)
+\end{semiverbatim}
+\end{mdframed}
+\vspace{.2cm}
+\normalsize
+
+- The `desc()` command sorts descending (highest to the lowest). The default is to sort ascending.
+
+\vspace{-1cm}
+
+## Arrange
+
+- Example: Sorting by education expenditure (high to low):
+
+```{r, myfntsize = T, collapse=TRUE}
+educexp %>% arrange(desc(education)) %>% head()
+```
+\vspace{-1cm}
+
+# Mutating (altering the content)
+
+## Mutating
+
+- We frequently need to operate with our variables. For example, suppose that you want to apply a log function to `income`.
+
+- `log` has the advantage of transforming large changes into smaller ones.
+
+- It also has the advantage of interpreting regression models. Check [out this UofV Library entry](https://data.library.virginia.edu/interpreting-log-transformations-in-a-linear-model/).
+
+- Syntax:
+
+\vspace{0.2cm}
+\footnotesize
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{semiverbatim}
+newdat <- olddat \%>\% mutate(vnew = calcs(vold), etc)
+\end{semiverbatim}
+\end{mdframed}
+\vspace{.2cm}
+\normalsize
+
+\vspace{-1cm}
+
+## Mutating
+
+Example: Log of `education` and the sum of variables:
+
+```{r}
+educ5 <- educexp %>% 
+  mutate(logeduc = log(education), 
+         sum_iyu = income + young + urban)
+head(educ5, 4)
+```
+
+**Your turn:** Adapt this code to arrange the dataset in terms of `logeduc`.
+
+\vspace{-1cm}
+
+# Grouping(-by) and Summarizing
+
+## Summarize
+
+- The `summarize` function is helpful when computing summary statistics in the whole sample.
+
+- Syntax:
+
+\vspace{0.2cm}
+\footnotesize
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{semiverbatim}
+olddat \%>\% summarize(stat1 = calcs(vars1), stat2 = calcs(vars2), etc)
+\end{semiverbatim}
+\end{mdframed}
+\vspace{.2cm}
+\normalsize
+
+- Note that we only save the results if we need them! The idea is that those summary statistics you compute to check, not save.
+
+\vspace{-1cm}
+
+## Summarize
+
+- Example: Suppose we want to compute the mean, standard deviation, and the number of observations for `education` and `income`.
+
+```{r, myfntsize = T, collapse=TRUE}
+educexp %>%
+  summarize(avgeduc = mean(education), 
+            stdeveduc = sd(education), neduc = n(),
+            avginc = mean(income), 
+            stdevinc = sd(income), ninc = n())
+```
+
+- Besides the number of observations, these are pretty informative statistics.
+
+\vspace{-1cm}
+
+## Group-by and Summarize
+
+- But we may want the summary by a group. For example, to compute the *differences-in-means* estimator, we need:
+  + The average in the treatment group
+  + The average in the control group.
+  
+- Group-by can help us here: 
+  + First, we group our results by the treatment status. 
+  + Then, we summarize. 
+
+- It will create one summary for each group.
+
+- Syntax:
+
+\vspace{0.2cm}
+\footnotesize
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{semiverbatim}
+dat \%>\% group\_by(groupvar) \%>\% 
+
+\ \ summarize(stat1 = calcs(vars1), etc)
+\end{semiverbatim}
+\end{mdframed}
+\vspace{.2cm}
+\normalsize
+
+\vspace{-1cm}
+
+## Group-by and Summarize
+
+- Example:
+
+```{r, collapse=TRUE}
+voting %>% group_by(message) %>%
+  summarize(avgvote = mean(voted) * 100, ncases = n())
+```
+
+- And the differences-in-means estimator is then straightforward to compute.
+
+- Note that we also saved the number of cases in each treatment status. 
+  + It makes more sense: Number of control and treatment groups cases.
+
+\vspace{-1cm}
+
+## Group-by and Summarize
+
+**Your turn:** Adapt this example here to compute the percentage of voters in the treatment and the control group, filtering by younger voters (born on or after 1975).
+
+- Example:
+
+```
+voting %>% 
+  group_by(message) %>%
+  summarize(avgvote = mean(voted) * 100, 
+            ncases = n())
+```
+
+**Question:** Does the treatment effect increase or decrease? Why do you think that is the case?
+
+\vspace{-1cm}
+
+## Detour: `tibble` versus `data.frame`
+
+- When using `dplyr` functions such as the ones we have used in here, `tidyverse` sometimes saves the results in `tibble`s.
+
+- `tibble`s are pretty much the same as `data.frame`s.
+
+- To go back to `data.frame`, you should do the following: `dfdat <- data.frame(tibbledat)`.
+
+- Or you can add a `%>% data.frame()` to the end of your pipeing. For this class, it does not matter which one you use.
+
+- If you want to check about `tibble`s, [here](https://tibble.tidyverse.org) is a good source.
+
+\vspace{-1cm}
+
+# Plotting Correlations
+
+## `ggcorrplot` and `GGally`
+
+- These packages are helpful to add some more spice to our plots.
+
+- For example, `ggcorrplot` is good for plotting correlations of multiple variables.
+  + The command `cor` computes two-by-two correlations for all the combinations of variables when more the two vars.
+
+- Installing packages: Run this code in your console:
+
+```
+install.packages('ggcorrplot')
+install.packages('GGally')
+```
+
+- \alert{Warning:} You should ***never*** install packages on R Markdown!
+
+\vspace{-1cm}
+
+## `ggcorrplot` and `GGally`
+
+- Now, to load both packages:
+
+```{r}
+library('ggcorrplot')
+library('GGally')
+```
+
+- And we now have all the functionalities of these packages at our disposal!
+
+\vspace{-1cm}
+
+***
+```{r, fig.height=3, fig.width=4.5, fig.align='center', myfntsize = TRUE, collapse=TRUE}
+ggpairs(educexp %>% select(-states), aes(alpha = 0.4)) + 
+  theme(text = element_text(size = 10), 
+        axis.text.x = element_text(angle = 90) ) 
+```
+\vspace{-0.5cm}
+
+## Correlations
+
+- And the correlation between these variables is:
+
+```{r, collapse=TRUE}
+educexp %>% select(-states) %>% cor()
+```
+
+- The correlation between the variable and itself is always one.
+
+- The correlation is a **`symmetric matrix`**: 
+  + The correlation between `income` and `education` is the same as the correlation between `education` and `income`.
+
+## Correlations
+
+Using squares:
+
+```{r, fig.height=2.5, fig.width=4, fig.align='center', myfntsize = TRUE, collapse=TRUE}
+ggcorrplot(educexp %>% select(-states) %>% cor()) 
+```
+
+\vspace{-2cm}
+
+## Correlations
+
+And using circles:
+
+```{r, fig.height=2.4, fig.width=4, fig.align='center', myfntsize = TRUE, collapse=TRUE}
+ggcorrplot(educexp %>% select(-states) %>% cor(), 
+           method = 'circle') 
+```
+
+\vspace{-2cm}
+
+## `ggcorrplot` and `GGally`
+
+- Note that both commands use **only numeric variables.**
+
+- Another thing to note is that you can do correlation plots using `GGally`.
+  + Function name: `ggcorr`. The syntax is different, but it also produces a nice plot.
+  
+- Syntax for `ggpairs`:
+
+\vspace{0.2cm}
+\footnotesize
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{semiverbatim}
+dat \%>\% select(numericvars) \%>\% ggpairs()
+\end{semiverbatim}
+\end{mdframed}
+\vspace{.2cm}
+\normalsize
+
+- Syntax for `ggcorrplot`:
+
+\vspace{0.2cm}
+\footnotesize
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{verbatim}
+dat %>% select(numericvars) %>% 
+  cor() %>% ggcorrplot()
+\end{verbatim}
+\end{mdframed}
+\vspace{.2cm}
+\normalsize
+
+\vspace{-1cm}
+
+***
+\begin{center}
+\begin{minipage}{0.6\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.5cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{\textbf{Today's Lab}}}\normalsize\\
+- Selecting variables\\
+- Filtering cases in the dataset\\
+- Grouping and summarizing data\\
+- Visualizing correlations\\\\
+\multicolumn{1}{c}{\large\concept{\textbf{Next Lab}}}\normalsize\\
+- More data wrangling\\
+- One more plot\\
+- Dealing with missing data\\
+- Lots of analysis\\\\
+\end{tabular}
+\end{center}
+\vspace{.5cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+  
+# Questions?
+
+# See you in the next lab!

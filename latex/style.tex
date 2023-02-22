@@ -1,5 +1,5 @@
-\usepackage{mdframed} 
-\usepackage{booktabs}
+\usepackage{mdframed, booktabs, tcolorbox, listings, verbatim}
+\usepackage[scaled]{beramono}
 
 % change colors
 \usepackage{color}
@@ -84,14 +84,18 @@
 % \newcommand{\reducedstrut}{\vrule width 0pt height .9\ht\strutbox depth .9\dp\strutbox\relax}
 
 % verbatim sans
-% \usepackage{fancyvrb}
-% \usepackage{listings}
+%\usepackage{fancyvrb}
 % %\lstset{fancyvrb=true,basicstyle=\sffamily,columns=flexible}
 % % 
 % % % if verbatim is written lowercase!!
-% \makeatletter
-% \def\verbatim@font{\normalfont\sffamily}
-% \makeatother
+%\makeatletter
+%\def\verbatim@font{\sffamily}
+%\makeatother
+
+\setlength{\OuterFrameSep}{-3pt}
+\makeatletter
+\preto{\@verbatim}{\topsep=-10pt \partopsep=0.1cm }
+\makeatother
 
 % create new commands
 \newcommand{\bit}{ 
