@@ -1,0 +1,651 @@
+---
+title: |
+    | **POLI 30 D: Political Inquiry**
+    | \vspace{-.8cm}
+author: |
+    | \large\textbf{TA Sessions}\vspace{.3cm}
+date: |
+    | \large\textbf{Lab 08 | R Plots and R Data Analysis IV}
+fontsize: 12pt
+urlcolor: blue
+output:
+  beamer_presentation:
+    highlight: tango
+    includes:
+      in_header: '../../latex/style.tex'
+    incremental: true # if true: pauses are inserted after each item in a list
+    keep_tex: false # if true: .tex files are kept (helpful when fixing errors)
+    slide_level: 2
+classoption: "handout" # overrides incremental, removes all pauses
+---
+
+```{r, echo=FALSE, results='hide', include=FALSE} 
+knitr::opts_chunk$set(echo = TRUE)
+knitr::knit_hooks$set(mysmall = function(before, options, envir) { 
+  if (before) { 
+    return("\\small") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::knit_hooks$set(myscriptsize = function(before, options, envir) { 
+  if (before) { 
+    return("\\scriptsize") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::knit_hooks$set(myfntsize = function(before, options, envir) { 
+  if (before) { 
+    return("\\footnotesize") 
+  } else { 
+    return("\\normalsize") 
+  } 
+}) 
+knitr::knit_hooks$set(mytiny = function(before, options, envir) { 
+  if (before) { 
+    return("\\tiny") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::opts_chunk$set(myscriptsize = TRUE)
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+## Before we start
+
+**Announcements:**
+
+- GitHub page: [**https://github.com/umbertomig/POLI30Dpublic**](https://github.com/umbertomig/POLI30Dpublic)
+
+- Piazza forum: The link in the slides needs to be fixed. Check with instructors for an alternative link.
+
+## Before we start
+
+**Announcements: Final Exam**
+
+- The best way to study for the **final exam** is to:
+  1. Revise the lectures' content from lecture one until the last lecture. All will be on.
+  2. Make sure you understand how to run the code and how to interpret results.
+  3. Revise the content from the homework. They are a good clue regarding the format of the exam.
+  4. If you cannot do it, then explain with words how you would do it. Explain in detail. 
+    - This helps us to give you partial credit.
+
+## Before we start
+
+**Recap:** In the Lab sessions so far, you learned:
+
+- How to install R and R Studio on your computer.
+- How to do basic and advanced operations with vectors and data frames.
+- How to install packages and work with R Markdown.
+- How to create plots and how to do data analysis.
+
+**Great job!**
+
+- Do you have any questions about these contents?
+
+***
+\begin{center}
+\begin{minipage}{0.6\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.5cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{\textbf{Plan for Lab 08}}}\normalsize\\\\
+- Group-by and summarize\\
+- A bit more recoding\\
+- Dealing with missing data\\
+- Extract random samples from data\\
+- Playing with random variables\\
+- Full summary of a regression\\\\
+\end{tabular}
+\end{center}
+\vspace{.5cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+
+# Getting started
+
+## Getting started
+
+- To get started, we need to load the datasets we will need in the lab.
+
+- We also need to load the `tidyverse` package, which has all the R functions we use.
+
+\vspace{0.5cm}
+
+```{r}
+library(tidyverse)
+```
+
+## Getting started - Education expenditure data
+
+```{r, collapse=TRUE}
+educexp <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/educexp.csv")
+head(educexp)
+```
+
+\vspace{-1cm}
+
+## Getting started - Chile survey data
+
+```{r, collapse=TRUE}
+chile <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/survchileComplete.csv")
+head(chile)
+```
+
+\vspace{-1cm}
+
+## Getting started - Voting
+
+```{r, collapse=TRUE}
+voting <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/voting.csv")
+head(voting)
+```
+
+\vspace{-1cm}
+
+# Group-by and Summarize
+
+## Group-by and Summarize
+
+- Suppose we want to find the average age by region.
+
+- This is pretty straightforward when using group-by and summarize:
+  + First, we group our results by the `region` 
+  + Then, we summarize the `age`
+
+- It will create one average (or whatever stat we ask for) for each region group.
+
+- Syntax:
+
+\vspace{0.2cm}
+\footnotesize
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{semiverbatim}
+dat \%>\% group\_by(groupvar) \%>\% 
+
+\ \ summarize(stat1 = calcs(vars1), etc)
+\end{semiverbatim}
+\end{mdframed}
+\vspace{.2cm}
+\normalsize
+
+\vspace{-1cm}
+
+## Group-by and Summarize
+
+- What operations are available?
+
+\footnotesize
+
+|  **Function**  |             **Operation**             |
+|:--------------:|---------------------------------------|
+|    `first()`   | First value of a vector               |
+|    `last()`    | Last value of a vector                |
+|    `nth()`     | Nth value of a vector                 |
+|      `n()`     | Number of values in a vector          |
+| `n_distinct()` | Number of distinct values in a vector |
+|     `min()`    | Minimum value in a vector             |
+|     `max()`    | Maximum value in a vector             |
+|    `mean()`    | Mean of a vector                      |
+|   `median()`   | Median of a vector                    |
+|     `var()`    | Variance of a vector                  |
+|     `sd()`     | Standard deviation of a vector        |
+
+\normalsize
+
+\vspace{-1cm}
+
+## Group-by and Summarize
+
+- Example: Find the maximum age by region in the Chile Survey data.
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE}
+chile %>% group_by(region) %>%
+  summarize(maximumage = max(age))
+```
+
+- Note the `NA`. We are going to learn how to deal with those today.
+
+\vspace{-1cm}
+
+## Group-by and Summarize
+
+- Suppose you want to check the vote of the oldest person in each region.
+
+\vspace{0.5cm}
+
+```{r}
+chile %>% group_by(region) %>% arrange(desc(age)) %>%
+  summarize(voteoldest = first(vote), 
+            ageoldest = first(age))
+```
+
+- `Y` stands for a vote for Pinochet, and `U` stands for undecided.
+
+- **Question**: How about the vote of the youngest person in each of the regions?
+
+\vspace{-1cm}
+
+# Recoding variables
+
+## Recoding variables
+
+- Create a binary variable that is one when the person has `PS` schooling (some college or more).
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE}
+chile2 <- chile %>%
+  mutate(postsec = ifelse(education == 'PS', 1, 0))
+chile2 %>% select(education, postsec) %>% head(4)
+```
+
+- When using `ifelse`, the syntax is:
+
+> `ifelse(test, val_if_T, val_if_F)`
+
+- Note that we work with vectors in the logical test.
+
+\vspace{-1cm}
+
+## Recoding variables
+
+- Create a binary variable that is one when the person is older than 40.
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE}
+chile3 <- chile %>%
+  mutate(olderthan40 = ifelse(age > 40, 1, 0))
+chile3 %>% select(age, olderthan40) %>% head(4)
+```
+
+- **Your turn:** What is the proportion of people over 40 years old by region?
+
+\vspace{-1cm}
+
+## Recoding variables
+
+- Let us say you want to create a binary indicator of whether the person lives in the `North` or `Central` regions.
+
+- `ifelse()` with `%in%` gets this done:
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE}
+chile4 <- chile %>%
+  mutate(NCind = ifelse(region %in% c('N', 'C'), 1, 0))
+chile4 %>% count(NCind)
+```
+
+- Note the `%in%` operator. This is the operator of choice when we make two or more comparisons!
+
+- **Your turn:** Adapt the code above to add also the South region.
+
+\vspace{-1cm}
+
+## Recoding variables
+
+- Suppose we want to recode a continuous variable into a discrete one.
+
+- Suppose we want to recode age into three groups:
+  + From youngest to 30 years old
+  + From 31 to 60 years old
+  + Older than 60 years old
+
+- To do that, we use the function `cut`. We do three things:
+  + `labels = c('lab1', 'lab2, ...)`
+  + `breaks = c(-Inf, break1, break2, ..., Inf)`
+  + `right = (T or F)`: Add the right break to it?!
+
+\vspace{-1cm}
+
+## Recoding variables
+
+- It is simple to use:
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE}
+chile5 <- chile %>%
+  mutate(agecat = 
+           cut(age, breaks = c(-Inf, 30, 60, Inf), 
+               labels = c('<= 30', '31 to 60', '> 60'), 
+               right = T))
+chile5 %>% count(agecat)
+```
+
+- Note `-Inf` and `Inf`. They stand for $-\infty$ and $\infty$ \smiley
+
+\vspace{-1cm}
+
+# Missing Values
+
+## Missing Values
+
+- Note this `NA` that keeps popping up. This is the way we tell R we have missing data.
+
+- Missing data stands for data that we have no idea is
+  + It could be errors in typing up the data
+  + It could be that you do not know
+  + It could be that a respondent stopped the interview
+  + It could be that the person refused to answer a question
+
+- For all these reasons, the key is to understand that it may mess up our analysis.
+
+\vspace{-1cm}
+
+## Missing Data
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE}
+chile %>%
+  group_by(region) %>%
+  summarize(avgsquo = mean(statusquo), nobs = n())
+```
+
+- Note the `NA`s. These are the missing values.
+
+\vspace{-1cm}
+
+## Missing Data
+
+- Most functions in R have a way to deal with it. In `mean`, we add the `na.rm = TRUE` to fix:
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE}
+chile %>%
+  group_by(region) %>%
+  summarize(avgsquo = mean(statusquo, na.rm = T), nobs = n())
+```
+
+\vspace{-1cm}
+
+## Missing Data
+
+- We can remove missing using `na.omit`. It removes the missing values and returns a *clean* dataset.
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE}
+chile %>% select(region, statusquo) %>%
+  na.omit() %>% group_by(region) %>%
+  summarize(avgsquo = mean(statusquo), nobs = n())
+```
+
+- The complete dataset has 2700 observations. 
+
+- After removing the missing in `region` and `statusquo`, it has `r chile %>% select(region, statusquo) %>% na.omit() %>% nrow()` observations.
+
+\vspace{-1cm}
+
+## Missing Data
+
+- When you use `na.omit`, you end up with a smaller dataset.
+  + This is the way to go if you do not need the removed cases.
+
+- When you use `na.rm = T`, the dataset remains the same:
+  + Good, since missingness can be different in different variables.
+  + But sometimes, the function has a different pattern. This works for `mean`, but not for `cor`.
+  + It works most of the time, though.
+  
+# Extracting random samples from data
+
+## Random samples
+
+- Sometimes, we need to extract random samples from a dataset.
+
+- Examples: 
+  + Suppose you have the Census in your computer and want to extract random people to survey.
+  + Suppose you have a dataset of all students and want to extract a representative sample to run a survey.
+  + Suppose you are working with a large dataset, but your computer is old.
+
+- In all these situations, you may extract a sample from your data and work with this sample.
+
+\vspace{-1cm}
+
+## Random samples
+
+- Extract a 10% sample of the data, **without** replacement.
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE, myscriptsize = TRUE}
+set.seed(123456) # change here for a different result
+educexp10pct <- 
+  educexp %>% sample_frac(0.1, replace = F)
+educexp10pct %>% head()
+educexp10pct %>% dim()
+```
+
+- As you can see, the sample has 10% of the cases or 5 cases.
+
+\vspace{-1cm}
+
+## Random samples
+
+- Extract a 10% sample of the data, **with** replacement.
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE}
+educexp10pctwr <- 
+  educexp %>% sample_frac(0.1, replace = T)
+educexp10pctwr %>% head()
+educexp10pctwr %>% dim()
+```
+
+- With replacement, it draws `VT` (Vermont) twice.
+
+\vspace{-1cm}
+
+## Random samples
+
+- Extract a 10-case sample of the data, **without** replacement.
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE}
+educexp10case <- 
+  educexp %>% sample_n(10, replace = F)
+educexp10case %>% head()
+educexp10case %>% dim()
+```
+
+- As you can see, the sample has precisely 10 cases.
+
+\vspace{-1cm}
+
+## Random samples
+
+- Extract a 10-case sample of the data, **with** replacement.
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE}
+educexp10casewr <- 
+  educexp %>% sample_n(10, replace = T)
+educexp10casewr %>% tail(10)
+```
+
+- We were lucky that no state had been drawn twice.
+
+\vspace{-1cm}
+
+# Playing with random variables
+
+## Creating Random Bernoulli
+
+- The function `rbinom` gets: Number of cases, $1$ (zeros or ones), and `prob = p`.
+
+\vspace{0.5cm}
+
+```{r, collapse = TRUE, fig.height = 2.2, fig.width = 5}
+rv <- rbinom(1000, 1, prob = 0.3)
+ggplot(data = data.frame(rv)) + geom_bar(aes(x = rv))
+```
+
+\vspace{-1cm}
+
+## Creating Random Bernoulli
+
+\vspace{0.5cm}
+
+- **Your turn:** Create a variable:
+\vspace{0.5cm}
+  + 10000 observations with probability $p = 0.23$
+\vspace{0.5cm}
+  + 2000 observations with probability $p = 0.95$
+\vspace{0.5cm}
+  + 500 observations with probability $p = 0.41$
+
+\vspace{0.5cm}
+
+- Create a histogram of each of the cooked variables.
+
+\vspace{-1cm}
+
+## Creating Random Normal Variables
+
+- The function `rnorm` gets: Number of cases, `mean`, and standard deviation (`sd`).
+
+\vspace{0.5cm}
+
+```{r, collapse = TRUE, fig.height = 2, fig.width = 5}
+rv <- rnorm(1000, mean = 33, sd = 7)
+ggplot(data = data.frame(rv)) + 
+  geom_histogram(aes(x = rv), bins = 20, color = 'white') + 
+  theme_minimal()
+```
+
+\vspace{-1cm}
+
+## Creating Random Normal Variables
+
+\vspace{0.5cm}
+
+- **Your turn:** Create a variable:
+\vspace{0.5cm}
+  + 10000 observations with mean $3$ and standard deviation $5$
+\vspace{0.5cm}
+  + 2000 observations with mean $35$ and standard deviation $10$
+\vspace{0.5cm}
+  + 500 observations with mean $0$ and standard deviation $1$
+
+\vspace{0.5cm}
+
+- Create a histogram of each of the cooked variables.
+
+\vspace{-1cm}
+
+# Checking the full summary of a regression
+
+## Regression summary
+\vspace{0.5cm}
+- We can create a summary of a regression. 
+\vspace{0.5cm}
+- You must wrap the `lm` function around `summary`.
+\vspace{0.5cm}
+- Check it out for the voting experiment and the expenditure in education in the 1970 US states.
+\vspace{0.5cm}
+- Couple of things to note:
+  1. Lots of statistics. You will learn about the most relevant in class.
+  2. You can compute $R^2$ now for models with more than two variables.
+
+\vspace{-1cm}
+
+## Regression summary
+
+```{r, collapse=TRUE, myscriptsize = TRUE}
+summary(lm(voted ~ message, data = voting))
+```
+
+\vspace{-1cm}
+
+## Regression summary
+
+```{r, collapse=TRUE, myscriptsize = TRUE}
+summary(lm(education ~ income + young + urban, data = educexp))
+```
+
+\vspace{-1cm}
+
+## Regression summary
+
+- For a prettier table, use the `stargazer` package.
+\vspace{0.5cm}
+- Stargazer has lots of options and makes plots very pretty. The only one you need to remember: 
+\vspace{0.5cm}
+  + If your R Markdown is a PDF, use `type = 'latex'`
+  \vspace{0.5cm}
+  + If your R Markdown is an HTML, use `type = 'html'`
+\vspace{0.5cm}
+- Also add the `results = 'asis'` to your code chunk, otherwise, it will look weird.
+
+\vspace{-1cm}
+
+## Regression summary
+
+- To install stargazer:
+\vspace{0.5cm}
+  1. Install `stargazer`
+\vspace{0.5cm}
+  2. Load `stargazer`
+
+\vspace{0.5cm}
+
+```{r}
+library(stargazer)
+```
+
+\vspace{-1cm}
+
+## Regression summary
+
+\vspace{0.5cm}
+
+```{r, results='asis'}
+mod <- lm(voted ~ message, data = voting)
+stargazer(mod, type = 'latex', header = F, float = F,
+          font.size = 'scriptsize', no.space = F, 
+          dep.var.labels = 'Turnout', style = 'qje',
+          covariate.labels = 'Peer-pressure message')
+```
+
+\vspace{-1cm}
+
+***
+\begin{center}
+\begin{minipage}{0.6\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.5cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{\textbf{Today's Lab}}}\normalsize\\
+- Group-by and summarize\\
+- A bit more recoding\\
+- Dealing with missing data\\
+- Extract random samples from data\\
+- Playing with random variables\\
+- Full summary of a regression\\\\
+\multicolumn{1}{c}{\large\concept{\textbf{Next Lab}}}\normalsize\\
+- Cool things you can do with R\\\\
+\end{tabular}
+\end{center}
+\vspace{.5cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+  
+# Questions?
+
+# See you in the next lab!
