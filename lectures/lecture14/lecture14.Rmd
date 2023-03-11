@@ -1,0 +1,700 @@
+---
+title: |
+    | **POLI 30 D: Political Inquiry**
+    | \vspace{-.8cm}
+author: |
+    | \large\textbf{Professor Umberto Mignozzetti\\(Based on DSS Materials)}\vspace{.3cm}
+date: |
+    | \large\textbf{Lecture 14 | Hypothesis Testing}
+fontsize: 12pt
+urlcolor: blue
+output:
+  beamer_presentation:
+    highlight: tango
+    includes:
+      in_header: 'https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/latex/style.tex'
+    incremental: true # if true: pauses are inserted after each item in a list
+    keep_tex: false # if true: .tex files are kept (helpful when fixing errors)
+    slide_level: 2
+classoption: "handout" # overrides incremental, removes all pauses
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::knit_hooks$set(mysmall = function(before, options, envir) { 
+  if (before) { 
+    return("\\small") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::knit_hooks$set(myscriptsize = function(before, options, envir) { 
+  if (before) { 
+    return("\\scriptsize") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::knit_hooks$set(myfntsize = function(before, options, envir) { 
+  if (before) { 
+    return("\\footnotesize") 
+  } else { 
+    return("\\normalsize") 
+  } 
+}) 
+knitr::knit_hooks$set(mytiny = function(before, options, envir) { 
+  if (before) { 
+    return("\\tiny") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::opts_chunk$set(myscriptsize = TRUE)
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+## Before we start
+
+**Announcements:**
+
+- Quizzes and Participation: On Canvas.
+
+- GitHub page: [https://github.com/umbertomig/POLI30Dpublic](https://github.com/umbertomig/POLI30Dpublic)
+
+- Piazza forum: Not sure what the link is. Ask your TA!
+
+- Note to self: Turn on the mic!
+
+## Before we start
+
+\footnotesize
+
+**Recap:** We learned:
+
+- The definitions of theory, scientific theory, and hypotheses.
+- Data, datasets, variables, and how to compute means.
+- Causal effect, treatments, outcomes, and randomization.
+- Sampling, descriptive statistics, correlation, and prediction.
+- Strengths and weaknesses of observational and experimental studies.
+- Probability, law of large numbers, and central limit theorem.
+
+**Great job!**
+
+- Do you have any questions about these contents?
+
+\normalsize
+
+
+***
+\begin{center}
+\begin{minipage}{0.85\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{\textbf{Plan for Today}}}\normalsize\\[.3cm]
+- Hypothesis Testing Intuition \\
+\,\,\,\,\,\,\,\,- Null Hypothesis\\
+\,\,\,\,\,\,\,\,- Alternative Hypothesis\\
+\,\,\,\,\,\,\,\,- Test Statistic\\
+\,\,\,\,\,\,\,\,- P-Values\\\\
+- Hypothesis Testing Formal Procedure\\\\
+- Example: Do Small Classes Improve Math Scores?\\
+\,\,\,\,\,\,\, - What Is the Estimated Average Treatment Effect?\\
+\,\,\,\,\,\,\, - Is the Effect Statistically Significant?\\
+\end{tabular}
+\end{center}
+\vspace{.1cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+
+## The Context
+
+- Suppose we are estimating the average causal effect of a treatment on an outcome. 
+
+-  In this context, $X$ is the treatment variable, and $Y$ is the outcome variable.
+
+-  What do we need to calculate to estimate the average causal effect?
+    + The **difference-in-means** estimator
+
+-  We want to compute it by fitting a linear regression: $\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$.
+  + Which coefficient is equivalent to the difference-in-means estimator?
+
+\vspace{-1cm}
+
+## The Context
+
+- What we can estimate is $\widehat{\beta}_1$, which is the average causal effect *at the sample level*
+
+- What we care about is $\beta_1$, which is the average causal effect *at the population level*
+
+- As we discussed in the last class, samples often differ from population:
+  + Noise produced by sampling makes $\widehat{\beta}_1 \neq \beta_1$
+
+## The Context
+
+- The question we want to answer is:
+  + Looking at the *sample*, do we have enough evidence to conclude that the *population* ATE differs from zero?
+  + In other words, can we say that $\beta_1$ is unlikely to be zero?
+
+- By the way, why do you think we focus on zero?
+
+- To answer this question, we need to do something called a \concept{hypothesis testing}
+
+## Hypothesis Testing
+
+\begin{center}\includegraphics[width=0.9\textwidth]{../../images/supremecourt.jpg}\end{center}
+
+\vspace{-1cm}
+
+## Hypothesis Testing
+
+- We assume the contrary of what we want to prove and test if this leads to a contradiction.
+
+- Suppose a person is on trial for murder. To be fair to the person, we assume that she is innocent.
+  + Then, we look at the evidence:
+
+    + **Person 1**: No good alibi, DNA, or footage.
+
+    + **Person 2**: No good alibi, has blood in the crime scene with matched DNA, and footage showing the person leaving minutes after the crime.
+
+- Which person is more likely to be innocent?
+
+## Hypothesis Testing
+
+- By the way, **both** could. be *innocent*. Or **both** could be *guilty*. For a given person:
+
+\begin{center}\includegraphics[width=0.9\textwidth]{../../images/hip1.png}\end{center}
+
+- This makes hypothesis testing hard: We use what we see to infer about something we did not see.
+
+## Hypothesis Testing
+
+- **Person 1**: No good alibi, DNA, or footage.
+
+\begin{center}\includegraphics[width=0.9\textwidth]{../../images/hip1.png}\end{center}
+
+\vspace{-1cm}
+
+## Hypothesis Testing
+
+- **Person 2**: No good alibi, has blood in the crime scene with matched DNA, and footage showing the person leaving minutes after the crime.
+
+\begin{center}\includegraphics[width=0.9\textwidth]{../../images/hip1.png}\end{center}
+
+\vspace{-1cm}
+
+## Hypothesis Testing
+
+We have two powerful friends: LLN (Law of Large Numbers) and the CLT (Central Limit Theorem).
+
+- We always assume **no** relationship between variables.
+
+- This is called \concept{null hypothesis}. It states that $\beta_1$ is zero:
+\vspace{-.3cm}
+$$ H_0{:}  \,\beta_1 =  0 $$
+\vspace{-1cm}
+
+- Our \concept{alternative hypothesis}\ state that $\beta_1$ is different than zero:
+\vspace{-.3cm}
+$$ H_1{:}  \,\beta_1  \neq 0 $$
+\vspace{-1.6cm}
+
+## Hypothesis Testing
+
+- Thanks to the LLN, we know that the larger the sample, the closer we are to the actual value.
+
+- Thanks to CLT, we know that if $H_0$ is true, then the test statistic over multiple samples:
+\vspace{.1cm}
+\begin{mdframed}[linecolor=titleline, linewidth=0.05cm, innerleftmargin=.5cm,innerrightmargin=.5cm]
+\vspace{-.5cm}
+$$\textrm{test-statistic} = \frac{ \widehat{\beta}_1 - 0}{\textrm{ standard error of }\widehat{\beta}_1 } \sim \pN(0,1)$$ 
+\end{mdframed}
+
+\vspace{-1cm}
+
+## Hypothesis Testing
+
+- If we were to draw multiple large samples from the same target population, $\frac{ \widehat{\beta}_1 - 0}{\textrm{ standard error of }\widehat{\beta}_1 }$ would be distributed as a standard normal:
+
+```{r, fig.width=6, fig.height=2.5, echo=F, out.width = '90%', fig.align='center'}
+par(mfrow = c(1,1),
+          oma = c(1,0,1,0) + 0.1,
+          mar = c(3,3,1,1) + 0.1,
+          mgp = c(2,.5,0), cex=0.8, adj=1)
+
+x <- seq(-3.5,3.5,length=1e3)
+y <- dnorm(x,mean=0,sd=1)
+plot(x, y, type="l", col="white", xlim=c(-3, 3), 
+     main="", xlab="", ylim=c(0,0.4), 
+     font.main=1, bty="n", axes = F, ylab="")
+abline(v=0, lty="dashed", col="gray")
+
+axis(1, at=c(-5,-1.96,0,1.96, 5), labels=c("",-1.96, 0,1.96, ""), lwd.tick=0, col="gray17", col.axis="gray17")
+
+mtext(expression(paste(infinity)), side=1, line=.6, outer=FALSE, at=3.2, cex=1.1, col="gray17")
+mtext(expression(paste("-",infinity)), side=1, line=.6, outer=FALSE, at=-3.1, cex=1.1, col="gray17")
+lines(x,y, col="gray17", lwd=1, lty=2)
+text(x=-3.1,y=0.325, labels="if null hypothesis is true,", cex = 1.3, col="gray17", adj=0)
+text(x=-3.1,y=0.270, labels="test statistics ~ N(0, 1)", cex = 1.3, col="gray17", adj=0)
+```
+
+\vspace{-1cm}
+
+## Hypothesis Testing
+
+- In reality, we only draw one sample:
+
+  + We will only observe one test statistic: $z^{obs}$
+
+  + But we know the distribution of the test statistics if the null hypothesis is true.
+
+- We can calculate the chance that we observe a test statistic as extreme or more extreme as the one we do observe if $H_0$ is true.
+
+  + This is know as the \concept{p-value}: $P(Z{\leq}{-}|z^{obs}|)+P(Z{\geq}|z^{obs}|)$
+
+\vspace{-1cm}
+
+## Hypothesis Testing
+
+- \concept{p-value}: $P(Z{\leq}{-}|z^{obs}|)+P(Z{\geq}|z^{obs}|)$
+
+
+```{r, fig.width=6, fig.height=2.5, echo=F, out.width = '90%', fig.align='center'}
+par(mfrow = c(1,1),
+          oma = c(1,0,1,0) + 0.1,
+          mar = c(3,3,1,1) + 0.1,
+          mgp = c(2,.5,0), cex=0.8, adj=1)
+
+x <- seq(-3.5,3.5,length=1e3)
+y <- dnorm(x,mean=0,sd=1)
+plot(x, y, type="l", col="white", xlim=c(-3, 3), 
+     main="", xlab="", ylim=c(0,0.4), 
+     font.main=1, bty="n", axes = F, ylab="")
+abline(v=0, lty="dashed", col="gray")
+
+axis(1, at=c(-5,-1,0,1, 5), labels=c("", expression(paste("-|",z^{obs},"|")), 0, expression(paste("|",z^{obs},"|")), ""), lwd.tick=0, col="gray17", col.axis="gray17")
+
+mtext(expression(paste(infinity)), side=1, line=.6, outer=FALSE, at=3.2, cex=1.1, col="gray17")
+mtext(expression(paste("-",infinity)), side=1, line=.6, outer=FALSE, at=-3.1, cex=1.1, col="gray17")
+polygon(c(x[x>=1], 1), c(y[x>=1], y[x==max(x)]), 
+        col="gray", border="white")
+polygon(c(x[x<=-1], -1), c(y[x<=-1], y[x==min(x)]), 
+        col="gray", border="white")
+lines(x,y, col="gray17", lwd=1, lty=2)
+text(x=1.5,y=0.325, labels="N(0, 1)", cex = 1.3, col="gray17", adj=0.5)
+```
+
+\vspace{-1cm}
+
+## Hypothesis Testing
+```{r, fig.width=6, fig.height=2, echo=F,out.width = '90%', fig.align='center'}
+par(mfrow = c(1,1),
+          oma = c(1,0,1,0) + 0.1,
+          mar = c(3,3,1,1) + 0.1,
+          mgp = c(2,.5,0), cex=0.8, adj=1)
+
+x <- seq(-3.5,3.5,length=1e3)
+y <- dnorm(x,mean=0,sd=1)
+plot(x, y, type="l", col="white", xlim=c(-3, 3), 
+     main="", xlab="", ylim=c(0,0.4), 
+     font.main=1, bty="n", axes = F, ylab="")
+abline(v=0, lty="dashed", col="gray")
+
+axis(1, at=c(-5,-1,0,1, 5), labels=c("", expression(paste("-|",z^{obs},"|")), 0, expression(paste("|",z^{obs},"|")), ""), lwd.tick=0, col="gray17", col.axis="gray17")
+
+mtext(expression(paste(infinity)), side=1, line=.6, outer=FALSE, at=3.2, cex=1.1, col="gray17")
+mtext(expression(paste("-",infinity)), side=1, line=.6, outer=FALSE, at=-3.1, cex=1.1, col="gray17")
+polygon(c(x[x>=0.8], 0.8), c(y[x>=0.8], y[x==max(x)]), 
+        col="gray", border="white")
+polygon(c(x[x<=-0.8], -0.8), c(y[x<=-0.8], y[x==min(x)]), 
+        col="gray", border="white")
+lines(x,y, col="gray17", lwd=1, lty=2)
+text(x=1.5,y=0.325, labels="N(0, 1)", cex = 1.3, col="gray17", adj=0.5)
+```
+
+- \concept{If the p-value is large}: the probability that we observe $z^{obs}$ or more extreme is large if $H_0$ is true
+  + $z^{obs}$ is common relative to the distribution of test statistics under the null
+
+- *Our evidence is consistent with $H_0$ being true*
+
+- Conclusion: We fail to reject $H_0$. This is called **not statistically significant**
+
+\vspace{-1cm}
+
+## Hypothesis Testing
+
+- **Person 1** again: No good alibi, DNA, or footage. 
+
+\begin{center}\includegraphics[width=0.9\textwidth]{../../images/hip1.png}\end{center}
+
+- There is little evidence to reject this person's innocence (the null hypothesis in criminal justice)!
+
+\vspace{-1cm}
+
+## Hypothesis Testing
+
+```{r, fig.width=6, fig.height=2, echo=F, out.width = '85%', fig.align='center'}
+par(mfrow = c(1,1),
+          oma = c(1,0,1,0) + 0.1,
+          mar = c(3,3,1,1) + 0.1,
+          mgp = c(2,.5,0), cex=0.8, adj=1)
+
+x <- seq(-3.5,3.5,length=1e3)
+y <- dnorm(x,mean=0,sd=1)
+plot(x, y, type="l", col="white", xlim=c(-3, 3), 
+     main="", xlab="", ylim=c(0,0.4), 
+     font.main=1, bty="n", axes = F, ylab="")
+abline(v=0, lty="dashed", col="gray")
+
+axis(1, at=c(-5,-2,0,2, 5), labels=c("", expression(paste("-|",z^{obs},"|")), 0, expression(paste("|",z^{obs},"|")), ""), lwd.tick=0, col="gray17", col.axis="gray17")
+
+mtext(expression(paste(infinity)), side=1, line=.6, outer=FALSE, at=3.2, cex=1.1, col="gray17")
+mtext(expression(paste("-",infinity)), side=1, line=.6, outer=FALSE, at=-3.1, cex=1.1, col="gray17")
+polygon(c(x[x>=2], 2), c(y[x>=2], y[x==max(x)]), 
+        col="gray", border="white")
+polygon(c(x[x<=-2], -2), c(y[x<=-2], y[x==min(x)]), 
+        col="gray", border="white")
+lines(x,y, col="gray17", lwd=1, lty=2)
+text(x=1.5,y=0.325, labels="N(0, 1)", cex = 1.3, col="gray17", adj=0.5)
+```
+\vspace{-0.5cm}
+- \concept{If the p-value is small}: the probability that we observe $z^{obs}$ or more extreme is small if $H_0$ is true
+  + $z^{obs}$ is extreme relative to the distribution of test statistics under the null
+
+- *Our evidence is inconsistent with $H_0$ being true*
+  + Either $H_0$ is not true, or we got unlucky by drawing a fringe sample
+
+- **Conclusion:** We reject $H_0$ and conclude that the estimate is **statistically significant**
+
+\vspace{-1cm}
+
+## Hypothesis Testing
+
+- **Person 2** again: No good alibi, has blood in the crime scene with matched DNA, and footage showing the person leaving minutes after the crime.
+
+\begin{center}\includegraphics[width=0.9\textwidth]{../../images/hip1.png}\end{center}
+
+- Again, no certainty, but much more evidence that this person here may be guilty.
+
+\vspace{-1cm}
+
+## Hypothesis Testing
+
+- How small does the p-value need to be to reject the null hypothesis?
+  + No good answer to that. In fact, many (not so interesting) papers on the subject.
+  + The smaller, the better. We will use the conventional 5\% value.
+\vspace{.3cm}
+
+\begin{mdframed}[linecolor=titleline, linewidth=0.05cm, innerleftmargin=.5cm,innerrightmargin=.5cm]
+
+\begin{itemize}
+\item When \concept{p-value} \ $>$ 5\%: We conclude that the estimate is statistically \textbf{insignificant} (\textit{likely to \textbf{be zero} at the population level})
+
+\item When \concept{p-value} \ $\leq$ 5\%: We conclude that the estimate is statistically \textbf{significant} (\textit{likely to \textbf{not be zero} at the population level})
+\end{itemize}
+
+\end{mdframed}
+
+\vspace{-1cm}
+
+## Shortcut
+```{r, fig.width=6, fig.height=2, echo=F, out.width = '90%', fig.align='center'}
+par(mfrow = c(1,1),
+          oma = c(1,0,1,0) + 0.1,
+          mar = c(3,3,1,1) + 0.1,
+          mgp = c(2,.5,0), cex=0.8, adj=1)
+          
+x <- seq(-3.5,3.5,length=1e3)
+y <- dnorm(x,mean=0,sd=1)
+plot(x, y, type="l", col="white", xlim=c(-3, 3), 
+     main="", xlab="", ylim=c(0,0.4), 
+     font.main=1, bty="n", axes = F, ylab="")
+axis(1, at=c(-3.1,-2,0,2,3.1), 
+     labels=c("","-1.96","0", "1.96",""), 
+     lwd.tick=0, col.axis="gray17", col="gray17")
+polygon(c(x[x>=-2], -2), c(y[x>=-2], y[x==max(x)]), 
+        col="gray", border="white")
+polygon(c(x[x>=2], 2), c(y[x>=2], y[x==max(x)]), 
+        col="white", border="white")
+lines(x,y, col="gray17", lwd=1, lty=2) 
+text(x=0,y=0.19, labels=expression("95%"),
+     cex = 1.3, col="white", lwd=2, adj=0.5)
+``` 
+\vspace{.1cm}
+
+- Recall: $\textrm{\textit{P}}(\textrm{-1.96} \leq Z \leq\textrm{1.96}) \,\, \approx \,\, \textrm{0.95}$
+
+- Probability that $Z$ takes a value less than or equal to -1.96 plus the probability that $Z$ takes a value greater than or equal to 1.96 is approximately 5\% (1-0.95=0.05)
+
+- $\textrm{\textit{P}}(Z\leq\textrm{-1.96}) + \textrm{\textit{P}}(Z\geq\textrm{1.96})  \,\, \approx \,\, \textrm{0.05}$
+
+\vspace{-1cm}
+
+## Shortcut
+```{r, fig.width=6, fig.height=2.5, echo=F, out.width = '90%', fig.align='center'}
+par(mfrow = c(1,1),
+          oma = c(1,1,1,1) + 0.1,
+          mar = c(5,3,1,3) + 0.1,
+          mgp = c(2,.5,0), cex=.8, adj=1, bg="white")
+
+x <- seq(-3.5,3.5,length=1e3)
+y <- dnorm(x,mean=0,sd=1)
+plot(x, y, type="l", col="white", xlim=c(-3.5, 3.5), 
+     main="", xlab="", ylim=c(0,0.4), font.main=1, 
+     bty="n", axes = F, ylab="")
+
+axis(1, at=c(-5,-2,0, 2, 5), 
+     labels=c("", "-1.96", "", "1.96","" ), lwd.tick=0,
+     col="gray17", col.axis="gray17")
+
+polygon(c(x[x>=2], 2), c(y[x>=2], y[x==max(x)]), 
+        col="gray", border="white")
+polygon(c(x[x<=-2], -2), c(y[x<=-2], y[x==min(x)]), 
+        col="gray", border="white")
+
+lines(x,y, lwd=1, lty=2,col="gray17")
+
+text(2.5,.2,expression("P(Z">="1.96)"%~~%"0.025"), cex=1.1, col="#ef3119", adj=0.5)
+text(-2.5,.2,expression("P(Z"<="-1.96)"%~~%"0.025"), cex=1.1, col="#ef3119", adj=0.5)
+
+text(-0.83,.08,expression("P(-1.96"<="Z"), cex=1.1, adj=0.5,col="gray17")
+text(0.6,.08,expression(""<="1.96)"%~~%"0.95"), cex=1.1, adj=0.5,col="gray17")
+
+arrows(2.5, .15, 2.5, .05, code = 2, lwd=1, length=.1, col="#ef3119")
+arrows(-2.5, .15, -2.5, .05, code = 2, lwd=1, length=.1, col="#ef3119")
+```
+
+\vspace{-1cm}
+
+- In short, given the characteristics of $Z$: 
+\vspace{.1cm}
+  + When p-value $>$ 5\%, it means that $|z^{obs}|<$ 1.96
+  + When p-value $\leq$ 5\%, it means that $|z^{obs}|\geq$ 1.96
+
+- We can draw conclusions based on either the value of $|z^{obs}|$ or the value of p-value
+\vspace{.1cm}
+  + Both procedures are mathematically equivalent and lead to the same conclusion
+
+\vspace{-1cm}
+
+## Hypothesis Testing
+
+**Algorithm:**
+
+1. Specify null and alternative hypotheses
+\vspace{.1cm}
+  - $\textrm{H}_{0} {:} \,\, \beta_1 = {0}$ (The true average causal effect at the population level is zero)
+  - $\textrm{H}_{1} {:} \,\,  \beta_1 \neq {0}$ (The true average causal effect at the population level is either positive or negative)
+\vspace{.2cm}
+
+2. Compute the observed value of the test statistic and (perhaps also) the associated p-value
+\vspace{.1cm}
+  - $\textrm{z}^{obs} = \frac{\widehat{\beta}_1}{\textrm{standard error of }\widehat{\beta}_1}$
+  - $\textrm{p-value} \,\, = \,\, {2} \times \textrm{\textit{P}}(Z\leq-|\textrm{z}^{obs}|)$
+\vspace{-1cm}
+
+## Hypothesis Testing
+```{r, fig.width=6, fig.height=2.5, echo=F, out.width = '90%', fig.align='center'}
+par(mfrow = c(1,1),
+          oma = c(1,0,1,0) + 0.1,
+          mar = c(5,3,1,3) + 0.1,
+          mgp = c(2,.5,0), cex=.8, adj=1)
+
+x <- seq(-3.5,3.5,length=1e3)
+y <- dnorm(x,mean=0,sd=1)
+plot(x, y, type="l", col="white", xlim=c(-4, 4), 
+     main="", xlab="", ylim=c(0,0.4), font.main=1, 
+     bty="n", axes = F, ylab="")
+
+axis(1, at=c(-5,-2,0, 2, 5), 
+     labels=c("", "-1.96", "", "1.96","" ), 
+     cex=1, lwd.ticks=0,col="gray17", col.axis="gray17")
+polygon(c(x[x>=2], 2), c(y[x>=2], y[x==max(x)]), 
+        col="gray", border="white")
+polygon(c(x[x<=-2], -2), c(y[x<=-2], y[x==min(x)]), 
+        col="gray", border="white")
+lines(x,y, col="gray17", lwd=1, lty=2)
+
+text(0,.18,expression(paste("Fail to reject H")[0]), cex=1, adj=0.5,col="gray17")
+text(-2.1,.25,expression(paste("Reject H")[0]), cex=1, adj=1, col="#ef3119")
+text(-2.1,.19,expression(paste("|",z^{obs},"|")>="1.96"), cex=.8, adj=1,col="gray17")
+text(-2.1,.15,expression(paste("p-value")<="0.05"), cex=.8, adj=1,col="gray17")
+text(2.1,.25,expression(paste("Reject H")[0]), cex=1, adj=0, col="#ef3119")
+text(2.1,.19,expression(paste("|",z^{obs},"|")>="1.96"), cex=.8, adj=0,col="gray17")
+text(2.1,.15,expression(paste("p-value")<="0.05"), cex=.8, adj=0,col="gray17")
+arrows(-2.1, .08, -3.2, .08, code = 2, lwd=1, length=.1, col="#ef3119")
+arrows(2.1, .08, 3.2, .08, code = 2, lwd=1, length=.1, col="#ef3119")
+abline(v=-2, lty="dashed", col="gray")
+abline(v=2, lty="dashed", col="gray")
+```
+
+\vspace{-1cm}
+
+3. Conclude
+\vspace{.1cm}
+  - If $|\textrm{z}^{obs}| <$ 1.96 or p-value ${>}$ 0.05, we conclude that the estimate is not statistically significant
+  - If $|\textrm{z}^{obs}| \geq$ 1.96 or p-value ${\leq}$ 0.05, that the estimate is statistically significant
+\vspace{-1cm}
+
+## The importance of replication
+- When an effect is statistically significant at the 5\% level, do we know that the true estimate at the population level is not zero?
+    + No, we do not
+\vspace{.2cm}
++ But thanks to the LLN and the CLT, we know that if the null hypothesis is true, only in 5\% of the samples drawn from the target population we will wrongly reject the null.
+
+\vspace{-1cm}
+
+## The importance of replication
+
+- It is important to replicate social scientific studies:
+  + Arriving at similar conclusions when analyzing different samples is reassuring.
+\vspace{.2cm}
+- While the probability of falsely rejecting the null hypothesis in any one sample is 5\%, the probability of falsely rejecting the null twice in a row is only 0.25\%
+\vspace{.2cm}
++ Let us return to the STAR dataset and estimate the average causal effect of attending a small class \textit{on math test scores}.
+
+## Do Small Classes Improve Math Scores?
+
+\vspace{.4cm}\begin{center}\includegraphics[height=.39\textheight]{../../images/small_class_treat}\,\,\, \includegraphics[height=.39\textheight]{../../images/small_class_control}\end{center}
+
+\footnotesize
+(Based on \href{https://edsource.org/wp-content/uploads/old/STAR.pdf}{Mosteller. 1995.``The Tennessee Study of Class Size in the Early School Grades,'' \textit{Future of Children} 5 (2): 113--27.})
+
+## Do Small Classes Improve Math Scores?
+
+- The data come from a randomized experiment conducted in Tennessee: 
+  + Students were randomly assigned to attend either a small class or a regular-size class
+\vspace{.2cm}
++ To estimate the average causal effect, what estimator can we use?
+\vspace{-1cm}
+
+## 0. Get Ready for the Analysis
+
+- Load the data and create any variables needed
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE, comment='##'}
+## load and look at the data
+star <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/STAR.csv") # reads and stores data
+
+## create treatment variable
+star$small <- # stores return values as new variable
+  ifelse(star$classtype=="small", # logical test
+         1, # return value if true
+         0) # return value if false
+```
+    
+\vspace{-1cm}
+
+## 0. Get Ready for the Analysis
+
+- Look at the data
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE, comment='##'}
+## make sure the variable was created correctly
+head(star) # shows first observations
+```
+
+- The treatment variable is?
+
+- The outcome variable is?
+
+- What is the outcome's unit of measurement?
+
+\vspace{-1cm}
+
+## 1. What Is the Estimated Average Treatment Effect?
+
+- Fit a linear model so that the estimated slope coefficient is equivalent to the difference-in-means estimator.
+
+- In this case, the fitted line is: $\widehat{math} = \widehat{\beta}_0 + \widehat{\beta}_1 small$
+
+- R code?  
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE, comment='##'}
+mod <- lm(math ~ small, data = star) # fits linear model
+mod # shows the contents of the object
+```
+
+\vspace{-1cm}
+
+## 1. What Is the Estimated Average Treatment Effect?
+
+- $\widehat{\beta}_1$ = `r round(coef(mod)[2],2)`
+
+- Direction, size, and unit of measurement of the effect? 
+  + An increase of about 6 (or 5.99) points
+
+\vspace{-1cm}
+
+## 1. What Is the Estimated Average Treatment Effect?
+
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{center}\concept{\tip{conclusion statement}}\end{center}
+Assuming that \color{gray}[the treatment and control groups are comparable] \color{black} (a reasonable assumption because \color{gray}...\color{black}), \newline we estimate that \color{gray}[the treatment] [increases/decreases] \newline [the outcome] \color{black} by \color{gray} [size and unit of measurement of the effect]\color{black}, on average.
+\end{mdframed}
+\vspace{.2cm}
+
+## 1. What Is the Estimated Average Treatment Effect?
+
+- *Assuming that students who attended a small class were comparable to students who attended a regular-size class (a reasonable assumption because the data come from a randomized experiment), we estimate that attending a small class increases math test scores by about 6 points, on average.*
+
+## 2. Is the Effect Statistically Significant?
+
+- Is the average treatment effect statistically distinguishable from zero at the population level?
+
+1. Specify null and alternative hypotheses
+\vspace{.2cm}
+  + $H_0 {:} \,\, \beta_1 = 0$ (attending a small class has no average causal effect on math test scores at the population level)
+  + $H_1 {:} \,\, \beta_1 \neq 0$ (attending a small class either increases or decreases math test scores at the population level)
+
+## 2. Is the Effect Statistically Significant? 
+
+- R computes the coefficient and the p-value by running \fu{summary()}:
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE, comment='##', mytiny = TRUE}
+summary(mod)
+```
+
+\vspace{-1cm}
+
+## 2. Is the Effect Statistically Significant?
+
+- Is the effect statistically significant at the 5\% level?
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE, comment='##', mytiny = TRUE}
+summary(mod)
+```
+
+\vspace{-1cm}
+
+## Summary
+
+- **Today's Class:**
+  + Hypothesis Testing with Estimated Regression Coefficients
+  + Example: *Do Small Classes Improve Math Scores*?
+    + What Is the Estimated Average Treatment Effect?
+    + Is the Effect *Statistically Significant*?
+
+\vspace{0.2cm}
+
+- **Next class**:
+  + Do's and do not's in political methodology.
+  
+\vspace{-1cm}
+
+# Questions?
+
+# See you in the next class!

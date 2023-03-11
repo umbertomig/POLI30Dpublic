@@ -1,0 +1,195 @@
+---
+title: "POLI 30 D"
+author: "Problem Set 03"
+output: html_document
+---
+
+```{r, echo = FALSE, results='hide', include=FALSE}
+## Load the tidyverse
+library(tidyverse)
+
+## Load the dataset and save it with the name `anes`.
+anes <- read.csv('https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/anes2016.csv')
+```
+
+# Problem Set 03 - Predicting 2016 ANES Survey Results
+
+## Due: Mar 09
+
+In this exercise, we will predict the presidential vote in the 2016 election using a liberal-conservative scale. We will also analyze some patterns in the 2016 American National Elections Survey (ANES). ANES is among the most comprehensive electoral surveys conducted in the US. It is conducted both offline and online, and pre and post-election.
+
+The original dataset has 1842 variables. I selected a few here for us to study:
+
+
+| **Variable** | **Meaning** |
+|---|---|
+| `int_vote_trump` | Intend to vote for Trump in the 2016 election |
+| `voted_trump` | Voted for Trump in the 2016 election |
+| `int_vote_clinton` | Intend to vote for Clinton in the 2016 election |
+| `voted_clinton` | Voted for Clinton in the 2016 election |
+| `lib_conserv_scale` | Liberal-Conservative scale |
+| `white_voter` | Respondent declared herself as White |
+| `latinx_voter` | Respondent declared herself as Latinx |
+| `swing_voter` | Intended one vote but voted different |
+| `swing_trump` | Did not intend to vote for Trump but did vote for him. |
+| `swing_hillary` | Did not intend to vote for Clinton but did vote for her. |
+| `region` | Country region |
+| `age` | Age in years |
+| `religion_important_life` | Binary indicator for the belief that religion is important for life. |
+
+\vspace{.5cm}
+
+As always, we start by looking at the data:
+
+```{r, collapse=TRUE, comment='##'}
+head(anes)
+```
+
+---
+
+### 1. In this dataset, what does each observation represent? (1 point)
+
+\newline
+
+**Answer**: Answers here
+
+\newline
+
+---
+
+### 2. Suppose we want to predict the vote for Trump using the liberal-conservative scale. What should be our X variable? In other words, which variable will we use as the predictor? (1 point)
+
+\newline
+
+**Answer**: Answers here
+
+\newline
+
+---
+
+### 3. Suppose we want to predict the vote for Trump using the liberal-conservative scale. What should be our Y variable? In other words, which variable will we use as the outcome variable? (1 point)
+
+\newline
+
+**Answer**: Answers here
+
+\newline
+
+---
+
+### 4. Suppose we want to predict the vote for Trump using the liberal-conservative scale. Create a scatter plot of the relationship between the two variables. (1 point) 
+(Hint: The default scatter plot will not work for this data because both variables have discrete variation: Vote for Trump is binary, and the lib-con scale has seven categories. To plot this, you **should use some jitter**. The parameters for jitter are `height` for y and `width` for x.)
+
+\newline
+
+**R code**:
+
+```{r}
+# Put your R Code in here
+```
+
+\newline
+
+---
+
+### 5. Suppose we want to predict the vote for Trump using the liberal-conservative scale. Use the function `lm()` to fit a linear model to the data. (1 point)
+
+\newline
+
+**R code**:
+
+```{r}
+# Put your R Code in here
+```
+
+---
+    
+### 6. In the model fitted in Question 05, what is the fitted line? In other words, provide the formula $\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$ where you specify each term. (1 point)
+(I.e., substitute $Y$ for the name of the outcome variable, substitute $\widehat{\beta}_0$ for the estimated value of the intercept coefficient, substitute $\widehat{\beta}_1$ for the estimated value of the slope coefficient, and substitute $X$ for the name of the predictor.) 
+
+\newline
+
+**Answer**: Answers here.
+
+\newline
+
+---
+
+### 7. Assume we use the model fitted in Question 05. Now, use the fitted line to make some predictions. 
+
+a. Computing $\widehat{Y}$ based on $X$: Suppose that one scores at $-1$ in the liberal-conservative scale. What is the predicted chance that this person will vote for Trump? Please show your calculations and then answer the question with a full sentence (including units of measurement). (0.5 points)
+
+\newline
+
+**Calculations**: Calculations here.
+
+\newline
+
+**Answer**: Answers here.
+
+\newline
+
+b. Computing $\triangle \widehat{Y}$ based on $\triangle X$: Suppose that a liberal person that initially scored as a -1 in the liberal-conservative scale watches only conservative news outlets for one year straight. She then revises some of her ideas and now scores 1 on the liberal-conservative scale. What would it be our best guess of how much her predicted chance for voting for Trump \textit{changes} due to this change in the liberal-conservative scale? Please show your calculations and then answer the question with a complete sentence (including units of measurement). (0.5 points)
+
+\newline
+
+**Calculations**: Calculations here.
+
+\newline
+
+**Answer**: Answers here.
+
+\newline
+
+---
+
+### 8. Assume we are still using the model fitted in Question 05. What is the $R^2$ of that model? And how would you interpret it? (1 point)
+(Hint: the function `cor()` might be helpful here.)
+
+\newline
+
+**R code**:
+
+```{r}
+# R Code in here
+```
+
+\newline
+
+**Answer**: Answers here.
+
+\newline
+
+---
+
+### 9. In Question 05, we fit a model that uses the liberal-conservative scale to predict the intentions to vote for Trump. Now, suppose that *age* can affect both the chance of voting for Trump and the liberal-conservative scale. Fit a new prediction model that controls for age. Is it true that older people tended to vote for Trump? Does your liberal-conservative scale do better or worse in this new model? How do you interpret the liberal-conservative scores after controlling for age? Explain. (1 point)
+
+\newline
+
+**R code**:
+
+```{r}
+# R Code in here
+```
+
+\newline
+
+**Answer**: Answers here.
+
+\newline
+
+---
+
+### 10. In Question 09, we fit a model that uses the liberal-conservative scale and age to predict the intentions to vote for Trump. Many analysts said that, besides the person's age, Latinx voters tended to support Trump in the 2016 election. This could confound the results: a relatively liberal young Latinx could vote for Trump because she could associate the liberals with radical policies. Is this true? Explain using a new regression model with age, the liberal-conservative scale, and the Latinx binary indicator. Moreover, how do you interpret the liberal-conservative scores after controlling for age and Latinx? (1 point)
+
+\newline
+
+**R code**:
+
+```{r, collapse=TRUE, eval=TRUE}
+# R Code in here.
+```
+
+\newline
+
+**Answer**: Answers here.
