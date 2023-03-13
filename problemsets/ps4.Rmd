@@ -1,0 +1,136 @@
+---
+title: "POLI 30 D"
+author: "Problem Set 04"
+output: html_document
+---
+
+```{r, echo = FALSE, results='hide', include=FALSE}
+## Load the tidyverse and stargazer
+library(tidyverse)
+library(stargazer)
+
+## Load the datasets
+anes <- read.csv('https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/anes2016.csv')
+leaders <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/leaders.csv")
+```
+
+# Problem Set 04 - Testing Hypothesis
+
+## Due: Mar 20
+
+**Note**: ***This PS is optional***, I will consider the three highest grades. If this one is higher than your lowest grade, it substitutes it. Otherwise, it does not change. Regardless, it is good training for the final exam.
+
+In this exercise, you will re-estimate the regressions we ran before and test whether the coefficients of interest are significant or not.
+
+---
+
+## Problems 01 to 03
+
+This problem is on the ANES dataset. The original dataset has 1842 variables. I selected a few here for us to study:
+
+| **Variable** | **Meaning** |
+|---|---|
+| `int_vote_trump` | Intend to vote for Trump in the 2016 election |
+| `voted_trump` | Voted for Trump in the 2016 election |
+| `int_vote_clinton` | Intend to vote for Clinton in the 2016 election |
+| `voted_clinton` | Voted for Clinton in the 2016 election |
+| `lib_conserv_scale` | Liberal-Conservative scale |
+| `white_voter` | Respondent declared herself as White |
+| `latinx_voter` | Respondent declared herself as Latinx |
+| `swing_voter` | Intended one vote but voted different |
+| `swing_trump` | Did not intend to vote for Trump but did vote for him. |
+| `swing_hillary` | Did not intend to vote for Clinton but did vote for her. |
+| `region` | Country region |
+| `age` | Age in years |
+| `religion_important_life` | Binary indicator for the belief that religion is important for life. |
+
+\vspace{.5cm}
+
+As always, we start by looking at the data:
+
+```{r, collapse=TRUE, comment='##'}
+head(anes) # shows first observations
+```
+
+**Now, consider the following regression table**:
+
+```{r, collapse=TRUE, eval=TRUE}
+mod <- lm(swing_trump ~ lib_conserv_scale + white_voter, data = anes)
+stargazer(mod,
+          type = 'text',
+          column.labels = 'Changed Vote from Clinton to Trump',
+          covariate.labels = c('Liberal-Conservative Scale',
+                               'White Voter',
+                               'Intercept'), 
+          report = ('vcsp'), single.row = TRUE)
+```
+
+In parenthesis, close to the coefficient, is the standard error. Below, starting with $p = $, is the p-value.
+
+---
+
+### 1. What is the outcome / dependent variable? What are the independent variables? (2 points)
+
+**Answer**: Your answers here.
+
+---
+
+### 2. Interpret the coefficients in this regression. (2 points)
+
+**Answer**: Your answers here.
+
+---
+
+### 3. Many political analysts said the Trump victory was because many white voters swung towards Trump during the election. Is this true? What the hypothesis test on the `white_voter` coefficient tells you? (Hint: formulate the null hypothesis and then interpret the p-value.) (2 points)
+
+**Answer**: Your answers here.
+
+---
+
+## For Questions 04 and 05, we will analyze whether the leader's death affects the Democracy levels.
+
+This is the meaning of the variables:
+
+| **variable** | **meaning** |
+|---|---|
+| year | year of the assassination attempt |
+| country | country where the assassination attempt took place |
+| leadername | name of the leader |
+| died | whether the leader died as a result of the assassination attempt |
+| politybefore | [Polity scores](https://en.wikipedia.org/wiki/Polity_data_series) of the country before the assassination attempt |
+| polityafter | [Polity scores](https://en.wikipedia.org/wiki/Polity_data_series) of the country after the assassination attempt |
+
+Here is a head of this dataset:
+
+```{r, collapse=TRUE, comment='##'}
+head(leaders) # shows first observations
+```
+
+And look at the following regression table:
+
+```{r, collapse=TRUE, eval=TRUE}
+mod <- lm(polityafter ~ died + politybefore, data = leaders)
+stargazer(mod,
+          type = 'text',
+          column.labels = 'Democracy after (Polity IV scores)',
+          covariate.labels = c('Successful Attempt',
+                               'Democracy before (Polity IV scores)',
+                               'Intercept'), 
+          report = ('vcsp'), single.row = TRUE)
+```
+
+In parenthesis, close to the coefficient, is the standard error. Below, starting with $p = $, is the p-value.
+
+\newline
+
+---
+
+### 4. What are the outcome, treatment, and confounder here? Or in other words, what is dependent, and what are the independent variables? (2 points) (Hint: Check Lecture 12.)
+
+**Answer**: Your answers here.
+
+---
+
+### 5. Does the death of a leader affect the democracy levels after the attempt? Explain. (2 points) (Hint: This is hypothesis testing.)
+
+**Answer**: Your answers here.
