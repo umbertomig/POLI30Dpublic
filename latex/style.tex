@@ -63,6 +63,12 @@
 % ignore characters that are not beamer ready
 \DeclareUnicodeCharacter{00A0}{ }
 
+% Multicolumn slide
+\def\begincols{\begin{columns}}
+\def\begincol{\begin{column}}
+\def\endcol{\end{column}}
+\def\endcols{\end{columns}}
+
 % for dags and trees
 \usepackage{pgf,tikz}
 \usepackage{qtree, wasysym}
