@@ -1,0 +1,554 @@
+---
+title: |
+    | **POLI 30 D: Political Inquiry**
+    | \vspace{-.8cm}
+author: |
+    | \large\textbf{Professor Umberto Mignozzetti}\vspace{.3cm}
+date: |
+    | \large\textbf{Lecture 20 | Do's and dont's in Political Methodology\\(Based on BdM and Fowler's book, Zack Binney, and others)}
+fontsize: 12pt
+urlcolor: blue
+output:
+  beamer_presentation:
+    highlight: tango
+    includes:
+      in_header: 'https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/latex/style.tex'
+    incremental: true # if true: pauses are inserted after each item in a list
+    keep_tex: false # if true: .tex files are kept (helpful when fixing errors)
+    slide_level: 2
+classoption: "handout" # overrides incremental, removes all pauses
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::knit_hooks$set(mysmall = function(before, options, envir) { 
+  if (before) { 
+    return("\\small") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::knit_hooks$set(myscriptsize = function(before, options, envir) { 
+  if (before) { 
+    return("\\scriptsize") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::knit_hooks$set(myfntsize = function(before, options, envir) { 
+  if (before) { 
+    return("\\footnotesize") 
+  } else { 
+    return("\\normalsize") 
+  } 
+}) 
+knitr::knit_hooks$set(mytiny = function(before, options, envir) { 
+  if (before) { 
+    return("\\tiny") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::opts_chunk$set(myscriptsize = TRUE)
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+## Before we start
+
+**Announcements:**
+
+- Quizzes and Participation: On Canvas.
+
+- GitHub page: [https://github.com/umbertomig/POLI30Dpublic](https://github.com/umbertomig/POLI30Dpublic)
+
+- Piazza forum: Not sure what the link is. Ask your TA!
+
+- Note to self: Turn on the mic!
+
+## Before we start
+
+\footnotesize
+
+**Recap:** We learned:
+
+- The definitions of theory, scientific theory, and hypotheses.
+- Data, datasets, variables, and how to compute descriptive stats.
+- Causal effect, treatments, outcomes, and randomization.
+- Strengths and weaknesses of observational and experimental studies.
+- Probability, the law of large numbers, central limit theorem, and their use in hypothesis testing.
+
+**Great job!**
+
+- Do you have any questions about these contents?
+
+\normalsize
+
+
+***
+\begin{center}
+\begin{minipage}{0.85\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{\textbf{Plan for Today}}}\normalsize\\[.3cm]
+- Hypothesis Testing\\
+- Denominators \\
+- Regression to the mean \\
+- Behavior Adaptation \\
+- Reporting Bias and P-Hacking \\
+- Dangers of Uncritical Analyses\\\\
+\end{tabular}
+\end{center}
+\vspace{.1cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+
+# Do Small Classes Improve Math Scores?
+
+## Do Small Classes Improve Math Scores?
+
+\vspace{.4cm}\begin{center}\includegraphics[height=.39\textheight]{../../images/small_class_treat}\,\,\, \includegraphics[height=.39\textheight]{../../images/small_class_control}\end{center}
+
+\footnotesize
+(Based on \href{https://edsource.org/wp-content/uploads/old/STAR.pdf}{Mosteller. 1995.``The Tennessee Study of Class Size in the Early School Grades,'' \textit{Future of Children} 5 (2): 113--27.})
+
+## Do Small Classes Improve Math Scores?
+
+- The data come from a randomized experiment conducted in Tennessee: 
+  + Students were randomly assigned to attend either a small class or a regular-size class
+\vspace{.2cm}
++ To estimate the average causal effect, what estimator can we use?
+\vspace{-1cm}
+
+## 0. Get Ready for the Analysis
+
+- Load the data and create any variables needed
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE, comment='##'}
+## load and look at the data
+star <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/STAR.csv") # reads and stores data
+
+## create treatment variable
+star$small <- # stores return values as new variable
+  ifelse(star$classtype=="small", # logical test
+         1, # return value if true
+         0) # return value if false
+```
+    
+\vspace{-1cm}
+
+## 0. Get Ready for the Analysis
+
+- Look at the data
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE, comment='##'}
+## make sure the variable was created correctly
+head(star) # shows first observations
+```
+
+- The treatment variable is?
+
+- The outcome variable is?
+
+- What is the outcome's unit of measurement?
+
+\vspace{-1cm}
+
+## 1. What Is the Estimated Average Treatment Effect?
+
+- Fit a linear model so that the estimated slope coefficient is equivalent to the difference-in-means estimator.
+
+- In this case, the fitted line is: $\widehat{math} = \widehat{\beta}_0 + \widehat{\beta}_1 small$
+
+- R code?  
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE, comment='##'}
+mod <- lm(math ~ small, data = star) # fits linear model
+mod # shows the contents of the object
+```
+
+\vspace{-1cm}
+
+## 1. What Is the Estimated Average Treatment Effect?
+
+- $\widehat{\beta}_1$ = `r round(coef(mod)[2],2)`
+
+- Direction, size, and unit of measurement of the effect? 
+  + An increase of about 6 (or 5.99) points
+
+\vspace{-1cm}
+
+## 1. What Is the Estimated Average Treatment Effect?
+
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.2cm}
+\begin{center}\concept{\tip{conclusion statement}}\end{center}
+Assuming that \color{gray}[the treatment and control groups are comparable] \color{black} (a reasonable assumption because \color{gray}...\color{black}), \newline we estimate that \color{gray}[the treatment] [increases/decreases] \newline [the outcome] \color{black} by \color{gray} [size and unit of measurement of the effect]\color{black}, on average.
+\end{mdframed}
+\vspace{.2cm}
+
+## 1. What Is the Estimated Average Treatment Effect?
+
+- *Assuming that students who attended a small class were comparable to students who attended a regular-size class (a reasonable assumption because the data come from a randomized experiment), we estimate that attending a small class increases math test scores by about 6 points, on average.*
+
+## 2. Is the Effect Statistically Significant?
+
+- Is the average treatment effect statistically distinguishable from zero at the population level?
+
+1. Specify null and alternative hypotheses
+\vspace{.2cm}
+  + $H_0 {:} \,\, \beta_1 = 0$ (attending a small class has no average causal effect on math test scores at the population level)
+  + $H_1 {:} \,\, \beta_1 \neq 0$ (attending a small class either increases or decreases math test scores at the population level)
+
+## 2. Is the Effect Statistically Significant? 
+
+- R computes the coefficient and the p-value by running \fu{summary()}:
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE, comment='##', mytiny = TRUE}
+summary(mod)
+```
+
+\vspace{-1cm}
+
+## 2. Is the Effect Statistically Significant?
+
+- Is the effect statistically significant at the 5\% level?
+
+\vspace{0.5cm}
+
+```{r, collapse=TRUE, comment='##', mytiny = TRUE}
+summary(mod)
+```
+
+\vspace{-1cm}
+
+# How not to be fooled with data?
+
+# Denominators
+
+## Denominators
+
+::: columns
+
+:::: column
+
+NYT reported 28k COVID cases this week (Mar 13). **Is that bad?**
+
+- Is our denominator San Diego county?
+
+- Or is our denominator the entire country?
+
+::::
+
+:::: column
+
+- This one is my favorite!
+
+\begin{center}\includegraphics[height=.39\textheight]{../../images/mstolencar.png}\end{center}
+
+::::
+
+:::
+
+## Denominators
+
+::: columns
+
+:::: column
+
+Another typical screw-up: forgetting that maps also have denominators.
+
+\begin{center}\includegraphics[height=.42\textheight]{../../images/mapsnotgood.png}\end{center}
+
+::::
+
+:::: column
+
+Or the cousin of the Denominator problem: messing up with graph scales.
+
+\begin{center}\includegraphics[height=.42\textheight]{../../images/womenheight}\end{center}
+
+::::
+
+:::
+
+## Denominators
+
+::: columns
+
+:::: column
+
+**Lesson:** 
+
+- Always match the numerator with a denominator!
+
+- When looking at a statistic, ask yourself:
+
+1. What question is this answering? 
+
+2. Is it the one I *should* be answering?
+
+::::
+
+:::: column
+
+Another one of my favorites: [Trump on Axios](https://www.youtube.com/watch?v=cqF4kQBAB9w)
+
+\vspace{0.5cm}
+
+\begin{center}\includegraphics[height=.3\textheight]{../../images/trumponaxios.png}\end{center}
+
+$$ \dfrac{\text{death}}{\text{cases}} \neq \dfrac{\text{death}}{\text{population}} $$
+
+::::
+
+:::
+
+
+# Regression to the Mean
+
+## Regression to the Mean
+
+::: columns
+
+:::: column
+
+- Scared Straight
+  + Took juvenile offenders on tours of prisons
+
+- Initial studies chose the worst juvenile offenders.
+
+- And participants reported less delinquency.
+
+- What is the problem with this?
+  + **Signal:** The kid could be really *bad*
+  + **Noise:** Wrong place at the wrong time.
+
+::::
+
+:::: column
+
+- Regression:
+$$ \text{Outcome} = \text{Signal} + \text{Noise} $$
+
+\begin{center}\includegraphics[height=.39\textheight]{../../images/scaredstraight.jpg}\end{center}
+
+- Guess what? **Increased** the chance of delinquency (oops).
+
+::::
+
+:::
+
+\vspace{-1cm}
+
+## Regression to the Mean
+
+::: columns
+
+:::: column
+
+Golf
+
+- There is a correlation between rounds, but the regression coefficient is less than one!
+
+\begin{center}\includegraphics[height=.39\textheight]{../../images/golfrtm}\end{center}
+
+- This means that a person doing very well tends to do poorly later.
+
+::::
+
+:::: column
+
+A golf commentator might look at that and say:
+
+- Player X had a good first round but succumbed to the pressure.
+
+- Player Y, who had a bad first round, realized she had nothing to lose.
+
+- What do you think?
+
+::::
+
+:::
+
+\vspace{-1cm}
+
+# Behavior Adaptation
+
+## Behavior Adaptation
+
+Any social scientist knows that: *people adapt*...
+
+\begin{center}\includegraphics[height=.39\textheight]{../../images/peopleadapt.png}\end{center}
+
+\vspace{-1cm}
+
+## Behavior Adaptation
+
+::: columns
+
+:::: column
+
+Window tax
+
+- 1696: King William III needs to raise money.
+
+- Wants a progressive tax: higher rates for those with more
+
+- Analysis: rich people tended to have houses with more windows, so tax based on that!
+
+- Windows are easily assessed from outside the home. Genius!
+
+::::
+
+:::: column
+
+Well, maybe not that genius after all:
+
+\begin{center}\includegraphics[height=.39\textheight]{../../images/windowtax}\end{center}
+
+::::
+
+:::
+
+\vspace{-1cm}
+
+## Behavior Adaptation
+
+::: columns
+
+:::: column
+
+COVID-19 Close Contacts
+
+- Paulding County, Georgia schools wanted to reopen in fall 2020.
+
+- CDC defines a *close contacts*: anyone spending 15+ minutes within 6 feet of an infected person
+
+- It is great to follow the rules.
+
+::::
+
+:::: column
+
+Or maybe not:
+
+\begin{center}\includegraphics[height=.55\textheight]{../../images/zackgeorgia}\end{center}
+
+::::
+
+:::
+
+\vspace{-1cm}
+
+# Reporting Bias and P-Hacking
+
+## Reporting Bias and P-Hacking
+
+::: columns
+
+:::: column
+
+Paul the Octopus:
+
+- Predicted winners of games involving the German National Team
+
+- Made prediction by choosing a box with a country’s flag to eat from first
+
+- 11/13, correct. Impressive!
+
+::::
+
+:::: column
+
+\begin{center}\includegraphics[height=.39\textheight]{../../images/paultheoctopus}\end{center}
+
+::::
+
+:::
+
+## Reporting Bias and P-Hacking
+
+::: columns
+
+:::: column
+
+Paul the Octopus:
+
+- $\text{p-value} = P(\text{11 right} | \text{null}) + P(\text{12 right}|\text{null}) + P(\text{13 right}|\text{null}) = 0.011$
+
+- Thus, significant!
+
+- It is impressive that this octopus did this feat, but think a bit: does this mean that this octopus predicts the future?
+
+- Well...
+
+::::
+
+:::: column
+
+- Chance of at least one octopus doing this (one octopus world): $1 - 0.967^1 = 0.033$ 
+
+- Chance of at least one octopus doing this (two octopuses world): $1 - 0.967^2 = 0.065$ 
+
+- Chance of at least one octopus doing this (fifty octopuses world): $1 - 0.967^{50} = 0.813$
+
+- Guess what? In a world with many octopuses, one is going to do that.
+
+::::
+
+:::
+
+\vspace{-1cm}
+
+## Reporting Bias and P-Hacking
+
+And if you want to laugh and learn my favorite combo, check out [this video](https://www.youtube.com/watch?v=0Rnq1NpHdmw) 
+
+\begin{center}\includegraphics[height=.39\textheight]{../../images/scistudyoliver}\end{center}
+
+\vspace{-1cm}
+
+# Dangers of Uncritical Analyses
+
+## Dangers of Uncritical Analyses
+
+- Numbers: make things appear *precise*.
+
+- But that is not true!
+
+- How to not let numbers fool you (follow the [Calling BS](https://www.amazon.com/Calling-Bullshit-Skepticism-Data-Driven-World/dp/0525509186/ref=tmm_hrd_swatch_0?_encoding=UTF8&qid=1678863552&sr=8-1) advice)
+  1. Who is telling me this? 
+  
+  2. How does she know it? Is she an expert on the topic?
+
+  3. Why is she telling me this? What is this person trying to sell me? Does she have the incentive to lie to me?
+
+
+\vspace{-1cm}
+
+## Summary
+
+- **Today's Class:**
+  + Interpret hypothesis testing
+  + Denominators
+  + Regression to the mean
+  + Behavior Adaptation
+  + Reporting Bias and P-Hacking
+  + Dangers of Uncritical Analyses
+  
+\vspace{-1cm}
+
+# Questions?
+
+# Thank you for the great quarter!

@@ -59,7 +59,7 @@ knitr::opts_chunk$set(collapse = TRUE)
 
 - GitHub page: [**https://github.com/umbertomig/POLI30Dpublic**](https://github.com/umbertomig/POLI30Dpublic)
 
-- Piazza forum: The link in the slides needs to be fixed. Check with instructors for an alternative link.
+- Piazza forum: Check with instructors for an alternative link.
 
 ## Before we start
 
@@ -70,7 +70,7 @@ knitr::opts_chunk$set(collapse = TRUE)
   2. Make sure you understand how to run the code and how to interpret results.
   3. Revise the content from the homework. They are a good clue regarding the format of the exam.
   4. If you cannot do it, then explain with words how you would do it. Explain in detail. 
-    - This helps us to give you partial credit.
+    + This helps us to give you partial credit.
 
 ## Before we start
 
