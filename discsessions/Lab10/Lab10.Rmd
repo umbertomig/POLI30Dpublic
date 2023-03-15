@@ -1,0 +1,407 @@
+---
+title: |
+    | **POLI 30 D: Political Inquiry**
+    | \vspace{-.8cm}
+author: |
+    | \large\textbf{TA Sessions}\vspace{.3cm}
+date: |
+    | \large\textbf{Lab 10 | What can I do with R?}
+fontsize: 12pt
+urlcolor: blue
+always_allow_html: true
+output:
+  beamer_presentation:
+    highlight: tango
+    includes:
+      in_header: '../../latex/style.tex'
+    incremental: true # if true: pauses are inserted after each item in a list
+    keep_tex: false # if true: .tex files are kept (helpful when fixing errors)
+    slide_level: 2
+classoption: "handout" # overrides incremental, removes all pauses
+---
+
+```{r, echo=FALSE, results='hide', include=FALSE} 
+knitr::opts_chunk$set(echo = TRUE)
+knitr::knit_hooks$set(mysmall = function(before, options, envir) { 
+  if (before) { 
+    return("\\small") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::knit_hooks$set(myscriptsize = function(before, options, envir) { 
+  if (before) { 
+    return("\\scriptsize") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::knit_hooks$set(myfntsize = function(before, options, envir) { 
+  if (before) { 
+    return("\\footnotesize") 
+  } else { 
+    return("\\normalsize") 
+  } 
+}) 
+knitr::knit_hooks$set(mytiny = function(before, options, envir) { 
+  if (before) { 
+    return("\\tiny") 
+  } else { 
+    return("\\normalsize") 
+  } 
+})
+knitr::opts_chunk$set(myscriptsize = TRUE)
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+## Before we start
+
+**Announcements:**
+
+- GitHub page: [**https://github.com/umbertomig/POLI30Dpublic**](https://github.com/umbertomig/POLI30Dpublic)
+
+- Piazza forum: Check with instructors for an alternative link.
+
+## Before we start
+
+**Announcements: Final Exam**
+
+- Three questions.
+  + Everyone needs to do Question 1.
+  + Then you choose between Q2 and Q3.
+
+- Each question: five points (letters a to e)
+  + Q1: Theoretical (interpretation)
+  + Q2 or Q3: Coding (R) + Theory (interpretation)
+
+- We cannot help you during the exam. Keep calm and put your brain to work. 
+
+- You are fantastic. You got this!
+
+\vspace{-1cm}
+
+## Before we start
+
+**Recap:** In the Lab sessions so far, you learned:
+
+- How to install R and R Studio on your computer.
+- How to do basic and advanced operations with vectors and data frames.
+- How to install packages and work with R Markdown.
+- How to create plots, run data analysis, and run regressions.
+
+**Great job!**
+
+- Do you have any questions about these contents?
+
+***
+\begin{center}
+\begin{minipage}{0.6\paperwidth}
+\begin{mdframed}[backgroundcolor=white,linecolor=title, linewidth=0.05cm]
+\vspace{.5cm}
+\begin{center}
+\begin{tabular}{l}
+\multicolumn{1}{c}{\large\concept{\textbf{Plan for Lab 10}}}\normalsize\\\\
+- Cool stuff you can do if you \\
+\ \ \ \ \ \ \ keep learning R: \\
+\ \ \ \ \ \ - Join two datasets \\
+\ \ \ \ \ \ - Plotting a Map \\
+\ \ \ \ \ \ - Doing an Interactive Plot \\
+\ \ \ \ \ \ - A bit of Text-as-data \\
+\ \ \ \ \ \ - A bit of Machine Learning \\
+\ \ \ \ \ \ - Shiny WebApps \\
+\ \ \ \ \ \ - Scrollytells \\\\
+\end{tabular}
+\end{center}
+\vspace{.5cm}
+\end{mdframed}
+\end{minipage}
+\end{center}
+
+# Getting started
+
+## Getting started
+
+- I prepared a `Lab10.R` script for you to follow the class.
+
+- Use that script!
+
+- Step 0: Install all the needed packages. Then load them.
+
+\vspace{0.5cm}
+
+```{r, warning=FALSE, echo = TRUE, results='hide', include=FALSE}
+library(tidyverse); library(countrycode)
+library(plotly); library(gapminder)
+library(maptools); library(viridis)
+library(coefplot); library(ggthemes)
+library(maps); library(cluster)
+library(dendextend); library(circlize)
+library(wordcloud2)
+educexp <- read.csv("https://raw.githubusercontent.com/umbertomig/POLI30Dpublic/main/data/educexp.csv")
+```
+
+# Join two datasets
+
+## Join two datasets
+
+- Join two datasets is something that R does fast and reliably. Consider you have these two datasets in here:
+
+::: columns
+
+:::: column
+
+Dataset 1:
+
+```{r, echo = F}
+PErisk <- read.csv('https://raw.githubusercontent.com/umbertomig/qtm151/main/datasets/PErisk.csv') # or your locale folder
+dat1 <- PErisk %>% 
+  filter(country %in% PErisk$country[1:5]) %>%
+  select(country, courts:prsexp2) %>%
+  mutate(barb2 = round(barb2, 2))
+dat1
+```
+
+\vspace{0.5cm}
+
+::::
+
+:::: column
+
+Dataset 2:
+
+```{r, echo = F}
+dat2 <- PErisk %>% 
+  filter(country %in% PErisk$country[2:6]) %>%
+  select(country, prscorr2, gdpw2) %>%
+  mutate(gdpw2 = round(gdpw2, 2))
+dat2
+```
+
+::::
+
+:::
+
+\vspace{0.5cm}
+
+- Note that they have they variable `country` in common, but different variables. Why could that be?
+
+\vspace{-1cm}
+
+## Join two datasets
+
+To join it, we use the `full_join` command:
+
+\vspace{0.5cm}
+
+```{r}
+full_join(dat1, dat2)
+```
+
+\vspace{0.5cm}
+
+- Note that whenever we have no idea of the value, R fills it with `NA`s.
+
+- And there are several other ways to join datasets. Keep learning!
+
+\vspace{-1cm}
+
+# Maps
+
+## Maps
+
+- You can plot beautiful (and informative) maps in R.
+
+- There are many ways to do that. We are going to use one here that is the most common.
+
+- We are going to draw two maps:
+  1. Gender Inequality Index (2021)
+  2. Corruption Perception Index (2018)
+  
+- You can do other maps as well. Keep learning!
+  
+\vspace{-1cm}
+
+## Maps
+
+```{r, echo = F, fig.align='center', fig.width=4.5, fig.height=2.5, warning=FALSE}
+qog <- read.csv('https://www.qogdata.pol.gu.se/data/qog_bas_cs_jan23.csv')
+world <- map_data("world")
+
+world %>%
+  mutate(region = countryname(region)) %>%
+  merge(qog %>% select(country = cname, gii_gii) %>%
+          mutate(country = countryname(country)), 
+        by.x = "region", by.y = "country", all.x = T) %>%
+  arrange(group, order) %>%
+  ggplot(aes(x = long, y = lat, 
+             group = group, fill = gii_gii)) + 
+  geom_polygon() + 
+  scale_fill_viridis("", na.value = "gray90") +
+  theme_map() +
+  ggtitle('Gender Inequality Index\n(higher values represent more inequality)')
+```
+
+\vspace{-1cm}
+
+## Maps
+
+```{r, echo = F, fig.align='center', fig.width=4.5, fig.height=2.5, warning=FALSE}
+world %>%
+  mutate(region = countryname(region)) %>%
+  merge(qog %>% select(country = cname, ti_cpi) %>%
+          mutate(country = countryname(country)), 
+        by.x = "region", by.y = "country", all.x = T) %>%
+  arrange(group, order) %>%
+  ggplot(aes(x = long, y = lat, group = group, fill = ti_cpi)) + 
+  geom_polygon() + 
+  scale_fill_viridis("", na.value = "gray90") +
+  theme_map() +
+  ggtitle('Corruption Perception Index\n(higher values represent lower corruption)')
+```
+
+\vspace{-1cm}
+
+
+# `plotly`
+
+## `plotly`
+
+- Interactive graphs are great, especially when taking data to people that are not specialists.
+
+- `plotly` helps us to plot the graphs and play with them.
+
+- Since we cannot do it in a PDF, just run the code on your computer.
+
+- You can build your interactive plot. Keep learning!
+
+\vspace{-1cm}
+
+## `plotly`
+
+```{r, fig.align='center', fig.width=5, fig.height=2.5, echo = FALSE, warning=FALSE, fig.asp=0.7}
+p <- ggplot(data = educexp, aes(x = income, y = education)) + 
+#  geom_point(fill = 'lightblue', alpha = 0.4) + 
+  geom_text(aes(label=states), size=2) + 
+  labs(title = '', y = 'Per-Capita Education Expenditure', x = 'Per-Capita Income') + 
+  theme_minimal(); ggplotly(p)
+```
+
+\vspace{-1cm}
+
+## `plotly`
+
+```{r, fig.align='center', fig.width=5, fig.height=2.5, echo = FALSE, warning=FALSE, fig.asp=0.7}
+p <- ggplot(gapminder, aes(x=gdpPercap, y=lifeExp, color = continent)) +
+  geom_point(aes(size = pop, frame = year, ids=country)) + scale_x_log10(); ggplotly(p)
+```
+
+\vspace{-1cm}
+
+# Text-as-data
+
+## Text-as-data
+
+- Lots of our work in PoliSci is about analyzing a massive text corpus.
+  + Tweets
+  + Books
+  + Reports
+  + You name it...
+  
+- R is at the forefront when it comes to text-as-data.
+
+- You can also analyze text-as-data using R. Keep learning!
+
+## Text-as-data
+
+```{r, fig.align='center', fig.width=5, fig.height=3, echo = FALSE, warning=FALSE, fig.asp=0.7}
+wordcloud2(demoFreq, size = 0.5)
+```
+
+\vspace{-1cm}
+
+# Machine Learning
+
+## Machine Learning
+
+- Machine learning is a set of tools that aims to discover and predict data patterns.
+
+- We can use machine learning to predict the outcome of a variable or do classification.
+
+- You can also use machine learning on your data. Keep learning!
+
+- Let us use Machine Learning to cluster voters in the 1976 Carter (Democrat) x Ford (Republican) election.
+  + We rely on past Republican vote shares.
+
+\vspace{-1cm}
+
+## Machine Learning
+
+```{r, fig.align='center', fig.width=5, fig.height=3, echo = FALSE, warning=FALSE, fig.asp=0.7}
+votes.km <- cluster::votes.repub %>%
+  select(X1976) %>%
+  kmeans(2, nstart=50)
+circlize_dendrogram(color_labels(hclust(dist(votes.km$cluster)), k=2, col = c("blue3", "red3")))
+```
+
+\vspace{-1cm}
+
+## Machine Learning
+
+```{r, fig.align='center', fig.width=5, fig.height=2.5, echo = FALSE, warning=FALSE}
+cluster::votes.repub %>%
+  select(X1976) %>%
+  dist(method = "euclidean") %>%
+  hclust() %>%
+  color_labels(k=7) %>%
+  plot()
+```
+
+\vspace{-1cm}
+
+# Shiny WebApps
+
+## Shiny WebApps
+
+- Shiny WebApps are great for creating web applications to manipulate and visualize real-time data.
+
+- We are not doing those here, but here are a few examples to explore. All done in R!
+
+- [Health Expenditure x Life Expectancy](https://shiny.rstudio.com/gallery/google-charts.html)
+
+- [US Zipcode explorer](https://shiny.rstudio.com/gallery/superzip-example.html)
+
+- [Wordcloud creator](https://shiny.rstudio.com/gallery/word-cloud.html)
+
+\vspace{-1cm}
+
+## Shiny WebApps
+
+- [Bus company simulation game](https://shiny.rstudio.com/gallery/bus-company-simulation.html)
+
+- [k-Means clustering](https://shiny.rstudio.com/gallery/kmeans-example.html)
+
+- [COVID tracker](https://vac-lshtm.shinyapps.io)
+
+- [Data analyzer](https://vnijs.shinyapps.io/radiant/)
+
+- You can also build your Shiny WebApp. Keep learning!
+
+\vspace{-1cm}
+
+# Scrollytells
+
+## Scrollytells
+
+- [Scrollytell](https://github.com/statistiekcbs/scrollytell) is a nice wrapper for your Shiny. It helps you to present your analysis results using data.
+
+- We are not doing those here, but here is an example for you to explore. All done in R!
+
+- [Scrollytell on Labor Automation](https://www.connorrothschild.com/post/automation-scrollytell)
+
+- You can also build your Scrollytell. Keep learning!
+
+\vspace{-1cm}
+
+# Questions?
+
+# Thank you all for a great quarter!
