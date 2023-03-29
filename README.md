@@ -6,13 +6,9 @@ Repo for the UCSD Political Inquiry course. This class is based on the book [*Da
 
 ## Folders
 
-1. `coding`: Coding used in the *discussion sessions*.
-2. `data`: Datasets used in the class.
-3. `discsessions`: Slides used in the TA discussion sessions (may vary based on the TA's preferences).
-4. `images`: Folder with images (not relevant for students).
-5. `inclassex`: In-class exercises (R Scripts and R Markdowns).
-6. `latex`: LaTeX styling (not relevant for students).
-7. `lectures`: R Markdown and PDF of the lectures (based on a twenty-lectures course).
-8. `problemsets`: R Markdown of Problem Sets.
+1. `01-Slides`: PDF of the lectures and labs
+2. `02-Assignments`: Problem-sets and past exams
+3. `03-Coding`: R Scripts and R Markdown codes
+4. `04-Datasets`: Datasets used in the class
 
 *Go Tritons!*
