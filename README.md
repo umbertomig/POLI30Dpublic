@@ -6,9 +6,9 @@ Repo for the UCSD Political Inquiry course.
 
 ## Folders
 
-1. `assignments`: Problem-sets and past exams
+1. `assignments`: Problem sets and past exams
 2. `coding`: R Scripts and R Markdown codes
-3. `datasets`: Datasets used in the class
+3. `data`: Datasets used in the class
 4. `slides`: PDF of the lectures and labs
 
 ## Acknowledge
